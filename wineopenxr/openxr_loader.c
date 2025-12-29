@@ -223,10 +223,12 @@ static XrResult wine_openxr_init_once(void) {
   }
 
   if (!wine_openxr_unix_init_once()) {
+    TRACE("wine_openxr_unix_init_once() failed");
     return XR_ERROR_INITIALIZATION_FAILED;
   }
 
   if (!get_vulkan_extensions()) {
+    TRACE("get_vulkan_extensions() failed");
     return XR_ERROR_INITIALIZATION_FAILED;
   }
 
@@ -471,7 +473,7 @@ XrResult WINAPI xrCreateInstance(const XrInstanceCreateInfo *createInfo, XrInsta
     WARN("xrCreateInstance failed: %d\n", params.result);
     free(wine_instance);
   } else {
-    *instance = (XrInstance)wine_instance;
+    *instance = (XrInstance)(uintptr_t)wine_instance;
   }
 
   return params.result;
@@ -511,7 +513,7 @@ XrResult WINAPI xrDestroyInstance(XrInstance instance) {
 
 /* SteamVR does some internal init during these functions. */
 static XrResult do_vulkan_init(wine_XrInstance *wine_instance, VkInstance vk_instance) {
-  XrInstance instance = (XrInstance)wine_instance;
+  XrInstance instance = (XrInstance)(uintptr_t)wine_instance;
   char *instance_extensions, *device_extensions;
   XrGraphicsRequirementsVulkanKHR vk_reqs;
   XrResult res;
@@ -575,7 +577,7 @@ XrResult WINAPI xrCreateSession(XrInstance instance, const XrSessionCreateInfo *
   NTSTATUS _status;
   uint32_t session_type = 0;
 
-  TRACE("%p, %p, %p\n", instance, createInfo, session);
+  TRACE("0x%s, %p, %p\n", TRACE_HANDLE(instance), createInfo, session);
 
   if (createInfo->next) {
     switch (((XrBaseInStructure *)createInfo->next)->type) {
@@ -700,7 +702,7 @@ XrResult WINAPI xrCreateSession(XrInstance instance, const XrSessionCreateInfo *
 
   LeaveCriticalSection(&session_list_lock);
 
-  *session = (XrSession)wine_session;
+  *session = (XrSession)(uintptr_t)wine_session;
 
   return XR_SUCCESS;
 }
@@ -710,7 +712,7 @@ XrResult WINAPI xrDestroySession(XrSession session) {
   struct xrDestroySession_params params = {.session = session};
   NTSTATUS _status;
 
-  TRACE("%p\n", session);
+  TRACE("0x%s\n", TRACE_HANDLE(session));
   _status = UNIX_CALL(xrDestroySession, &params);
   assert(!_status && "xrDestroySession");
   if (params.result != XR_SUCCESS) {
@@ -726,7 +728,7 @@ XrResult WINAPI xrPollEvent(XrInstance instance, XrEventDataBuffer *eventData) {
   struct xrPollEvent_params params = {.instance = instance, .eventData = eventData};
   NTSTATUS _status;
 
-  WINE_TRACE("%p, %p\n", instance, eventData);
+  WINE_TRACE("0x%s, %p\n", TRACE_HANDLE(instance), eventData);
 
   _status = UNIX_CALL(xrPollEvent, &params);
   assert(!_status && "xrPollEvent");
@@ -737,32 +739,32 @@ XrResult WINAPI xrPollEvent(XrInstance instance, XrEventDataBuffer *eventData) {
     switch (eventData->type) {
       case XR_TYPE_EVENT_DATA_INTERACTION_PROFILE_CHANGED: {
         XrEventDataInteractionProfileChanged *evt = (XrEventDataInteractionProfileChanged *)eventData;
-        evt->session = (XrSession)get_wrapped_XrSession(evt->session);
+        evt->session = (XrSession)(uintptr_t)get_wrapped_XrSession(evt->session);
         break;
       }
       case XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED: {
         XrEventDataSessionStateChanged *evt = (XrEventDataSessionStateChanged *)eventData;
-        evt->session = (XrSession)get_wrapped_XrSession(evt->session);
+        evt->session = (XrSession)(uintptr_t)get_wrapped_XrSession(evt->session);
         break;
       }
       case XR_TYPE_EVENT_DATA_VISIBILITY_MASK_CHANGED_KHR: {
         XrEventDataVisibilityMaskChangedKHR *evt = (XrEventDataVisibilityMaskChangedKHR *)eventData;
-        evt->session = (XrSession)get_wrapped_XrSession(evt->session);
+        evt->session = (XrSession)(uintptr_t)get_wrapped_XrSession(evt->session);
         break;
       }
       case XR_TYPE_EVENT_DATA_REFERENCE_SPACE_CHANGE_PENDING: {
         XrEventDataReferenceSpaceChangePending *evt = (XrEventDataReferenceSpaceChangePending *)eventData;
-        evt->session = (XrSession)get_wrapped_XrSession(evt->session);
+        evt->session = (XrSession)(uintptr_t)get_wrapped_XrSession(evt->session);
         break;
       }
       case XR_TYPE_EVENT_DATA_USER_PRESENCE_CHANGED_EXT: {
         XrEventDataUserPresenceChangedEXT *evt = (XrEventDataUserPresenceChangedEXT *)eventData;
-        evt->session = (XrSession)get_wrapped_XrSession(evt->session);
+        evt->session = (XrSession)(uintptr_t)get_wrapped_XrSession(evt->session);
         break;
       }
       case XR_TYPE_EVENT_DATA_LOCALIZATION_CHANGED_ML: {
         XrEventDataLocalizationChangedML *evt = (XrEventDataLocalizationChangedML *)eventData;
-        evt->session = (XrSession)get_wrapped_XrSession(evt->session);
+        evt->session = (XrSession)(uintptr_t)get_wrapped_XrSession(evt->session);
         break;
       }
       default:
@@ -777,7 +779,7 @@ XrResult WINAPI xrGetSystem(XrInstance instance, const XrSystemGetInfo *getInfo,
   struct xrGetSystem_params params = {.instance = instance, .getInfo = getInfo, .systemId = systemId};
   NTSTATUS _status;
 
-  TRACE("%p, %p, %p\n", instance, getInfo, systemId);
+  TRACE("0x%s, %p, %p\n", TRACE_HANDLE(instance), getInfo, systemId);
   _status = UNIX_CALL(xrGetSystem, &params);
   assert(!_status && "xrGetSystem");
   if (params.result != XR_SUCCESS) {
@@ -915,7 +917,7 @@ XrResult WINAPI xrEnumerateSwapchainFormats(XrSession session,
   };
   NTSTATUS _status;
 
-  TRACE("%p, %u, %p, %p\n", session, formatCapacityInput, formatCountOutput, formats);
+  TRACE("0x%s, %u, %p, %p\n", TRACE_HANDLE(session), formatCapacityInput, formatCountOutput, formats);
 
   if (wine_session->session_type != SESSION_TYPE_D3D11 && wine_session->session_type != SESSION_TYPE_D3D12) {
     _status = UNIX_CALL(xrEnumerateSwapchainFormats, &params);
@@ -978,7 +980,7 @@ XrResult WINAPI xrCreateSwapchain(XrSession session, const XrSwapchainCreateInfo
 
   wine_swapchain->create_info = *createInfo;
 
-  TRACE("%p, %p, %p\n", session, createInfo, swapchain);
+  TRACE("0x%s, %p, %p\n", TRACE_HANDLE(session), createInfo, swapchain);
 
   if (wine_session->session_type == SESSION_TYPE_D3D11 || wine_session->session_type == SESSION_TYPE_D3D12) {
     BOOL format_is_depth;
@@ -1009,7 +1011,7 @@ XrResult WINAPI xrCreateSwapchain(XrSession session, const XrSwapchainCreateInfo
   }
 
   wine_swapchain->session = wine_session;
-  *swapchain = (XrSwapchain)wine_swapchain;
+  *swapchain = (XrSwapchain)(uintptr_t)wine_swapchain;
 
   return XR_SUCCESS;
 }
@@ -1040,7 +1042,7 @@ XrResult WINAPI xrDestroySwapchain(XrSwapchain swapchain) {
   struct xrDestroySwapchain_params params = {.swapchain = swapchain};
   NTSTATUS _status;
 
-  TRACE("%p\n", swapchain);
+  TRACE("0x%s\n", TRACE_HANDLE(swapchain));
 
   _status = UNIX_CALL(xrDestroySwapchain, &params);
   assert(!_status && "xrDestroySwapchain");
@@ -1157,7 +1159,7 @@ XrResult WINAPI xrEnumerateSwapchainImages(XrSwapchain swapchain,
   };
   NTSTATUS _status;
 
-  TRACE("%p, %u, %p, %p\n", swapchain, imageCapacityInput, imageCountOutput, images);
+  TRACE("0x%s, %u, %p, %p\n", TRACE_HANDLE(swapchain), imageCapacityInput, imageCountOutput, images);
   if (wine_swapchain->session->session_type != SESSION_TYPE_D3D11 &&
       wine_swapchain->session->session_type != SESSION_TYPE_D3D12) {
     _status = UNIX_CALL(xrEnumerateSwapchainImages, &params);
@@ -1369,7 +1371,7 @@ XrResult WINAPI xrAcquireSwapchainImage(XrSwapchain swapchain,
   };
   NTSTATUS _status;
 
-  TRACE("%p, %p, %p image count %d, acquired %d\n", swapchain, acquireInfo, index, wine_swapchain->image_count,
+  TRACE("0x%s, %p, %p image count %d, acquired %d\n", TRACE_HANDLE(swapchain), acquireInfo, index, wine_swapchain->image_count,
         wine_swapchain->acquired_count);
 
   if (wine_instance->d3d12_device && wine_swapchain->acquired_count >= wine_swapchain->image_count)
@@ -1422,7 +1424,7 @@ XrResult WINAPI xrReleaseSwapchainImage(XrSwapchain swapchain, const XrSwapchain
   };
   NTSTATUS _status;
 
-  TRACE("%p, %p\n", swapchain, releaseInfo);
+  TRACE("0x%s, %p\n", TRACE_HANDLE(swapchain), releaseInfo);
 
   if (wine_instance->d3d12_device && !wine_swapchain->acquired_count)
   {
@@ -1479,7 +1481,7 @@ XrResult WINAPI xrBeginFrame(XrSession session, const XrFrameBeginInfo *frameBeg
   };
   NTSTATUS _status;
 
-  TRACE("%p, %p\n", session, frameBeginInfo);
+  TRACE("0x%s, %p\n", TRACE_HANDLE(session), frameBeginInfo);
 
   lock_d3d_queue(wine_session->instance, FALSE);
   _status = UNIX_CALL(xrBeginFrame, &params);
@@ -1631,7 +1633,7 @@ XrResult WINAPI xrEndFrame(XrSession session, const XrFrameEndInfo *frameEndInfo
   uint32_t i, view_idx = 0, view_info_idx = 0;
   NTSTATUS _status;
 
-  TRACE("%p, %p\n", session, frameEndInfo);
+  TRACE("0x%s, %p\n", TRACE_HANDLE(session), frameEndInfo);
 
   if (frameEndInfo->layerCount > wine_session->composition_layer_count) {
     free(wine_session->composition_layers);
@@ -1771,7 +1773,7 @@ XrResult WINAPI xrCreateVulkanInstanceKHR(XrInstance instance,
   VkCreateInfoWineInstanceCallback callback;
   VkInstanceCreateInfo vulkan_create_info;
 
-  TRACE("instance %p, createInfo %p, vulkanInstance %p, vulkanResult %p.\n", instance, createInfo, vulkanInstance,
+  TRACE("instance 0x%s, createInfo %p, vulkanInstance %p, vulkanResult %p.\n", TRACE_HANDLE(instance), createInfo, vulkanInstance,
         vulkanResult);
 
   if (createInfo->createFlags) {
@@ -1779,7 +1781,7 @@ XrResult WINAPI xrCreateVulkanInstanceKHR(XrInstance instance,
   }
 
   context.wine_instance = instance;
-  context.create_info = (UINT64)createInfo;
+  context.create_info = (UINT64)(uintptr_t)createInfo;
 
   vulkan_create_info = *createInfo->vulkanCreateInfo;
   callback.sType = VK_STRUCTURE_TYPE_CREATE_INFO_WINE_INSTANCE_CALLBACK;
@@ -1806,7 +1808,7 @@ XrResult WINAPI xrCreateVulkanDeviceKHR(XrInstance instance,
   VkCreateInfoWineDeviceCallback callback;
   VkDeviceCreateInfo vulkan_create_info;
 
-  TRACE("instance %p, createInfo %p, vulkanDevice %p, vulkanResult %p.\n", instance, createInfo, vulkanDevice,
+  TRACE("instance 0x%s, createInfo %p, vulkanDevice %p, vulkanResult %p.\n", TRACE_HANDLE(instance), createInfo, vulkanDevice,
         vulkanResult);
 
   if (createInfo->createFlags) {
@@ -1814,7 +1816,7 @@ XrResult WINAPI xrCreateVulkanDeviceKHR(XrInstance instance,
   }
 
   context.wine_instance = instance;
-  context.create_info = (UINT64)createInfo;
+  context.create_info = (UINT64)(uintptr_t)createInfo;
 
   vulkan_create_info = *createInfo->vulkanCreateInfo;
   callback.sType = VK_STRUCTURE_TYPE_CREATE_INFO_WINE_DEVICE_CALLBACK;

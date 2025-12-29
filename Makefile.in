@@ -639,7 +639,7 @@ $(eval $(call rules-makedep,lsteamclient,aarch64))
 OPENXR_CMAKE_ARGS = -DHAVE_FILESYSTEM_WITHOUT_LIB=0
 
 $(eval $(call rules-source,openxr,$(SRCDIR)/OpenXR-SDK))
-# $(eval $(call rules-cmake,openxr,i386,unix))
+$(eval $(call rules-cmake,openxr,i386,unix))
 $(eval $(call rules-cmake,openxr,x86_64,unix))
 $(eval $(call rules-cmake,openxr,aarch64,unix))
 
@@ -653,6 +653,7 @@ WINEOPENXR_LDFLAGS = -lopenxr_loader
 WINEOPENXR_DEPENDS = wine openxr
 
 $(eval $(call rules-source,wineopenxr,$(SRCDIR)/wineopenxr))
+$(eval $(call rules-makedep,wineopenxr,i386))
 $(eval $(call rules-makedep,wineopenxr,x86_64))
 $(eval $(call rules-makedep,wineopenxr,aarch64))
 
