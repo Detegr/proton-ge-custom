@@ -43,6 +43,19 @@ static inline void *conversion_context_alloc(struct conversion_context *pool, si
   }
 }
 
+static inline void *find_next_struct32(void *s, XrStructureType t)
+{
+    XrBaseOutStructure32 *header;
+
+    for (header = s; header; header = UlongToPtr(header->next))
+    {
+        if (header->type == t)
+            return header;
+    }
+
+    return NULL;
+}
+
 NTSTATUS init_openxr(void *args);
 NTSTATUS is_available_instance_function_openxr(void *args);
 NTSTATUS get_vk_create_callback_ptrs(void *args);

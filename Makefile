@@ -200,9 +200,11 @@ vrclient: any
 	cp -f $(BUILD_DIR)/dist/files/lib/wine/x86_64-unix/vrclient_x64.dll.so $(BUILD_ROOT)/vrclient/lib/wine/x86_64-unix/
 
 wineopenxr: | $(BUILD_ROOT)/wineopenxr/lib/wine/x86_64-windows
+wineopenxr: | $(BUILD_ROOT)/wineopenxr/lib/wine/i386-windows
 wineopenxr: | $(BUILD_ROOT)/wineopenxr/lib/wine/x86_64-unix
 wineopenxr: any
 	cp -f $(BUILD_DIR)/dist/files/lib/wine/x86_64-windows/wineopenxr.dll $(BUILD_ROOT)/wineopenxr/lib/wine/x86_64-windows/ && \
+	cp -f $(BUILD_DIR)/dist/files/lib/wine/i386-windows/wineopenxr.dll $(BUILD_ROOT)/wineopenxr/lib/wine/i386-windows/ && \
 	cp -f $(BUILD_DIR)/dist/files/lib/wine/x86_64-unix/wineopenxr.dll.so $(BUILD_ROOT)/wineopenxr/lib/wine/x86_64-unix/
 
 battleye: | $(BUILD_ROOT)/battleye/v1/lib/wine/i386-windows
