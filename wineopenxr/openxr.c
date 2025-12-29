@@ -202,7 +202,7 @@ XrResult WINAPI wine_xrGetVulkanGraphicsDeviceKHR(XrInstance instance,
                                                   VkInstance vkInstance,
                                                   VkPhysicalDevice *vkPhysicalDevice) {
   XrResult res;
-  TRACE("%p, 0x%s, %p, %p\n", instance, wine_dbgstr_longlong(systemId), vkInstance, vkPhysicalDevice);
+  TRACE("0x%s, 0x%s, %p, %p\n", TRACE_HANDLE(instance), wine_dbgstr_longlong(systemId), vkInstance, vkPhysicalDevice);
   res = g_xr_host_instance_dispatch_table.p_xrGetVulkanGraphicsDeviceKHR(
       wine_instance_from_handle(instance)->host_instance, systemId, get_native_VkInstance(vkInstance),
       vkPhysicalDevice);
@@ -216,7 +216,7 @@ XrResult WINAPI wine_xrGetVulkanGraphicsDevice2KHR(XrInstance instance,
   XrVulkanGraphicsDeviceGetInfoKHR our_getinfo;
   XrResult res;
 
-  TRACE("instance %p, getInfo %p, vulkanPhysicalDevice %p.\n", instance, getInfo, vulkanPhysicalDevice);
+  TRACE("instance 0x%s, getInfo %p, vulkanPhysicalDevice %p.\n", TRACE_HANDLE(instance), getInfo, vulkanPhysicalDevice);
 
   if (getInfo->next) {
     WARN("Unsupported chained structure %p.\n", getInfo->next);
@@ -243,7 +243,7 @@ XrResult WINAPI wine_xrGetVulkanInstanceExtensionsKHR(XrInstance instance,
   XrResult res;
   uint32_t lin_len;
 
-  TRACE("%p, 0x%s, %u, %p, %p\n", instance, wine_dbgstr_longlong(systemId), bufferCapacityInput, bufferCountOutput,
+  TRACE("0x%s, 0x%s, %u, %p, %p\n", TRACE_HANDLE(instance), wine_dbgstr_longlong(systemId), bufferCapacityInput, bufferCountOutput,
         buffer);
 
   /* Linux SteamVR does not return xlib_surface, but Windows SteamVR _does_
@@ -286,7 +286,7 @@ static VkResult WINAPI vk_create_instance_callback(const VkInstanceCreateInfo *c
   unsigned int i;
   VkResult ret;
 
-  our_create_info = *(const XrVulkanInstanceCreateInfoKHR *)c->create_info;
+  our_create_info = *(const XrVulkanInstanceCreateInfoKHR *)(uintptr_t)c->create_info;
   our_create_info.pfnGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)pfnGetInstanceProcAddr;
   our_create_info.vulkanCreateInfo = create_info;
   our_create_info.vulkanAllocator = allocator;
@@ -326,7 +326,7 @@ static VkResult WINAPI vk_create_device_callback(VkPhysicalDevice phys_dev,
   XrVulkanDeviceCreateInfoKHR our_create_info;
   VkResult ret;
 
-  our_create_info = *(const XrVulkanDeviceCreateInfoKHR *)c->create_info;
+  our_create_info = *(const XrVulkanDeviceCreateInfoKHR *)(uintptr_t)c->create_info;
   our_create_info.pfnGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)pfnGetInstanceProcAddr;
   our_create_info.vulkanPhysicalDevice = phys_dev;
   our_create_info.vulkanCreateInfo = create_info;
@@ -375,8 +375,8 @@ NTSTATUS init_openxr(void *args) {
 
   dlclose(unix_handle);
 
-  params->create_instance_callback = (UINT64)&vk_create_instance_callback;
-  params->create_device_callback = (UINT64)&vk_create_device_callback;
+  params->create_instance_callback = (UINT64)(uintptr_t)&vk_create_instance_callback;
+  params->create_device_callback = (UINT64)(uintptr_t)&vk_create_device_callback;
 
   return STATUS_SUCCESS;
 }
@@ -404,6 +404,6 @@ NTSTATUS is_available_instance_function_openxr(void *args)
     }
   }
 
-  params->ret = xrGetInstanceProcAddr(wine_instance ? wine_instance->host_instance : NULL, params->name, &fn);
+  params->ret = xrGetInstanceProcAddr(wine_instance ? wine_instance->host_instance : 0, params->name, &fn);
   return STATUS_SUCCESS;
 }

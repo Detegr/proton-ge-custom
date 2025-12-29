@@ -852,8 +852,11 @@ class XrFunction(object):
 
     def thunk(self, prefix=None, conv=False):
         thunk = ""
-        if not conv:
+        if conv:
+            thunk += "#ifndef _WIN64\n"
+        else:
             thunk += "#ifdef _WIN64\n"
+
         if self.is_perf_critical():
             thunk += "static void {0}{1}(void *args)\n".format(prefix, self.name)
         else:
@@ -876,7 +879,9 @@ class XrFunction(object):
             thunk += "    struct {0}_params *params = args;\n".format(self.name)
         thunk += self.body(conv, params_prefix="params->")
         thunk += "}\n"
-        if not conv:
+        if conv:
+            thunk += "#endif /* !_WIN64 */\n"
+        else:
             thunk += "#endif /* _WIN64 */\n"
         thunk += "\n"
         return thunk
@@ -2614,6 +2619,14 @@ class XrGenerator(object):
         f.write("#include \"openxr_private.h\"\n\n")
 
         f.write("WINE_DEFAULT_DEBUG_CHANNEL(openxr);\n\n")
+
+        f.write("#ifdef __GNUC__\n")
+        f.write("static void __attribute__((used)) __wine_debug_channel_warning_suppressor(void)\n")
+        f.write("{\n")
+        f.write("    (void)__wine_dbch___default;\n")
+        f.write("}\n")
+        f.write("#endif\n\n");
+
         # Generate any conversion helper functions.
         for conv in self.conversions:
             f.write(conv.definition())
@@ -2626,6 +2639,7 @@ class XrGenerator(object):
             if xr_func.name in MANUAL_LOADER_FUNCTIONS:
                 continue
 
+            f.write(xr_func.thunk(prefix="thunk32_", conv=True))
             f.write(xr_func.thunk(prefix="thunk64_"))
 
         # Create array of extensions.
@@ -2677,11 +2691,26 @@ class XrGenerator(object):
                 f.write("    (void *){1}{0},\n".format(xr_func.name, "thunk64_"))
             else:
                 f.write("    {1}{0},\n".format(xr_func.name, "thunk64_"))
-        f.write("};\n")
-        f.write("C_ASSERT(ARRAYSIZE(__wine_unix_call_funcs) == unix_count);\n\n")
+        f.write("};\n\n")
+        f.write("#else\n\n")
 
+        f.write("const unixlib_entry_t __wine_unix_call_funcs[] =\n")
+        f.write("{\n")
+        f.write("    init_openxr,\n")
+        f.write("    is_available_instance_function_openxr,\n")
+        for xr_func in self.registry.funcs.values():
+            if not xr_func.needs_exposing():
+                continue
+            if xr_func.name in MANUAL_LOADER_FUNCTIONS:
+                continue
+
+            if xr_func.is_perf_critical():
+                f.write("    (void *){1}{0},\n".format(xr_func.name, "thunk32_"))
+            else:
+                f.write("    {1}{0},\n".format(xr_func.name, "thunk32_"))
+        f.write("};\n\n")
         f.write("#endif /* _WIN64 */\n\n")
-        f.write("C_ASSERT(ARRAYSIZE(__wine_unix_call_funcs) == unix_count);\n")
+        f.write("C_ASSERT(ARRAYSIZE(__wine_unix_call_funcs) == unix_count);\n\n")
 
     def generate_thunks_h(self, f, prefix):
         self._generate_copyright(f)
@@ -2841,6 +2870,13 @@ class XrGenerator(object):
         f.write("#define XR_PTR_SIZE 8\n")
         f.write("#endif\n\n")
 
+        f.write("#if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__) || defined(_WIN64)\n")
+        f.write("#define XR_HANDLE_TO_U64(handle) ((uint64_t)(uintptr_t)(handle))\n")
+        f.write("#else\n")
+        f.write("#define XR_HANDLE_TO_U64(handle) handle\n")
+        f.write("#endif\n\n")
+        f.write("#define TRACE_HANDLE(handle) wine_dbgstr_longlong(XR_HANDLE_TO_U64(handle))\n\n")
+
         # The overall strategy is to define independent constants and datatypes,
         # prior to complex structures and function calls to avoid forward declarations.
         for const in self.registry.consts:
@@ -2888,6 +2924,8 @@ class XrGenerator(object):
         for struct in structs:
             LOGGER.debug("Generating struct: {0}".format(struct.name))
             f.write(struct.definition(align=True))
+            f.write("\n")
+            f.write(struct.definition(align=True, conv=True))
             f.write("\n")
 
         for func in self.registry.funcs.values():

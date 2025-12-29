@@ -9,6 +9,8 @@
 #include "openxr_loader.h"
 #include "openxr_thunks.h"
 
+typedef UINT32 PTR32
+
 extern struct openxr_instance_funcs g_xr_host_instance_dispatch_table;
 
 struct conversion_context {
