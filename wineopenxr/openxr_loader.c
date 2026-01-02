@@ -1660,20 +1660,52 @@ XrResult WINAPI xrEndFrame(XrSession session, const XrFrameEndInfo *frameEndInfo
   return params.result;
 }
 
-XrResult WINAPI xrConvertTimeToWin32PerformanceCounterKHR(XrInstance instance,
-                                                          XrTime time,
-                                                          LARGE_INTEGER *performanceCounter) {
-  FIXME("unimplemented\n");
-  /* FIXME */
-  return XR_ERROR_INITIALIZATION_FAILED;
+uint64_t ns_per_tick(void) {
+  static uint64_t ns_per_tick;
+
+  if (ns_per_tick == 0) {
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency(&freq);
+
+    // Might not be exact if isn't divisible by freq
+    ns_per_tick = U_1_000_000_000 / freq;
+  }
+
+  return ns_per_tick;
 }
 
-XrResult WINAPI xrConvertWin32PerformanceCounterToTimeKHR(XrInstance instance,
-                                                          const LARGE_INTEGER *performanceCounter,
-                                                          XrTime *time) {
-  FIXME("unimplemented\n");
-  /* FIXME */
-  return XR_ERROR_INITIALIZATION_FAILED;
+void timespec_to_perfcounter(struct timespec timespec,
+                             LARGE_INTEGER *performanceCounter) {
+  performanceCounter->QuadPart =
+      (timespec.tv_sec * U_1_000_000_000 + timespec.tv_nsec) / ns_per_tick();
+}
+
+struct timespec perfcounter_to_timespec(LARGE_INTEGER *performanceCounter) {
+  struct timespec ret;
+
+  uint64_t total_ns = performanceCounter->QuadPart * ns_per_tick();
+  ret.tv_sec = total_ns / U_1_000_000_000;
+  ret.tv_nsec = total_ns % U_1_000_000_000;
+
+  return ret;
+}
+
+XrResult WINAPI xrConvertTimeToWin32PerformanceCounterKHR(
+    XrInstance instance, XrTime time, LARGE_INTEGER *performanceCounter) {
+  XrResult result;
+  struct timespec timespec;
+
+  result = xrConvertTimeToTimespecTimeKHR(instance, time, &timespec);
+  timespec_to_perfcounter(timespec, performanceCounter);
+
+  return result;
+}
+
+XrResult WINAPI xrConvertWin32PerformanceCounterToTimeKHR(
+    XrInstance instance, const LARGE_INTEGER *performanceCounter,
+    XrTime *time) {
+  struct timespec timespec = perfcounter_to_timespec(performanceCounter);
+  return xrConvertTimespecTimeToTimeKHR(instance, &timespec, time);
 }
 
 XrResult WINAPI xrGetD3D11GraphicsRequirementsKHR(XrInstance instance,

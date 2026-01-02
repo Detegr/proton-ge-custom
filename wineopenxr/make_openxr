@@ -116,6 +116,8 @@ FUNCTION_OVERRIDES = {
 
     "xrConvertTimeToWin32PerformanceCounterKHR" : {"dispatch" : False},
     "xrConvertWin32PerformanceCounterToTimeKHR" : {"dispatch" : False},
+    "xrConvertTimespecTimeToTimeKHR" : {"dispatch" : False},
+    "xrConvertTimeToTimespecTimeKHR" : {"dispatch" : False},
     "xrGetD3D11GraphicsRequirementsKHR" : {"dispatch" : False},
     "xrGetD3D12GraphicsRequirementsKHR" : {"dispatch" : False},
 

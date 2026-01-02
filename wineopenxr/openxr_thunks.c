@@ -10375,6 +10375,66 @@ static NTSTATUS thunk64_xrComputeNewSceneMSFT(void *args)
 #endif /* _WIN64 */
 
 #ifndef _WIN64
+static NTSTATUS thunk32_xrConvertTimeToTimespecTimeKHR(void *args)
+{
+    struct
+    {
+        PTR32 instance;
+        XrTime time;
+        PTR32 timespecTime;
+        XrResult result;
+    } *params = args;
+
+    TRACE("%#x, 0x%s, %#x\n", params->instance, wine_dbgstr_longlong(params->time), params->timespecTime);
+
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle((XrInstance)(uintptr_t)UlongToPtr(params->instance))->host_instance, params->time, (const timespec *)(uintptr_t)UlongToPtr(params->timespecTime));
+    return STATUS_SUCCESS;
+}
+#endif /* !_WIN64 */
+
+#ifdef _WIN64
+static NTSTATUS thunk64_xrConvertTimeToTimespecTimeKHR(void *args)
+{
+    struct xrConvertTimeToTimespecTimeKHR_params *params = args;
+
+    TRACE("%p, 0x%s, %p\n", params->instance, wine_dbgstr_longlong(params->time), params->timespecTime);
+
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->time, params->timespecTime);
+    return STATUS_SUCCESS;
+}
+#endif /* _WIN64 */
+
+#ifndef _WIN64
+static NTSTATUS thunk32_xrConvertTimespecTimeToTimeKHR(void *args)
+{
+    struct
+    {
+        PTR32 instance;
+        PTR32 timespecTime;
+        PTR32 time;
+        XrResult result;
+    } *params = args;
+
+    TRACE("%#x, %#x, %#x\n", params->instance, params->timespecTime, params->time);
+
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle((XrInstance)(uintptr_t)UlongToPtr(params->instance))->host_instance, (const timespec *)(uintptr_t)UlongToPtr(params->timespecTime), (XrTime *)(uintptr_t)UlongToPtr(params->time));
+    return STATUS_SUCCESS;
+}
+#endif /* !_WIN64 */
+
+#ifdef _WIN64
+static NTSTATUS thunk64_xrConvertTimespecTimeToTimeKHR(void *args)
+{
+    struct xrConvertTimespecTimeToTimeKHR_params *params = args;
+
+    TRACE("%p, %p, %p\n", params->instance, params->timespecTime, params->time);
+
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->timespecTime, params->time);
+    return STATUS_SUCCESS;
+}
+#endif /* _WIN64 */
+
+#ifndef _WIN64
 static NTSTATUS thunk32_xrCreateAction(void *args)
 {
     struct
@@ -23179,6 +23239,8 @@ const unixlib_entry_t __wine_unix_call_funcs[] =
     thunk64_xrChangeVirtualKeyboardTextContextMETA,
     thunk64_xrClearSpatialAnchorStoreMSFT,
     thunk64_xrComputeNewSceneMSFT,
+    thunk64_xrConvertTimeToTimespecTimeKHR,
+    thunk64_xrConvertTimespecTimeToTimeKHR,
     thunk64_xrCreateAction,
     thunk64_xrCreateActionSet,
     thunk64_xrCreateActionSpace,
@@ -23583,6 +23645,8 @@ const unixlib_entry_t __wine_unix_call_funcs[] =
     thunk32_xrChangeVirtualKeyboardTextContextMETA,
     thunk32_xrClearSpatialAnchorStoreMSFT,
     thunk32_xrComputeNewSceneMSFT,
+    thunk32_xrConvertTimeToTimespecTimeKHR,
+    thunk32_xrConvertTimespecTimeToTimeKHR,
     thunk32_xrCreateAction,
     thunk32_xrCreateActionSet,
     thunk32_xrCreateActionSpace,

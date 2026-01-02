@@ -170,6 +170,30 @@ XrResult WINAPI xrComputeNewSceneMSFT(XrSceneObserverMSFT sceneObserver, const X
     return params.result;
 }
 
+XrResult WINAPI xrConvertTimeToTimespecTimeKHR(XrInstance instance, XrTime time, struct timespec *timespecTime)
+{
+    struct xrConvertTimeToTimespecTimeKHR_params params;
+    NTSTATUS _status;
+    params.instance = instance;
+    params.time = time;
+    params.timespecTime = timespecTime;
+    _status = UNIX_CALL(xrConvertTimeToTimespecTimeKHR, &params);
+    assert(!_status && "xrConvertTimeToTimespecTimeKHR");
+    return params.result;
+}
+
+XrResult WINAPI xrConvertTimespecTimeToTimeKHR(XrInstance instance, const struct timespec *timespecTime, XrTime *time)
+{
+    struct xrConvertTimespecTimeToTimeKHR_params params;
+    NTSTATUS _status;
+    params.instance = instance;
+    params.timespecTime = timespecTime;
+    params.time = time;
+    _status = UNIX_CALL(xrConvertTimespecTimeToTimeKHR, &params);
+    assert(!_status && "xrConvertTimespecTimeToTimeKHR");
+    return params.result;
+}
+
 XrResult WINAPI xrCreateAction(XrActionSet actionSet, const XrActionCreateInfo *createInfo, XrAction *action)
 {
     struct xrCreateAction_params params;
@@ -4540,7 +4564,9 @@ static const struct openxr_func xr_instance_dispatch_table[] =
     {"xrChangeVirtualKeyboardTextContextMETA", xrChangeVirtualKeyboardTextContextMETA},
     {"xrClearSpatialAnchorStoreMSFT", xrClearSpatialAnchorStoreMSFT},
     {"xrComputeNewSceneMSFT", xrComputeNewSceneMSFT},
+    {"xrConvertTimeToTimespecTimeKHR", xrConvertTimeToTimespecTimeKHR},
     {"xrConvertTimeToWin32PerformanceCounterKHR", xrConvertTimeToWin32PerformanceCounterKHR},
+    {"xrConvertTimespecTimeToTimeKHR", xrConvertTimespecTimeToTimeKHR},
     {"xrConvertWin32PerformanceCounterToTimeKHR", xrConvertWin32PerformanceCounterToTimeKHR},
     {"xrCreateAction", xrCreateAction},
     {"xrCreateActionSet", xrCreateActionSet},

@@ -41,6 +41,8 @@ enum unix_call
     unix_xrChangeVirtualKeyboardTextContextMETA,
     unix_xrClearSpatialAnchorStoreMSFT,
     unix_xrComputeNewSceneMSFT,
+    unix_xrConvertTimeToTimespecTimeKHR,
+    unix_xrConvertTimespecTimeToTimeKHR,
     unix_xrCreateAction,
     unix_xrCreateActionSet,
     unix_xrCreateActionSpace,
@@ -532,6 +534,22 @@ struct xrComputeNewSceneMSFT_params
 {
     XrSceneObserverMSFT sceneObserver;
     const XrNewSceneComputeInfoMSFT *computeInfo;
+    XrResult result;
+};
+
+struct xrConvertTimeToTimespecTimeKHR_params
+{
+    XrInstance instance;
+    XrTime time;
+    struct timespec *timespecTime;
+    XrResult result;
+};
+
+struct xrConvertTimespecTimeToTimeKHR_params
+{
+    XrInstance instance;
+    const struct timespec *timespecTime;
+    XrTime *time;
     XrResult result;
 };
 
