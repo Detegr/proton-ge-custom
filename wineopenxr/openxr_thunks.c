@@ -2590,18 +2590,7 @@ static inline void convert_XrSwapchainImageBaseHeader_host_to_win32(const XrSwap
 
 static inline XrSwapchainImageBaseHeader *convert_XrSwapchainImageBaseHeader_array_win32_to_host(struct conversion_context *ctx, const XrSwapchainImageBaseHeader32 *in, uint32_t count)
 {
-    XrSwapchainImageBaseHeader *out;
-    unsigned int i;
-
-    if (!in || !count) return NULL;
-
-    out = conversion_context_alloc(ctx, count * sizeof(*out));
-    for (i = 0; i < count; i++)
-    {
-        convert_XrSwapchainImageBaseHeader_win32_to_host(&in[i], &out[i]);
-    }
-
-    return out;
+    return wine_convert_XrSwapchainImageBaseHeader_array_win32_to_host(ctx, in, count);
 }
 
 static inline void convert_XrSwapchainImageBaseHeader_array_host_to_win32(const XrSwapchainImageBaseHeader *in, XrSwapchainImageBaseHeader32 *out, uint32_t count)

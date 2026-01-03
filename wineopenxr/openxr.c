@@ -274,6 +274,37 @@ XrResult WINAPI wine_xrGetVulkanInstanceExtensionsKHR(XrInstance instance,
   return res;
 }
 
+XrSwapchainImageBaseHeader *wine_convert_XrSwapchainImageBaseHeader_array_win32_to_host(struct conversion_context *ctx, const XrSwapchainImageBaseHeader32 *in, uint32_t count)
+{
+    if (count == 0) {
+        return NULL;
+    }
+
+    switch (in[0]->type)
+    {
+        case XR_TYPE_SWAPCHAIN_IMAGE_D3D11_KHR:
+        {
+            int i;
+            XrSwapchainImageD3D11KHR *out;
+            XrSwapchainImageD3D11KHR32 *in_images = (XrSwapchainImageD3D11KHR32*)in;
+            out = conversion_context_alloc(ctx, count * sizeof(XrSwapchainImageD3D11KHR));
+
+            for (i = 0; i < count; ++i)
+            {
+                out[i].type = in_images[i].type;
+                out[i].next = NULL;
+                out[i].texture = in_images[i].texture;
+            }
+
+            return (XrSwapchainImageBaseHeader*)out;
+        }
+        default:
+            assert(false && "Unsupported swapchain image type");
+    }
+
+    return NULL; // unreachable
+}
+
 XrCompositionLayerProjectionView* convert_xrcompositionlayerviews(struct conversion_context *ctx, const XrCompositionLayerProjectionView32 *views, uint32_t count)
 {
     int i;

@@ -183,6 +183,7 @@ MANUAL_LOADER_THUNKS = {
 
 MANUAL_CONVERSION_FUNCTIONS = {
     "convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host",
+    "convert_XrSwapchainImageBaseHeader_array_win32_to_host",
 }
 
 STRUCT_CHAIN_CONVERSIONS = {
