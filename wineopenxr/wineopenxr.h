@@ -3450,7 +3450,7 @@ typedef struct XrActionStateGetInfo
     XrStructureType type;
     const void *next;
     XrAction WINE_XR_ALIGN(8) action;
-    XrPath subactionPath;
+    XrPath WINE_XR_ALIGN(8) subactionPath;
 } XrActionStateGetInfo;
 
 typedef struct XrActionStateGetInfo32
@@ -3458,7 +3458,7 @@ typedef struct XrActionStateGetInfo32
     XrStructureType type;
     PTR32 next;
     XrAction DECLSPEC_ALIGN(8) action;
-    XrPath subactionPath;
+    XrPath DECLSPEC_ALIGN(8) subactionPath;
 } XrActionStateGetInfo32;
 
 typedef struct XrActionStatePose
@@ -3478,25 +3478,25 @@ typedef struct XrActionStatePose32
 typedef struct XrActionSuggestedBinding
 {
     XrAction WINE_XR_ALIGN(8) action;
-    XrPath binding;
+    XrPath WINE_XR_ALIGN(8) binding;
 } XrActionSuggestedBinding;
 
 typedef struct XrActionSuggestedBinding32
 {
     XrAction DECLSPEC_ALIGN(8) action;
-    XrPath binding;
+    XrPath DECLSPEC_ALIGN(8) binding;
 } XrActionSuggestedBinding32;
 
 typedef struct XrActiveActionSet
 {
     XrActionSet WINE_XR_ALIGN(8) actionSet;
-    XrPath subactionPath;
+    XrPath WINE_XR_ALIGN(8) subactionPath;
 } XrActiveActionSet;
 
 typedef struct XrActiveActionSet32
 {
     XrActionSet DECLSPEC_ALIGN(8) actionSet;
-    XrPath subactionPath;
+    XrPath DECLSPEC_ALIGN(8) subactionPath;
 } XrActiveActionSet32;
 
 typedef struct XrActiveActionSetPriorityEXT
@@ -4001,14 +4001,14 @@ typedef struct XrControllerModelKeyStateMSFT
 {
     XrStructureType type;
     void *next;
-    XrControllerModelKeyMSFT modelKey;
+    XrControllerModelKeyMSFT WINE_XR_ALIGN(8) modelKey;
 } XrControllerModelKeyStateMSFT;
 
 typedef struct XrControllerModelKeyStateMSFT32
 {
     XrStructureType type;
     PTR32 next;
-    XrControllerModelKeyMSFT modelKey;
+    XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
 } XrControllerModelKeyStateMSFT32;
 
 typedef struct XrControllerModelNodePropertiesMSFT
@@ -5342,7 +5342,7 @@ typedef struct XrFrameState
     XrStructureType type;
     void *next;
     XrTime WINE_XR_ALIGN(8) predictedDisplayTime;
-    XrDuration predictedDisplayPeriod;
+    XrDuration WINE_XR_ALIGN(8) predictedDisplayPeriod;
     XrBool32 shouldRender;
 } XrFrameState;
 
@@ -5351,7 +5351,7 @@ typedef struct XrFrameState32
     XrStructureType type;
     PTR32 next;
     XrTime DECLSPEC_ALIGN(8) predictedDisplayTime;
-    XrDuration predictedDisplayPeriod;
+    XrDuration DECLSPEC_ALIGN(8) predictedDisplayPeriod;
     XrBool32 shouldRender;
 } XrFrameState32;
 
@@ -5535,9 +5535,9 @@ typedef struct XrGraphicsBindingVulkanKHR
 {
     XrStructureType type;
     const void *next;
-    VkInstance instance;
-    VkPhysicalDevice physicalDevice;
-    VkDevice device;
+    VkInstance WINE_XR_ALIGN(8) instance;
+    VkPhysicalDevice WINE_XR_ALIGN(8) physicalDevice;
+    VkDevice WINE_XR_ALIGN(8) device;
     uint32_t queueFamilyIndex;
     uint32_t queueIndex;
 } XrGraphicsBindingVulkanKHR;
@@ -5547,9 +5547,9 @@ typedef struct XrGraphicsBindingVulkanKHR32
 {
     XrStructureType type;
     PTR32 next;
-    VkInstance instance;
-    VkPhysicalDevice physicalDevice;
-    VkDevice device;
+    VkInstance DECLSPEC_ALIGN(8) instance;
+    VkPhysicalDevice DECLSPEC_ALIGN(8) physicalDevice;
+    VkDevice DECLSPEC_ALIGN(8) device;
     uint32_t queueFamilyIndex;
     uint32_t queueIndex;
 } XrGraphicsBindingVulkanKHR32;
@@ -5770,7 +5770,7 @@ typedef struct XrHapticActionInfo
     XrStructureType type;
     const void *next;
     XrAction WINE_XR_ALIGN(8) action;
-    XrPath subactionPath;
+    XrPath WINE_XR_ALIGN(8) subactionPath;
 } XrHapticActionInfo;
 
 typedef struct XrHapticActionInfo32
@@ -5778,14 +5778,14 @@ typedef struct XrHapticActionInfo32
     XrStructureType type;
     PTR32 next;
     XrAction DECLSPEC_ALIGN(8) action;
-    XrPath subactionPath;
+    XrPath DECLSPEC_ALIGN(8) subactionPath;
 } XrHapticActionInfo32;
 
 typedef struct XrHapticAmplitudeEnvelopeVibrationFB
 {
     XrStructureType type;
     const void *next;
-    XrDuration duration;
+    XrDuration WINE_XR_ALIGN(8) duration;
     uint32_t amplitudeCount;
     const float *amplitudes;
 } XrHapticAmplitudeEnvelopeVibrationFB;
@@ -5794,7 +5794,7 @@ typedef struct XrHapticAmplitudeEnvelopeVibrationFB32
 {
     XrStructureType type;
     PTR32 next;
-    XrDuration duration;
+    XrDuration DECLSPEC_ALIGN(8) duration;
     uint32_t amplitudeCount;
     PTR32 amplitudes;
 } XrHapticAmplitudeEnvelopeVibrationFB32;
@@ -5837,7 +5837,7 @@ typedef struct XrHapticVibration
 {
     XrStructureType type;
     const void *next;
-    XrDuration duration;
+    XrDuration WINE_XR_ALIGN(8) duration;
     float frequency;
     float amplitude;
 } XrHapticVibration;
@@ -5846,7 +5846,7 @@ typedef struct XrHapticVibration32
 {
     XrStructureType type;
     PTR32 next;
-    XrDuration duration;
+    XrDuration DECLSPEC_ALIGN(8) duration;
     float frequency;
     float amplitude;
 } XrHapticVibration32;
@@ -5871,7 +5871,7 @@ typedef struct XrInputSourceLocalizedNameGetInfo
 {
     XrStructureType type;
     const void *next;
-    XrPath sourcePath;
+    XrPath WINE_XR_ALIGN(8) sourcePath;
     XrInputSourceLocalizedNameFlags WINE_XR_ALIGN(8) whichComponents;
 } XrInputSourceLocalizedNameGetInfo;
 
@@ -5879,7 +5879,7 @@ typedef struct XrInputSourceLocalizedNameGetInfo32
 {
     XrStructureType type;
     PTR32 next;
-    XrPath sourcePath;
+    XrPath DECLSPEC_ALIGN(8) sourcePath;
     XrInputSourceLocalizedNameFlags DECLSPEC_ALIGN(8) whichComponents;
 } XrInputSourceLocalizedNameGetInfo32;
 
@@ -5928,7 +5928,7 @@ typedef struct XrInteractionProfileAnalogThresholdVALVE
     XrStructureType type;
     const void *next;
     XrAction WINE_XR_ALIGN(8) action;
-    XrPath binding;
+    XrPath WINE_XR_ALIGN(8) binding;
     float onThreshold;
     float offThreshold;
     const XrHapticBaseHeader *onHaptic;
@@ -5940,7 +5940,7 @@ typedef struct XrInteractionProfileAnalogThresholdVALVE32
     XrStructureType type;
     PTR32 next;
     XrAction DECLSPEC_ALIGN(8) action;
-    XrPath binding;
+    XrPath DECLSPEC_ALIGN(8) binding;
     float onThreshold;
     float offThreshold;
     PTR32 onHaptic;
@@ -5951,7 +5951,7 @@ typedef struct XrInteractionProfileDpadBindingEXT
 {
     XrStructureType type;
     const void *next;
-    XrPath binding;
+    XrPath WINE_XR_ALIGN(8) binding;
     XrActionSet WINE_XR_ALIGN(8) actionSet;
     float forceThreshold;
     float forceThresholdReleased;
@@ -5966,7 +5966,7 @@ typedef struct XrInteractionProfileDpadBindingEXT32
 {
     XrStructureType type;
     PTR32 next;
-    XrPath binding;
+    XrPath DECLSPEC_ALIGN(8) binding;
     XrActionSet DECLSPEC_ALIGN(8) actionSet;
     float forceThreshold;
     float forceThresholdReleased;
@@ -5981,21 +5981,21 @@ typedef struct XrInteractionProfileState
 {
     XrStructureType type;
     void *next;
-    XrPath interactionProfile;
+    XrPath WINE_XR_ALIGN(8) interactionProfile;
 } XrInteractionProfileState;
 
 typedef struct XrInteractionProfileState32
 {
     XrStructureType type;
     PTR32 next;
-    XrPath interactionProfile;
+    XrPath DECLSPEC_ALIGN(8) interactionProfile;
 } XrInteractionProfileState32;
 
 typedef struct XrInteractionProfileSuggestedBinding
 {
     XrStructureType type;
     const void *next;
-    XrPath interactionProfile;
+    XrPath WINE_XR_ALIGN(8) interactionProfile;
     uint32_t countSuggestedBindings;
     const XrActionSuggestedBinding *suggestedBindings;
 } XrInteractionProfileSuggestedBinding;
@@ -6004,7 +6004,7 @@ typedef struct XrInteractionProfileSuggestedBinding32
 {
     XrStructureType type;
     PTR32 next;
-    XrPath interactionProfile;
+    XrPath DECLSPEC_ALIGN(8) interactionProfile;
     uint32_t countSuggestedBindings;
     PTR32 suggestedBindings;
 } XrInteractionProfileSuggestedBinding32;
@@ -6889,14 +6889,14 @@ typedef struct XrRenderModelPathInfoFB
 {
     XrStructureType type;
     void *next;
-    XrPath path;
+    XrPath WINE_XR_ALIGN(8) path;
 } XrRenderModelPathInfoFB;
 
 typedef struct XrRenderModelPathInfoFB32
 {
     XrStructureType type;
     PTR32 next;
-    XrPath path;
+    XrPath DECLSPEC_ALIGN(8) path;
 } XrRenderModelPathInfoFB32;
 
 typedef struct XrRenderModelPropertiesFB
@@ -7536,7 +7536,7 @@ typedef struct XrSessionCreateInfo
     XrStructureType type;
     const void *next;
     XrSessionCreateFlags WINE_XR_ALIGN(8) createFlags;
-    XrSystemId systemId;
+    XrSystemId WINE_XR_ALIGN(8) systemId;
 } XrSessionCreateInfo;
 
 typedef struct XrSessionCreateInfo32
@@ -7544,7 +7544,7 @@ typedef struct XrSessionCreateInfo32
     XrStructureType type;
     PTR32 next;
     XrSessionCreateFlags DECLSPEC_ALIGN(8) createFlags;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
 } XrSessionCreateInfo32;
 
 typedef struct XrSessionCreateInfoOverlayEXTX
@@ -7635,7 +7635,7 @@ typedef struct XrSpaceComponentStatusSetInfoFB
     const void *next;
     XrSpaceComponentTypeFB componentType;
     XrBool32 enabled;
-    XrDuration timeout;
+    XrDuration WINE_XR_ALIGN(8) timeout;
 } XrSpaceComponentStatusSetInfoFB;
 
 typedef struct XrSpaceComponentStatusSetInfoFB32
@@ -7644,7 +7644,7 @@ typedef struct XrSpaceComponentStatusSetInfoFB32
     PTR32 next;
     XrSpaceComponentTypeFB componentType;
     XrBool32 enabled;
-    XrDuration timeout;
+    XrDuration DECLSPEC_ALIGN(8) timeout;
 } XrSpaceComponentStatusSetInfoFB32;
 
 typedef struct XrSpaceEraseInfoFB
@@ -7737,7 +7737,7 @@ typedef struct XrSpaceQueryInfoFB
     const void *next;
     XrSpaceQueryActionFB queryAction;
     uint32_t maxResultCount;
-    XrDuration timeout;
+    XrDuration WINE_XR_ALIGN(8) timeout;
     const XrSpaceFilterInfoBaseHeaderFB *filter;
     const XrSpaceFilterInfoBaseHeaderFB *excludeFilter;
 } XrSpaceQueryInfoFB;
@@ -7748,7 +7748,7 @@ typedef struct XrSpaceQueryInfoFB32
     PTR32 next;
     XrSpaceQueryActionFB queryAction;
     uint32_t maxResultCount;
-    XrDuration timeout;
+    XrDuration DECLSPEC_ALIGN(8) timeout;
     PTR32 filter;
     PTR32 excludeFilter;
 } XrSpaceQueryInfoFB32;
@@ -8346,7 +8346,7 @@ typedef struct XrSpatialEntityAnchorCreateInfoBD
     XrStructureType type;
     const void *next;
     XrSenseDataSnapshotBD WINE_XR_ALIGN(8) snapshot;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD WINE_XR_ALIGN(8) entityId;
 } XrSpatialEntityAnchorCreateInfoBD;
 
 typedef struct XrSpatialEntityAnchorCreateInfoBD32
@@ -8354,7 +8354,7 @@ typedef struct XrSpatialEntityAnchorCreateInfoBD32
     XrStructureType type;
     PTR32 next;
     XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
 } XrSpatialEntityAnchorCreateInfoBD32;
 
 typedef struct XrSpatialEntityComponentDataBaseHeaderBD
@@ -8419,7 +8419,7 @@ typedef struct XrSpatialEntityComponentGetInfoBD
 {
     XrStructureType type;
     const void *next;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD WINE_XR_ALIGN(8) entityId;
     XrSpatialEntityComponentTypeBD componentType;
 } XrSpatialEntityComponentGetInfoBD;
 
@@ -8427,7 +8427,7 @@ typedef struct XrSpatialEntityComponentGetInfoBD32
 {
     XrStructureType type;
     PTR32 next;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
     XrSpatialEntityComponentTypeBD componentType;
 } XrSpatialEntityComponentGetInfoBD32;
 
@@ -8681,7 +8681,7 @@ typedef struct XrSwapchainImageFoveationVulkanFB
 {
     XrStructureType type;
     void *next;
-    VkImage image;
+    VkImage WINE_XR_ALIGN(8) image;
     uint32_t width;
     uint32_t height;
 } XrSwapchainImageFoveationVulkanFB;
@@ -8690,7 +8690,7 @@ typedef struct XrSwapchainImageFoveationVulkanFB32
 {
     XrStructureType type;
     PTR32 next;
-    VkImage image;
+    VkImage DECLSPEC_ALIGN(8) image;
     uint32_t width;
     uint32_t height;
 } XrSwapchainImageFoveationVulkanFB32;
@@ -8725,7 +8725,7 @@ typedef struct XrSwapchainImageVulkanKHR
 {
     XrStructureType type;
     void *next;
-    VkImage image;
+    VkImage WINE_XR_ALIGN(8) image;
 } XrSwapchainImageVulkanKHR;
 typedef XrSwapchainImageVulkanKHR XrSwapchainImageVulkan2KHR;
 
@@ -8733,7 +8733,7 @@ typedef struct XrSwapchainImageVulkanKHR32
 {
     XrStructureType type;
     PTR32 next;
-    VkImage image;
+    VkImage DECLSPEC_ALIGN(8) image;
 } XrSwapchainImageVulkanKHR32;
 typedef XrSwapchainImageVulkanKHR32 XrSwapchainImageVulkan2KHR32;
 
@@ -8741,14 +8741,14 @@ typedef struct XrSwapchainImageWaitInfo
 {
     XrStructureType type;
     const void *next;
-    XrDuration timeout;
+    XrDuration WINE_XR_ALIGN(8) timeout;
 } XrSwapchainImageWaitInfo;
 
 typedef struct XrSwapchainImageWaitInfo32
 {
     XrStructureType type;
     PTR32 next;
-    XrDuration timeout;
+    XrDuration DECLSPEC_ALIGN(8) timeout;
 } XrSwapchainImageWaitInfo32;
 
 typedef struct XrSwapchainStateBaseHeaderFB
@@ -9989,26 +9989,26 @@ typedef struct XrViveTrackerPathsHTCX
 {
     XrStructureType type;
     void *next;
-    XrPath persistentPath;
-    XrPath rolePath;
+    XrPath WINE_XR_ALIGN(8) persistentPath;
+    XrPath WINE_XR_ALIGN(8) rolePath;
 } XrViveTrackerPathsHTCX;
 
 typedef struct XrViveTrackerPathsHTCX32
 {
     XrStructureType type;
     PTR32 next;
-    XrPath persistentPath;
-    XrPath rolePath;
+    XrPath DECLSPEC_ALIGN(8) persistentPath;
+    XrPath DECLSPEC_ALIGN(8) rolePath;
 } XrViveTrackerPathsHTCX32;
 
 typedef struct XrVulkanDeviceCreateInfoKHR
 {
     XrStructureType type;
     const void *next;
-    XrSystemId systemId;
+    XrSystemId WINE_XR_ALIGN(8) systemId;
     XrVulkanDeviceCreateFlagsKHR WINE_XR_ALIGN(8) createFlags;
     PFN_vkGetInstanceProcAddr pfnGetInstanceProcAddr;
-    VkPhysicalDevice vulkanPhysicalDevice;
+    VkPhysicalDevice WINE_XR_ALIGN(8) vulkanPhysicalDevice;
     const VkDeviceCreateInfo *vulkanCreateInfo;
     const VkAllocationCallbacks *vulkanAllocator;
 } XrVulkanDeviceCreateInfoKHR;
@@ -10017,10 +10017,10 @@ typedef struct XrVulkanDeviceCreateInfoKHR32
 {
     XrStructureType type;
     PTR32 next;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrVulkanDeviceCreateFlagsKHR DECLSPEC_ALIGN(8) createFlags;
     PFN_vkGetInstanceProcAddr pfnGetInstanceProcAddr;
-    VkPhysicalDevice vulkanPhysicalDevice;
+    VkPhysicalDevice DECLSPEC_ALIGN(8) vulkanPhysicalDevice;
     PTR32 vulkanCreateInfo;
     PTR32 vulkanAllocator;
 } XrVulkanDeviceCreateInfoKHR32;
@@ -10029,23 +10029,23 @@ typedef struct XrVulkanGraphicsDeviceGetInfoKHR
 {
     XrStructureType type;
     const void *next;
-    XrSystemId systemId;
-    VkInstance vulkanInstance;
+    XrSystemId WINE_XR_ALIGN(8) systemId;
+    VkInstance WINE_XR_ALIGN(8) vulkanInstance;
 } XrVulkanGraphicsDeviceGetInfoKHR;
 
 typedef struct XrVulkanGraphicsDeviceGetInfoKHR32
 {
     XrStructureType type;
     PTR32 next;
-    XrSystemId systemId;
-    VkInstance vulkanInstance;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
+    VkInstance DECLSPEC_ALIGN(8) vulkanInstance;
 } XrVulkanGraphicsDeviceGetInfoKHR32;
 
 typedef struct XrVulkanInstanceCreateInfoKHR
 {
     XrStructureType type;
     const void *next;
-    XrSystemId systemId;
+    XrSystemId WINE_XR_ALIGN(8) systemId;
     XrVulkanInstanceCreateFlagsKHR WINE_XR_ALIGN(8) createFlags;
     PFN_vkGetInstanceProcAddr pfnGetInstanceProcAddr;
     const VkInstanceCreateInfo *vulkanCreateInfo;
@@ -10056,7 +10056,7 @@ typedef struct XrVulkanInstanceCreateInfoKHR32
 {
     XrStructureType type;
     PTR32 next;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrVulkanInstanceCreateFlagsKHR DECLSPEC_ALIGN(8) createFlags;
     PFN_vkGetInstanceProcAddr pfnGetInstanceProcAddr;
     PTR32 vulkanCreateInfo;
@@ -11967,7 +11967,7 @@ typedef struct XrSpatialEntityStateBD
 {
     XrStructureType type;
     void *next;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD WINE_XR_ALIGN(8) entityId;
     XrTime WINE_XR_ALIGN(8) lastUpdateTime;
     XrUuidEXT uuid;
 } XrSpatialEntityStateBD;
@@ -11976,7 +11976,7 @@ typedef struct XrSpatialEntityStateBD32
 {
     XrStructureType type;
     PTR32 next;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
     XrTime DECLSPEC_ALIGN(8) lastUpdateTime;
     XrUuidEXT uuid;
 } XrSpatialEntityStateBD32;
@@ -12117,7 +12117,7 @@ typedef struct XrSystemProperties
 {
     XrStructureType type;
     void *next;
-    XrSystemId systemId;
+    XrSystemId WINE_XR_ALIGN(8) systemId;
     uint32_t vendorId;
     char systemName[XR_MAX_SYSTEM_NAME_SIZE];
     XrSystemGraphicsProperties graphicsProperties;
@@ -12128,7 +12128,7 @@ typedef struct XrSystemProperties32
 {
     XrStructureType type;
     PTR32 next;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t vendorId;
     char systemName[XR_MAX_SYSTEM_NAME_SIZE];
     XrSystemGraphicsProperties graphicsProperties;
@@ -12394,7 +12394,7 @@ typedef struct XrActionSpaceCreateInfo
     XrStructureType type;
     const void *next;
     XrAction WINE_XR_ALIGN(8) action;
-    XrPath subactionPath;
+    XrPath WINE_XR_ALIGN(8) subactionPath;
     XrPosef poseInActionSpace;
 } XrActionSpaceCreateInfo;
 
@@ -12403,7 +12403,7 @@ typedef struct XrActionSpaceCreateInfo32
     XrStructureType type;
     PTR32 next;
     XrAction DECLSPEC_ALIGN(8) action;
-    XrPath subactionPath;
+    XrPath DECLSPEC_ALIGN(8) subactionPath;
     XrPosef poseInActionSpace;
 } XrActionSpaceCreateInfo32;
 
@@ -13136,7 +13136,7 @@ typedef struct XrMarkerSpaceCreateInfoML
     XrStructureType type;
     const void *next;
     XrMarkerDetectorML WINE_XR_ALIGN(8) markerDetector;
-    XrMarkerML marker;
+    XrMarkerML WINE_XR_ALIGN(8) marker;
     XrPosef poseInMarkerSpace;
 } XrMarkerSpaceCreateInfoML;
 
@@ -13145,7 +13145,7 @@ typedef struct XrMarkerSpaceCreateInfoML32
     XrStructureType type;
     PTR32 next;
     XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-    XrMarkerML marker;
+    XrMarkerML DECLSPEC_ALIGN(8) marker;
     XrPosef poseInMarkerSpace;
 } XrMarkerSpaceCreateInfoML32;
 

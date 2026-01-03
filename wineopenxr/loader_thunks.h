@@ -1500,7 +1500,7 @@ struct xrEnumerateDisplayRefreshRatesFB_params
 struct xrEnumerateEnvironmentBlendModes_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrViewConfigurationType viewConfigurationType;
     uint32_t environmentBlendModeCapacityInput;
     uint32_t *environmentBlendModeCountOutput;
@@ -1575,7 +1575,7 @@ struct xrEnumeratePersistedSpatialAnchorNamesMSFT_params
 struct xrEnumerateRaycastSupportedTrackableTypesANDROID_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t trackableTypeCapacityInput;
     uint32_t *trackableTypeCountOutput;
     XrTrackableTypeANDROID *trackableTypes;
@@ -1613,7 +1613,7 @@ struct xrEnumerateRenderModelSubactionPathsEXT_params
 struct xrEnumerateReprojectionModesMSFT_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrViewConfigurationType viewConfigurationType;
     uint32_t modeCapacityInput;
     uint32_t *modeCountOutput;
@@ -1624,7 +1624,7 @@ struct xrEnumerateReprojectionModesMSFT_params
 struct xrEnumerateSceneComputeFeaturesMSFT_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t featureCapacityInput;
     uint32_t *featureCountOutput;
     XrSceneComputeFeatureMSFT *features;
@@ -1643,7 +1643,7 @@ struct xrEnumerateSpaceSupportedComponentsFB_params
 struct xrEnumerateSpatialCapabilitiesEXT_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t capabilityCapacityInput;
     uint32_t *capabilityCountOutput;
     XrSpatialCapabilityEXT *capabilities;
@@ -1653,7 +1653,7 @@ struct xrEnumerateSpatialCapabilitiesEXT_params
 struct xrEnumerateSpatialCapabilityComponentTypesEXT_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrSpatialCapabilityEXT capability;
     XrSpatialCapabilityComponentTypesEXT *capabilityComponents;
     XrResult result;
@@ -1662,7 +1662,7 @@ struct xrEnumerateSpatialCapabilityComponentTypesEXT_params
 struct xrEnumerateSpatialCapabilityFeaturesEXT_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrSpatialCapabilityEXT capability;
     uint32_t capabilityFeatureCapacityInput;
     uint32_t *capabilityFeatureCountOutput;
@@ -1673,7 +1673,7 @@ struct xrEnumerateSpatialCapabilityFeaturesEXT_params
 struct xrEnumerateSpatialEntityComponentTypesBD_params
 {
     XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
     uint32_t componentTypeCapacityInput;
     uint32_t *componentTypeCountOutput;
     XrSpatialEntityComponentTypeBD *componentTypes;
@@ -1683,7 +1683,7 @@ struct xrEnumerateSpatialEntityComponentTypesBD_params
 struct xrEnumerateSpatialPersistenceScopesEXT_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t persistenceScopeCapacityInput;
     uint32_t *persistenceScopeCountOutput;
     XrSpatialPersistenceScopeEXT *persistenceScopes;
@@ -1693,7 +1693,7 @@ struct xrEnumerateSpatialPersistenceScopesEXT_params
 struct xrEnumerateSupportedAnchorTrackableTypesANDROID_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t trackableTypeCapacityInput;
     uint32_t *trackableTypeCountOutput;
     XrTrackableTypeANDROID *trackableTypes;
@@ -1703,7 +1703,7 @@ struct xrEnumerateSupportedAnchorTrackableTypesANDROID_params
 struct xrEnumerateSupportedPersistenceAnchorTypesANDROID_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t trackableTypeCapacityInput;
     uint32_t *trackableTypeCountOutput;
     XrTrackableTypeANDROID *trackableTypes;
@@ -1713,7 +1713,7 @@ struct xrEnumerateSupportedPersistenceAnchorTypesANDROID_params
 struct xrEnumerateSupportedTrackableTypesANDROID_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t trackableTypeCapacityInput;
     uint32_t *trackableTypeCountOutput;
     XrTrackableTypeANDROID *trackableTypes;
@@ -1741,7 +1741,7 @@ struct xrEnumerateSwapchainImages_params
 struct xrEnumerateViewConfigurationViews_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrViewConfigurationType viewConfigurationType;
     uint32_t viewCapacityInput;
     uint32_t *viewCountOutput;
@@ -1752,7 +1752,7 @@ struct xrEnumerateViewConfigurationViews_params
 struct xrEnumerateViewConfigurations_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t viewConfigurationTypeCapacityInput;
     uint32_t *viewConfigurationTypeCountOutput;
     XrViewConfigurationType *viewConfigurationTypes;
@@ -1887,7 +1887,7 @@ struct xrGetBodySkeletonHTC_params
 struct xrGetControllerModelKeyMSFT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath topLevelUserPath;
+    XrPath DECLSPEC_ALIGN(8) topLevelUserPath;
     XrControllerModelKeyStateMSFT *controllerModelKeyState;
     XrResult result;
 };
@@ -1895,7 +1895,7 @@ struct xrGetControllerModelKeyMSFT_params
 struct xrGetControllerModelPropertiesMSFT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrControllerModelKeyMSFT modelKey;
+    XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
     XrControllerModelPropertiesMSFT *properties;
     XrResult result;
 };
@@ -1903,7 +1903,7 @@ struct xrGetControllerModelPropertiesMSFT_params
 struct xrGetControllerModelStateMSFT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrControllerModelKeyMSFT modelKey;
+    XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
     XrControllerModelStateMSFT *state;
     XrResult result;
 };
@@ -1911,7 +1911,7 @@ struct xrGetControllerModelStateMSFT_params
 struct xrGetCurrentInteractionProfile_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath topLevelUserPath;
+    XrPath DECLSPEC_ALIGN(8) topLevelUserPath;
     XrInteractionProfileState *interactionProfile;
     XrResult result;
 };
@@ -2028,7 +2028,7 @@ struct xrGetMarkerDetectorStateML_params
 struct xrGetMarkerLengthML_params
 {
     XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-    XrMarkerML marker;
+    XrMarkerML DECLSPEC_ALIGN(8) marker;
     float *meters;
     XrResult result;
 };
@@ -2036,7 +2036,7 @@ struct xrGetMarkerLengthML_params
 struct xrGetMarkerNumberML_params
 {
     XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-    XrMarkerML marker;
+    XrMarkerML DECLSPEC_ALIGN(8) marker;
     uint64_t *number;
     XrResult result;
 };
@@ -2044,7 +2044,7 @@ struct xrGetMarkerNumberML_params
 struct xrGetMarkerReprojectionErrorML_params
 {
     XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-    XrMarkerML marker;
+    XrMarkerML DECLSPEC_ALIGN(8) marker;
     float *reprojectionErrorMeters;
     XrResult result;
 };
@@ -2060,7 +2060,7 @@ struct xrGetMarkerSizeVARJO_params
 struct xrGetMarkerStringML_params
 {
     XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-    XrMarkerML marker;
+    XrMarkerML DECLSPEC_ALIGN(8) marker;
     uint32_t bufferCapacityInput;
     uint32_t *bufferCountOutput;
     char *buffer;
@@ -2079,7 +2079,7 @@ struct xrGetMarkersML_params
 struct xrGetOpenGLGraphicsRequirementsKHR_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrGraphicsRequirementsOpenGLKHR *graphicsRequirements;
     XrResult result;
 };
@@ -2189,7 +2189,7 @@ struct xrGetRenderModelPropertiesEXT_params
 struct xrGetRenderModelPropertiesFB_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath path;
+    XrPath DECLSPEC_ALIGN(8) path;
     XrRenderModelPropertiesFB *properties;
     XrResult result;
 };
@@ -2435,7 +2435,7 @@ struct xrGetSpatialEntityComponentDataBD_params
 struct xrGetSpatialEntityUuidBD_params
 {
     XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
-    XrSpatialEntityIdBD entityId;
+    XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
     XrUuidEXT *uuid;
     XrResult result;
 };
@@ -2466,7 +2466,7 @@ struct xrGetSystem_params
 struct xrGetSystemProperties_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrSystemProperties *properties;
     XrResult result;
 };
@@ -2498,7 +2498,7 @@ struct xrGetTrackablePlaneANDROID_params
 struct xrGetViewConfigurationProperties_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrViewConfigurationType viewConfigurationType;
     XrViewConfigurationProperties *configurationProperties;
     XrResult result;
@@ -2548,7 +2548,7 @@ struct xrGetVisibilityMaskKHR_params
 struct xrGetVulkanDeviceExtensionsKHR_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t bufferCapacityInput;
     uint32_t *bufferCountOutput;
     char *buffer;
@@ -2566,8 +2566,8 @@ struct xrGetVulkanGraphicsDevice2KHR_params
 struct xrGetVulkanGraphicsDeviceKHR_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
-    VkInstance vkInstance;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
+    VkInstance DECLSPEC_ALIGN(8) vkInstance;
     VkPhysicalDevice *vkPhysicalDevice;
     XrResult result;
 };
@@ -2575,7 +2575,7 @@ struct xrGetVulkanGraphicsDeviceKHR_params
 struct xrGetVulkanGraphicsRequirements2KHR_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrGraphicsRequirementsVulkanKHR *graphicsRequirements;
     XrResult result;
 };
@@ -2583,7 +2583,7 @@ struct xrGetVulkanGraphicsRequirements2KHR_params
 struct xrGetVulkanGraphicsRequirementsKHR_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     XrGraphicsRequirementsVulkanKHR *graphicsRequirements;
     XrResult result;
 };
@@ -2591,7 +2591,7 @@ struct xrGetVulkanGraphicsRequirementsKHR_params
 struct xrGetVulkanInstanceExtensionsKHR_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrSystemId systemId;
+    XrSystemId DECLSPEC_ALIGN(8) systemId;
     uint32_t bufferCapacityInput;
     uint32_t *bufferCountOutput;
     char *buffer;
@@ -2617,7 +2617,7 @@ struct xrImportLocalizationMapML_params
 struct xrLoadControllerModelMSFT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrControllerModelKeyMSFT modelKey;
+    XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
     uint32_t bufferCapacityInput;
     uint32_t *bufferCountOutput;
     uint8_t *buffer;
@@ -2749,7 +2749,7 @@ struct xrPassthroughStartFB_params
 struct xrPathToString_params
 {
     XrInstance DECLSPEC_ALIGN(8) instance;
-    XrPath path;
+    XrPath DECLSPEC_ALIGN(8) path;
     uint32_t bufferCapacityInput;
     uint32_t *bufferCountOutput;
     char *buffer;
@@ -2862,7 +2862,7 @@ struct xrQueryLocalizationMapsML_params
 struct xrQueryPerformanceMetricsCounterMETA_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath counterPath;
+    XrPath DECLSPEC_ALIGN(8) counterPath;
     XrPerformanceMetricsCounterMETA *counter;
     XrResult result;
 };
@@ -3100,8 +3100,8 @@ struct xrSetEnvironmentDepthHandRemovalMETA_params
 struct xrSetInputDeviceActiveEXT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath interactionProfile;
-    XrPath topLevelPath;
+    XrPath DECLSPEC_ALIGN(8) interactionProfile;
+    XrPath DECLSPEC_ALIGN(8) topLevelPath;
     XrBool32 isActive;
     XrResult result;
 };
@@ -3109,8 +3109,8 @@ struct xrSetInputDeviceActiveEXT_params
 struct xrSetInputDeviceLocationEXT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath topLevelPath;
-    XrPath inputSourcePath;
+    XrPath DECLSPEC_ALIGN(8) topLevelPath;
+    XrPath DECLSPEC_ALIGN(8) inputSourcePath;
     XrSpace DECLSPEC_ALIGN(8) space;
     XrPosef pose;
     XrResult result;
@@ -3119,8 +3119,8 @@ struct xrSetInputDeviceLocationEXT_params
 struct xrSetInputDeviceStateBoolEXT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath topLevelPath;
-    XrPath inputSourcePath;
+    XrPath DECLSPEC_ALIGN(8) topLevelPath;
+    XrPath DECLSPEC_ALIGN(8) inputSourcePath;
     XrBool32 state;
     XrResult result;
 };
@@ -3128,8 +3128,8 @@ struct xrSetInputDeviceStateBoolEXT_params
 struct xrSetInputDeviceStateFloatEXT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath topLevelPath;
-    XrPath inputSourcePath;
+    XrPath DECLSPEC_ALIGN(8) topLevelPath;
+    XrPath DECLSPEC_ALIGN(8) inputSourcePath;
     float state;
     XrResult result;
 };
@@ -3137,8 +3137,8 @@ struct xrSetInputDeviceStateFloatEXT_params
 struct xrSetInputDeviceStateVector2fEXT_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
-    XrPath topLevelPath;
-    XrPath inputSourcePath;
+    XrPath DECLSPEC_ALIGN(8) topLevelPath;
+    XrPath DECLSPEC_ALIGN(8) inputSourcePath;
     XrVector2f state;
     XrResult result;
 };
@@ -3155,7 +3155,7 @@ struct xrSetMarkerTrackingTimeoutVARJO_params
 {
     XrSession DECLSPEC_ALIGN(8) session;
     uint64_t DECLSPEC_ALIGN(8) markerId;
-    XrDuration timeout;
+    XrDuration DECLSPEC_ALIGN(8) timeout;
     XrResult result;
 };
 

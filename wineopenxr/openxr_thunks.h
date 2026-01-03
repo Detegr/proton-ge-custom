@@ -34,6 +34,7 @@ XrResult wine_xrGetVulkanGraphicsDeviceKHR(XrInstance instance, XrSystemId syste
 XrResult wine_xrGetVulkanInstanceExtensionsKHR(XrInstance instance, XrSystemId systemId, uint32_t bufferCapacityInput, uint32_t *bufferCountOutput, char *buffer);
 const XrCompositionLayerBaseHeader * const*wine_convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(struct conversion_context *ctx, const XrCompositionLayerBaseHeader32 * const*in, uint32_t count);
 XrSwapchainImageBaseHeader *wine_convert_XrSwapchainImageBaseHeader_array_win32_to_host(struct conversion_context *ctx, const XrSwapchainImageBaseHeader32 *in, uint32_t count);
+void wine_convert_XrSwapchainImageBaseHeader_array_host_to_win32(const XrSwapchainImageBaseHeader *in, XrSwapchainImageBaseHeader32 *out, uint32_t count);
 
 /* For use by xrInstance and children */
 struct openxr_instance_funcs

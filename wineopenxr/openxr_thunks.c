@@ -2595,14 +2595,7 @@ static inline XrSwapchainImageBaseHeader *convert_XrSwapchainImageBaseHeader_arr
 
 static inline void convert_XrSwapchainImageBaseHeader_array_host_to_win32(const XrSwapchainImageBaseHeader *in, XrSwapchainImageBaseHeader32 *out, uint32_t count)
 {
-    unsigned int i;
-
-    if (!in) return;
-
-    for (i = 0; i < count; i++)
-    {
-        convert_XrSwapchainImageBaseHeader_host_to_win32(&in[i], &out[i]);
-    }
+    return wine_convert_XrSwapchainImageBaseHeader_array_host_to_win32(in, out, count);
 }
 
 static inline void convert_XrExternalCameraIntrinsicsOCULUS_win32_to_host(const XrExternalCameraIntrinsicsOCULUS32 *in, XrExternalCameraIntrinsicsOCULUS *out)
@@ -14753,7 +14746,7 @@ static NTSTATUS thunk32_xrEnumerateEnvironmentBlendModes(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         XrViewConfigurationType viewConfigurationType;
         uint32_t environmentBlendModeCapacityInput;
         PTR32 environmentBlendModeCountOutput;
@@ -15027,7 +15020,7 @@ static NTSTATUS thunk32_xrEnumerateRaycastSupportedTrackableTypesANDROID(void *a
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
         PTR32 trackableTypes;
@@ -15170,7 +15163,7 @@ static NTSTATUS thunk32_xrEnumerateReprojectionModesMSFT(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         XrViewConfigurationType viewConfigurationType;
         uint32_t modeCapacityInput;
         PTR32 modeCountOutput;
@@ -15203,7 +15196,7 @@ static NTSTATUS thunk32_xrEnumerateSceneComputeFeaturesMSFT(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t featureCapacityInput;
         PTR32 featureCountOutput;
         PTR32 features;
@@ -15266,7 +15259,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilitiesEXT(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t capabilityCapacityInput;
         PTR32 capabilityCountOutput;
         PTR32 capabilities;
@@ -15298,7 +15291,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilityComponentTypesEXT(void *args
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         XrSpatialCapabilityEXT capability;
         PTR32 capabilityComponents;
         XrResult result;
@@ -15332,7 +15325,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilityFeaturesEXT(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         XrSpatialCapabilityEXT capability;
         uint32_t capabilityFeatureCapacityInput;
         PTR32 capabilityFeatureCountOutput;
@@ -15365,7 +15358,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialEntityComponentTypesBD(void *args)
     struct
     {
         XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
-        XrSpatialEntityIdBD entityId;
+        XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
         uint32_t componentTypeCapacityInput;
         PTR32 componentTypeCountOutput;
         PTR32 componentTypes;
@@ -15397,7 +15390,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialPersistenceScopesEXT(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t persistenceScopeCapacityInput;
         PTR32 persistenceScopeCountOutput;
         PTR32 persistenceScopes;
@@ -15429,7 +15422,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedAnchorTrackableTypesANDROID(void *ar
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
         PTR32 trackableTypes;
@@ -15461,7 +15454,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedPersistenceAnchorTypesANDROID(void *
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
         PTR32 trackableTypes;
@@ -15493,7 +15486,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedTrackableTypesANDROID(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
         PTR32 trackableTypes;
@@ -15594,7 +15587,7 @@ static NTSTATUS thunk32_xrEnumerateViewConfigurationViews(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         XrViewConfigurationType viewConfigurationType;
         uint32_t viewCapacityInput;
         PTR32 viewCountOutput;
@@ -15634,7 +15627,7 @@ static NTSTATUS thunk32_xrEnumerateViewConfigurations(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t viewConfigurationTypeCapacityInput;
         PTR32 viewConfigurationTypeCountOutput;
         PTR32 viewConfigurationTypes;
@@ -16189,7 +16182,7 @@ static NTSTATUS thunk32_xrGetControllerModelKeyMSFT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath topLevelUserPath;
+        XrPath DECLSPEC_ALIGN(8) topLevelUserPath;
         PTR32 controllerModelKeyState;
         XrResult result;
     } *params = args;
@@ -16222,7 +16215,7 @@ static NTSTATUS thunk32_xrGetControllerModelPropertiesMSFT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrControllerModelKeyMSFT modelKey;
+        XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
         PTR32 properties;
         XrResult result;
     } *params = args;
@@ -16259,7 +16252,7 @@ static NTSTATUS thunk32_xrGetControllerModelStateMSFT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrControllerModelKeyMSFT modelKey;
+        XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -16296,7 +16289,7 @@ static NTSTATUS thunk32_xrGetCurrentInteractionProfile(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath topLevelUserPath;
+        XrPath DECLSPEC_ALIGN(8) topLevelUserPath;
         PTR32 interactionProfile;
         XrResult result;
     } *params = args;
@@ -16795,7 +16788,7 @@ static NTSTATUS thunk32_xrGetMarkerLengthML(void *args)
     struct
     {
         XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-        XrMarkerML marker;
+        XrMarkerML DECLSPEC_ALIGN(8) marker;
         PTR32 meters;
         XrResult result;
     } *params = args;
@@ -16825,7 +16818,7 @@ static NTSTATUS thunk32_xrGetMarkerNumberML(void *args)
     struct
     {
         XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-        XrMarkerML marker;
+        XrMarkerML DECLSPEC_ALIGN(8) marker;
         PTR32 number;
         XrResult result;
     } *params = args;
@@ -16855,7 +16848,7 @@ static NTSTATUS thunk32_xrGetMarkerReprojectionErrorML(void *args)
     struct
     {
         XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-        XrMarkerML marker;
+        XrMarkerML DECLSPEC_ALIGN(8) marker;
         PTR32 reprojectionErrorMeters;
         XrResult result;
     } *params = args;
@@ -16915,7 +16908,7 @@ static NTSTATUS thunk32_xrGetMarkerStringML(void *args)
     struct
     {
         XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
-        XrMarkerML marker;
+        XrMarkerML DECLSPEC_ALIGN(8) marker;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
         PTR32 buffer;
@@ -16978,7 +16971,7 @@ static NTSTATUS thunk32_xrGetOpenGLGraphicsRequirementsKHR(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         PTR32 graphicsRequirements;
         XrResult result;
     } *params = args;
@@ -17479,7 +17472,7 @@ static NTSTATUS thunk32_xrGetRenderModelPropertiesFB(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath path;
+        XrPath DECLSPEC_ALIGN(8) path;
         PTR32 properties;
         XrResult result;
     } *params = args;
@@ -18437,7 +18430,7 @@ static NTSTATUS thunk32_xrGetSpatialEntityUuidBD(void *args)
     struct
     {
         XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
-        XrSpatialEntityIdBD entityId;
+        XrSpatialEntityIdBD DECLSPEC_ALIGN(8) entityId;
         PTR32 uuid;
         XrResult result;
     } *params = args;
@@ -18574,7 +18567,7 @@ static NTSTATUS thunk32_xrGetSystemProperties(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         PTR32 properties;
         XrResult result;
     } *params = args;
@@ -18716,7 +18709,7 @@ static NTSTATUS thunk32_xrGetViewConfigurationProperties(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         XrViewConfigurationType viewConfigurationType;
         PTR32 configurationProperties;
         XrResult result;
@@ -18914,7 +18907,7 @@ static NTSTATUS thunk32_xrGetVulkanDeviceExtensionsKHR(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
         PTR32 buffer;
@@ -18978,8 +18971,8 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsDeviceKHR(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
-        VkInstance vkInstance;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
+        VkInstance DECLSPEC_ALIGN(8) vkInstance;
         PTR32 vkPhysicalDevice;
         XrResult result;
     } *params = args;
@@ -19009,7 +19002,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsRequirements2KHR(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         PTR32 graphicsRequirements;
         XrResult result;
     } *params = args;
@@ -19042,7 +19035,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsRequirementsKHR(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         PTR32 graphicsRequirements;
         XrResult result;
     } *params = args;
@@ -19075,7 +19068,7 @@ static NTSTATUS thunk32_xrGetVulkanInstanceExtensionsKHR(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrSystemId systemId;
+        XrSystemId DECLSPEC_ALIGN(8) systemId;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
         PTR32 buffer;
@@ -19174,7 +19167,7 @@ static NTSTATUS thunk32_xrLoadControllerModelMSFT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrControllerModelKeyMSFT modelKey;
+        XrControllerModelKeyMSFT DECLSPEC_ALIGN(8) modelKey;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
         PTR32 buffer;
@@ -19775,7 +19768,7 @@ static NTSTATUS thunk32_xrPathToString(void *args)
     struct
     {
         XrInstance DECLSPEC_ALIGN(8) instance;
-        XrPath path;
+        XrPath DECLSPEC_ALIGN(8) path;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
         PTR32 buffer;
@@ -20250,7 +20243,7 @@ static NTSTATUS thunk32_xrQueryPerformanceMetricsCounterMETA(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath counterPath;
+        XrPath DECLSPEC_ALIGN(8) counterPath;
         PTR32 counter;
         XrResult result;
     } *params = args;
@@ -21291,8 +21284,8 @@ static NTSTATUS thunk32_xrSetInputDeviceActiveEXT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath interactionProfile;
-        XrPath topLevelPath;
+        XrPath DECLSPEC_ALIGN(8) interactionProfile;
+        XrPath DECLSPEC_ALIGN(8) topLevelPath;
         XrBool32 isActive;
         XrResult result;
     } *params = args;
@@ -21322,8 +21315,8 @@ static NTSTATUS thunk32_xrSetInputDeviceLocationEXT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath topLevelPath;
-        XrPath inputSourcePath;
+        XrPath DECLSPEC_ALIGN(8) topLevelPath;
+        XrPath DECLSPEC_ALIGN(8) inputSourcePath;
         XrSpace DECLSPEC_ALIGN(8) space;
         XrPosef pose;
         XrResult result;
@@ -21354,8 +21347,8 @@ static NTSTATUS thunk32_xrSetInputDeviceStateBoolEXT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath topLevelPath;
-        XrPath inputSourcePath;
+        XrPath DECLSPEC_ALIGN(8) topLevelPath;
+        XrPath DECLSPEC_ALIGN(8) inputSourcePath;
         XrBool32 state;
         XrResult result;
     } *params = args;
@@ -21385,8 +21378,8 @@ static NTSTATUS thunk32_xrSetInputDeviceStateFloatEXT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath topLevelPath;
-        XrPath inputSourcePath;
+        XrPath DECLSPEC_ALIGN(8) topLevelPath;
+        XrPath DECLSPEC_ALIGN(8) inputSourcePath;
         float state;
         XrResult result;
     } *params = args;
@@ -21416,8 +21409,8 @@ static NTSTATUS thunk32_xrSetInputDeviceStateVector2fEXT(void *args)
     struct
     {
         XrSession DECLSPEC_ALIGN(8) session;
-        XrPath topLevelPath;
-        XrPath inputSourcePath;
+        XrPath DECLSPEC_ALIGN(8) topLevelPath;
+        XrPath DECLSPEC_ALIGN(8) inputSourcePath;
         XrVector2f state;
         XrResult result;
     } *params = args;
@@ -21478,7 +21471,7 @@ static NTSTATUS thunk32_xrSetMarkerTrackingTimeoutVARJO(void *args)
     {
         XrSession DECLSPEC_ALIGN(8) session;
         uint64_t DECLSPEC_ALIGN(8) markerId;
-        XrDuration timeout;
+        XrDuration DECLSPEC_ALIGN(8) timeout;
         XrResult result;
     } *params = args;
 

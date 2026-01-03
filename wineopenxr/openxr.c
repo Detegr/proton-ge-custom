@@ -274,35 +274,36 @@ XrResult WINAPI wine_xrGetVulkanInstanceExtensionsKHR(XrInstance instance,
   return res;
 }
 
+void wine_convert_XrSwapchainImageBaseHeader_array_host_to_win32(const XrSwapchainImageBaseHeader *in, XrSwapchainImageBaseHeader32 *out, uint32_t count)
+{
+    int i;
+    const XrSwapchainImageVulkanKHR *in_images = (const XrSwapchainImageVulkanKHR*)in;
+    XrSwapchainImageVulkanKHR32 *out_images = (XrSwapchainImageVulkanKHR32*)out;
+
+    for (i = 0; i < count; ++i)
+    {
+        // Other fields are already set and remain the same
+        out_images[i].image = in_images[i].image;
+    }
+}
+
 XrSwapchainImageBaseHeader *wine_convert_XrSwapchainImageBaseHeader_array_win32_to_host(struct conversion_context *ctx, const XrSwapchainImageBaseHeader32 *in, uint32_t count)
 {
-    if (count == 0) {
-        return NULL;
-    }
+    // wineopenxr uses Vulkan for everything, no matter which graphics backend
+    // the application thinks it's using
+    int i;
+    XrSwapchainImageVulkanKHR *out;
+    XrSwapchainImageVulkanKHR32 *in_images = (XrSwapchainImageVulkanKHR32*)in;
+    out = conversion_context_alloc(ctx, count * sizeof(XrSwapchainImageVulkanKHR));
 
-    switch (in[0]->type)
+    for (i = 0; i < count; ++i)
     {
-        case XR_TYPE_SWAPCHAIN_IMAGE_D3D11_KHR:
-        {
-            int i;
-            XrSwapchainImageD3D11KHR *out;
-            XrSwapchainImageD3D11KHR32 *in_images = (XrSwapchainImageD3D11KHR32*)in;
-            out = conversion_context_alloc(ctx, count * sizeof(XrSwapchainImageD3D11KHR));
-
-            for (i = 0; i < count; ++i)
-            {
-                out[i].type = in_images[i].type;
-                out[i].next = NULL;
-                out[i].texture = in_images[i].texture;
-            }
-
-            return (XrSwapchainImageBaseHeader*)out;
-        }
-        default:
-            assert(false && "Unsupported swapchain image type");
+        out[i].type = in_images[i].type;
+        out[i].next = NULL;
+        out[i].image = in_images[i].image;
     }
 
-    return NULL; // unreachable
+    return (XrSwapchainImageBaseHeader*)out;
 }
 
 XrCompositionLayerProjectionView* convert_xrcompositionlayerviews(struct conversion_context *ctx, const XrCompositionLayerProjectionView32 *views, uint32_t count)

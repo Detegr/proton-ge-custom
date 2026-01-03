@@ -184,6 +184,7 @@ MANUAL_LOADER_THUNKS = {
 MANUAL_CONVERSION_FUNCTIONS = {
     "convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host",
     "convert_XrSwapchainImageBaseHeader_array_win32_to_host",
+    "convert_XrSwapchainImageBaseHeader_array_host_to_win32",
 }
 
 STRUCT_CHAIN_CONVERSIONS = {
@@ -1229,7 +1230,7 @@ class XrVariable(object):
             return False
         elif self.type == "size_t":
             return False
-        elif self.type in ["uint64_t", "XrDeviceAddress", "XrDeviceSize"]:
+        elif self.type in ["uint64_t", "XrDeviceAddress", "XrDeviceSize", "XrTime", "VkImage", "VkInstance", "VkPhysicalDevice", "VkDevice", "XrSystemId", "XrPath", "XrDuration", "XrControllerModelKeyMSFT", "XrMarkerML", "XrSpatialEntityIdBD"]:
             return True
         elif self.is_bitmask():
             return self.type_info["data"].type == "XrFlags64"
@@ -1238,8 +1239,6 @@ class XrVariable(object):
         elif self.is_struct() or self.is_union():
             return self.type_info["data"].needs_alignment()
         elif self.is_handle():
-            return True
-        elif self.type == "XrTime":
             return True
         return False
 
@@ -2539,7 +2538,7 @@ class ArrayConversionFunction(object):
         body += self.prototype()
 
         if self.name in MANUAL_CONVERSION_FUNCTIONS:
-            concatenated_params = f"{'ctx' if needs_alloc else ''}, in, count"
+            concatenated_params = f"{'ctx, ' if needs_alloc else ''}in,{' out,' if self.direction == Direction.OUTPUT else ''} count"
             body += f"{{\n    return wine_{self.name}({concatenated_params});\n}}\n\n"
             if not self.conv and not self.copy:
                 body += "#endif /* _WIN64 */\n"
