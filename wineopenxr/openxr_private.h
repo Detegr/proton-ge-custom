@@ -5,9 +5,9 @@
 
 #include <pthread.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "openxr_loader.h"
-#include "openxr_thunks.h"
 
 extern struct openxr_instance_funcs g_xr_host_instance_dispatch_table;
 
@@ -69,5 +69,7 @@ extern struct openxr_instance_funcs *get_dispatch_table(uint64_t handle);
 #define MEMDUP_VOID(ctx, dst, src, size)       \
   dst = conversion_context_alloc((ctx), size); \
   memcpy((void *)(dst), (src), size);
+
+#include "openxr_thunks.h"
 
 #endif /* __WINE_OPENXR_PRIVATE_H */

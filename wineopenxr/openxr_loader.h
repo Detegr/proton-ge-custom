@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <time.h>
 #include "windef.h"
 #include "winbase.h"
 #include "wine/debug.h"
@@ -67,9 +68,15 @@ typedef struct {
   VkCommandPool vk_command_pool;
 } wine_XrInstance;
 
+#ifdef _WIN64
 static inline wine_XrInstance *wine_instance_from_handle(XrInstance handle) {
   return (wine_XrInstance *)(uintptr_t)handle;
 }
+#else
+static inline wine_XrInstance *wine_instance_from_handle(uint64_t handle) {
+  return (wine_XrInstance *)(uintptr_t)handle;
+}
+#endif
 
 union CompositionLayer;
 typedef union CompositionLayer CompositionLayer;

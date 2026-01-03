@@ -1660,6 +1660,8 @@ XrResult WINAPI xrEndFrame(XrSession session, const XrFrameEndInfo *frameEndInfo
   return params.result;
 }
 
+static const uint64_t ns_in_s = 1000000000ULL;
+
 uint64_t ns_per_tick(void) {
   static uint64_t ns_per_tick;
 
@@ -1668,7 +1670,7 @@ uint64_t ns_per_tick(void) {
     QueryPerformanceFrequency(&freq);
 
     // Might not be exact if isn't divisible by freq
-    ns_per_tick = U_1_000_000_000 / freq;
+    ns_per_tick = ns_in_s / freq.QuadPart;
   }
 
   return ns_per_tick;
@@ -1677,15 +1679,15 @@ uint64_t ns_per_tick(void) {
 void timespec_to_perfcounter(struct timespec timespec,
                              LARGE_INTEGER *performanceCounter) {
   performanceCounter->QuadPart =
-      (timespec.tv_sec * U_1_000_000_000 + timespec.tv_nsec) / ns_per_tick();
+      (timespec.tv_sec * ns_in_s + timespec.tv_nsec) / ns_per_tick();
 }
 
-struct timespec perfcounter_to_timespec(LARGE_INTEGER *performanceCounter) {
+struct timespec perfcounter_to_timespec(const LARGE_INTEGER *performanceCounter) {
   struct timespec ret;
 
   uint64_t total_ns = performanceCounter->QuadPart * ns_per_tick();
-  ret.tv_sec = total_ns / U_1_000_000_000;
-  ret.tv_nsec = total_ns % U_1_000_000_000;
+  ret.tv_sec = total_ns / ns_in_s;
+  ret.tv_nsec = total_ns % ns_in_s;
 
   return ret;
 }

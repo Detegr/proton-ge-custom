@@ -116,8 +116,8 @@ FUNCTION_OVERRIDES = {
 
     "xrConvertTimeToWin32PerformanceCounterKHR" : {"dispatch" : False},
     "xrConvertWin32PerformanceCounterToTimeKHR" : {"dispatch" : False},
-    "xrConvertTimespecTimeToTimeKHR" : {"dispatch" : False},
-    "xrConvertTimeToTimespecTimeKHR" : {"dispatch" : False},
+    "xrConvertTimespecTimeToTimeKHR" : {"dispatch" : True},
+    "xrConvertTimeToTimespecTimeKHR" : {"dispatch" : True},
     "xrGetD3D11GraphicsRequirementsKHR" : {"dispatch" : False},
     "xrGetD3D12GraphicsRequirementsKHR" : {"dispatch" : False},
 
@@ -179,6 +179,10 @@ MANUAL_LOADER_THUNKS = {
     "xrBeginFrame",
     "xrEndFrame",
     "xrGetVulkanDeviceExtensionsKHR",
+}
+
+MANUAL_CONVERSION_FUNCTIONS = {
+    "convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host",
 }
 
 STRUCT_CHAIN_CONVERSIONS = {
@@ -1233,9 +1237,9 @@ class XrVariable(object):
         elif self.is_struct() or self.is_union():
             return self.type_info["data"].needs_alignment()
         elif self.is_handle():
-            # Dispatchable handles are pointers to objects, while
-            # non-dispatchable are uint64_t and hence need alignment.
-            return not self.handle.is_dispatchable()
+            return True
+        elif self.type == "XrTime":
+            return True
         return False
 
     def is_wrapped(self):
@@ -1327,6 +1331,11 @@ class XrVariable(object):
                 cast_type += " {0}".format(self.pointer)
             elif self.is_static_array():
                 cast_type += " *"
+
+        # FIXME
+        if cast_type == "const timespec *":
+            cast_type = self.is_const() + " timespec *"
+            print(cast_type)
 
         return "({0})(uintptr_t)UlongToPtr({1}{2})".format(cast_type, prefix, self.name)
 
@@ -1759,6 +1768,9 @@ class XrParam(XrVariable):
 
         if is_member and conv and self.needs_ptr32_type():
             return "PTR32 {0}".format(self.name)
+
+        # if is_member and conv and self.is_handle() and self.is_dispatchable():
+        #     return f"uint64_t {self.name}"
 
         proto = ""
         if self.const and (not is_member or self.pointer):
@@ -2274,42 +2286,17 @@ class StructConversionFunction(object):
         if not self.conv and not self.copy:
             body += "#ifdef _WIN64\n"
 
+        body += self.prototype()
+
         needs_alloc = self.direction != Direction.OUTPUT and self.operand.needs_alloc(self.conv, self.unwrap)
-        win_type = self.type
-        if self.conv and self.operand.needs_win32_type():
-            win_type += "32"
-
-
-        if self.copy:
-            body += "void {0}(".format(self.name)
-        else:
-            body += "static inline void {0}(".format(self.name)
-        if self.conv:
-
-            if self.direction == Direction.OUTPUT:
-                params = ["const {0} *in".format(self.type), "{0} *out".format(win_type)]
-            else:
-                params = ["const {0} *in".format(win_type), "{0} *out".format(self.type)]
-
-            if self.operand.union:
-                params.append("XrFlags selector")
-
-            # Generate parameter list
-            if needs_alloc:
-                body += "struct conversion_context *ctx, "
-            body += ", ".join(p for p in params)
-            body += ")\n"
-
-        else:
-            params = ["const {0} *in".format(self.type), "{0} *out".format(self.type)]
-
-            # Generate parameter list
-            if needs_alloc:
-                body += "struct conversion_context *ctx, "
-            body += ", ".join(p for p in params)
-            body += ")\n"
-
         needs_extensions = self.operand.needs_extensions_conversion(self.conv, self.direction)
+        if self.name in MANUAL_CONVERSION_FUNCTIONS:
+            concatenated_params = f"{'ctx' if needs_alloc else ''}, in, out"
+            body += f"{{\n    return wine_{self.name}({concatenated_params});\n}}\n\n"
+            if not self.conv and not self.copy:
+                body += "#endif /* _WIN64 */\n"
+
+            return body
 
         body += "{\n"
         if needs_extensions:
@@ -2445,6 +2432,47 @@ class StructConversionFunction(object):
 
         return body
 
+    def prototype(self, prefix="", is_thunk=True):
+        body = ""
+
+        needs_alloc = self.direction != Direction.OUTPUT and self.operand.needs_alloc(self.conv, self.unwrap)
+        win_type = self.type
+        if self.conv and self.operand.needs_win32_type():
+            win_type += "32"
+        if self.copy or not is_thunk:
+            body += "void {0}(".format(prefix + self.name)
+        else:
+            body += "static inline void {0}(".format(prefix + self.name)
+        if self.conv:
+
+            if self.direction == Direction.OUTPUT:
+                params = ["const {0} *in".format(self.type), "{0} *out".format(win_type)]
+            else:
+                params = ["const {0} *in".format(win_type), "{0} *out".format(self.type)]
+
+            if self.operand.union:
+                params.append("XrFlags selector")
+
+            # Generate parameter list
+            if needs_alloc:
+                body += "struct conversion_context *ctx, "
+            body += ", ".join(p for p in params)
+            body += ")"
+
+        else:
+            params = ["const {0} *in".format(self.type), "{0} *out".format(self.type)]
+
+            # Generate parameter list
+            if needs_alloc:
+                body += "struct conversion_context *ctx, "
+            body += ", ".join(p for p in params)
+            body += ")"
+
+        if is_thunk:
+            body += "\n"
+
+        return body
+
 
 class ArrayConversionFunction(object):
     def __init__(self, array, direction, conv, unwrap):
@@ -2476,8 +2504,6 @@ class ArrayConversionFunction(object):
         if not self.conv:
             body += "#ifdef _WIN64\n"
 
-        needs_alloc = self.direction == Direction.INPUT or (self.direction != Direction.OUTPUT and self.array.needs_alloc(self.conv, self.unwrap))
-
         win_type = self.type
         if self.conv:
             if self.array.needs_win32_type():
@@ -2489,8 +2515,8 @@ class ArrayConversionFunction(object):
         if self.direction == Direction.OUTPUT and self.array.is_const():
             win_type = "const " + win_type
         
+        needs_alloc = self.direction == Direction.INPUT or (self.direction != Direction.OUTPUT and self.array.needs_alloc(self.conv, self.unwrap))
         pointer_part = self.array.pointer if self.array.pointer else "*"
-
         is_static_input = self.array.is_static_array() and self.direction == Direction.INPUT
 
         if self.direction == Direction.OUTPUT:
@@ -2509,16 +2535,17 @@ class ArrayConversionFunction(object):
             params = ["const {0} {1}in".format(win_type, pointer_part), "uint32_t count"]
             return_type = self.type
 
-        if return_type:
-            body += "static inline {0}{1} {2}{3}(".format(
-                "const " if self.array.is_const() else "", return_type, pointer_part, self.name)
+        body += self.prototype()
+
+        if self.name in MANUAL_CONVERSION_FUNCTIONS:
+            concatenated_params = f"{'ctx' if needs_alloc else ''}, in, count"
+            body += f"{{\n    return wine_{self.name}({concatenated_params});\n}}\n\n"
+            if not self.conv and not self.copy:
+                body += "#endif /* _WIN64 */\n"
+
+            return body
         else:
-            body += "static inline void {0}(".format(self.name)
-        
-        if needs_alloc:
-            body += "struct conversion_context *ctx, "
-        body += ", ".join(p for p in params)
-        body += ")\n{\n"
+            body += "{\n"
 
         if return_type:
             body += "    {0} {1}out;\n".format(return_type, "**" if self.array.pointer_array else "*")
@@ -2610,6 +2637,61 @@ class ArrayConversionFunction(object):
             body += "#endif /* _WIN64 */\n"
 
         body += "\n"
+
+        return body
+
+    def prototype(self, prefix="", is_thunk=True):
+        body = ""
+
+        needs_alloc = self.direction == Direction.INPUT or (self.direction != Direction.OUTPUT and self.array.needs_alloc(self.conv, self.unwrap))
+
+        win_type = self.type
+        if self.conv:
+            if self.array.needs_win32_type():
+                win_type += "32"
+            elif self.array.is_handle() and self.array.handle.is_dispatchable():
+                # Dispatchable handles are pointers on host, but uint32/PTR32 in 32-bit Guest
+                win_type = "PTR32"
+        
+        if self.direction == Direction.OUTPUT and self.array.is_const():
+            win_type = "const " + win_type
+        
+        pointer_part = self.array.pointer if self.array.pointer else "*"
+        is_static_input = self.array.is_static_array() and self.direction == Direction.INPUT
+
+        if self.direction == Direction.OUTPUT:
+            params = ["const {0} {1}in".format(self.type, pointer_part),
+                      "{0} {1}out".format(win_type, pointer_part), "uint32_t count"]
+            return_type = None
+        elif is_static_input:
+            # Static Input: Void return, explicit out buffer
+            params = ["const {0} {1}in".format(win_type, pointer_part), 
+                      "{0} {1}out".format(self.type, pointer_part), 
+                      "uint32_t count"]
+            return_type = None
+        else:
+            # Dynamic Input: Allocates and returns pointer
+            # Note: We rely on native types (e.g. char**) here, not PTR32*
+            params = ["const {0} {1}in".format(win_type, pointer_part), "uint32_t count"]
+            return_type = self.type
+
+        if return_type:
+            if is_thunk:
+                body += "static inline "
+            body += "{0}{1} {2}{3}{4}(".format(
+                "const " if self.array.is_const() else "", return_type, pointer_part, prefix, self.name)
+        else:
+            if is_thunk:
+                body += "static inline "
+            body += "void {0}{1}(".format(prefix, self.name)
+        
+        if needs_alloc:
+            body += "struct conversion_context *ctx, "
+        body += ", ".join(p for p in params)
+        body += ")"
+
+        if is_thunk:
+            body += "\n"
 
         return body
 
@@ -2779,6 +2861,9 @@ class XrGenerator(object):
                 continue
 
             f.write("{0};\n".format(xr_func.prototype(prefix=prefix, is_thunk=True)))
+        for conv in self.conversions:
+            if conv.name in MANUAL_CONVERSION_FUNCTIONS:
+                f.write("{0};\n".format(conv.prototype(prefix="wine_", is_thunk=False)))
         f.write("\n")
 
         f.write("/* For use by xrInstance and children */\n")
@@ -2920,8 +3005,11 @@ class XrGenerator(object):
         f.write("#define WINE_XR_ALIGN DECLSPEC_ALIGN\n")
         f.write("#endif\n\n")
 
+        f.write("#undef XR_PTR_SIZE\n")
         f.write("#if defined(__x86_64__) || defined(__aarch64__)\n")
         f.write("#define XR_PTR_SIZE 8\n")
+        f.write("#else\n")
+        f.write("#define XR_PTR_SIZE 4\n")
         f.write("#endif\n\n")
 
         f.write("#if defined(__x86_64__) || defined(_M_X64) || defined(__aarch64__) || defined(_WIN64)\n")

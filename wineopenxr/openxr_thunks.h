@@ -32,6 +32,7 @@ XrResult wine_xrEnumerateInstanceExtensionProperties(const char *layerName, uint
 XrResult wine_xrGetVulkanGraphicsDevice2KHR(XrInstance instance, const XrVulkanGraphicsDeviceGetInfoKHR *getInfo, VkPhysicalDevice *vulkanPhysicalDevice);
 XrResult wine_xrGetVulkanGraphicsDeviceKHR(XrInstance instance, XrSystemId systemId, VkInstance vkInstance, VkPhysicalDevice *vkPhysicalDevice);
 XrResult wine_xrGetVulkanInstanceExtensionsKHR(XrInstance instance, XrSystemId systemId, uint32_t bufferCapacityInput, uint32_t *bufferCountOutput, char *buffer);
+const XrCompositionLayerBaseHeader * const*wine_convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(struct conversion_context *ctx, const XrCompositionLayerBaseHeader32 * const*in, uint32_t count);
 
 /* For use by xrInstance and children */
 struct openxr_instance_funcs
@@ -51,6 +52,8 @@ struct openxr_instance_funcs
     XrResult (*p_xrChangeVirtualKeyboardTextContextMETA)(XrVirtualKeyboardMETA, const XrVirtualKeyboardTextContextChangeInfoMETA *);
     XrResult (*p_xrClearSpatialAnchorStoreMSFT)(XrSpatialAnchorStoreConnectionMSFT);
     XrResult (*p_xrComputeNewSceneMSFT)(XrSceneObserverMSFT, const XrNewSceneComputeInfoMSFT *);
+    XrResult (*p_xrConvertTimeToTimespecTimeKHR)(XrInstance, XrTime, struct timespec *);
+    XrResult (*p_xrConvertTimespecTimeToTimeKHR)(XrInstance, const struct timespec *, XrTime *);
     XrResult (*p_xrCreateAction)(XrActionSet, const XrActionCreateInfo *, XrAction *);
     XrResult (*p_xrCreateActionSet)(XrInstance, const XrActionSetCreateInfo *, XrActionSet *);
     XrResult (*p_xrCreateActionSpace)(XrSession, const XrActionSpaceCreateInfo *, XrSpace *);
@@ -452,6 +455,8 @@ struct openxr_instance_funcs
     USE_XR_FUNC(xrChangeVirtualKeyboardTextContextMETA) \
     USE_XR_FUNC(xrClearSpatialAnchorStoreMSFT) \
     USE_XR_FUNC(xrComputeNewSceneMSFT) \
+    USE_XR_FUNC(xrConvertTimeToTimespecTimeKHR) \
+    USE_XR_FUNC(xrConvertTimespecTimeToTimeKHR) \
     USE_XR_FUNC(xrCreateAction) \
     USE_XR_FUNC(xrCreateActionSet) \
     USE_XR_FUNC(xrCreateActionSpace) \

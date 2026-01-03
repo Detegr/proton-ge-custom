@@ -2396,24 +2396,7 @@ static inline void convert_XrCompositionLayerBaseHeader_win32_to_host(struct con
 
 static inline const XrCompositionLayerBaseHeader * const*convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(struct conversion_context *ctx, const XrCompositionLayerBaseHeader32 * const*in, uint32_t count)
 {
-    XrCompositionLayerBaseHeader **out;
-    unsigned int i;
-
-    if (!in || !count) return NULL;
-
-    out = conversion_context_alloc(ctx, count * sizeof(*out));
-    for (i = 0; i < count; i++)
-    {
-        if (in[i])
-        {
-            out[i] = conversion_context_alloc(ctx, sizeof(*out[i]));
-            convert_XrCompositionLayerBaseHeader_win32_to_host(ctx, (XrCompositionLayerBaseHeader32 *)in[i], out[i]);
-        }
-        else
-            out[i] = NULL;
-    }
-
-    return (void *)out;
+    return wine_convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(ctx, in, count);
 }
 
 static inline void convert_XrSecondaryViewConfigurationLayerInfoMSFT_win32_to_host(struct conversion_context *ctx, const XrSecondaryViewConfigurationLayerInfoMSFT32 *in, XrSecondaryViewConfigurationLayerInfoMSFT *out)
@@ -2633,6 +2616,28 @@ static inline void convert_XrSwapchainImageBaseHeader_array_host_to_win32(const 
     }
 }
 
+static inline void convert_XrExternalCameraIntrinsicsOCULUS_win32_to_host(const XrExternalCameraIntrinsicsOCULUS32 *in, XrExternalCameraIntrinsicsOCULUS *out)
+{
+    if (!in) return;
+
+    out->lastChangeTime = in->lastChangeTime;
+    out->fov = in->fov;
+    out->virtualNearPlaneDistance = in->virtualNearPlaneDistance;
+    out->virtualFarPlaneDistance = in->virtualFarPlaneDistance;
+    out->imageSensorPixelResolution = in->imageSensorPixelResolution;
+}
+
+static inline void convert_XrExternalCameraIntrinsicsOCULUS_host_to_win32(const XrExternalCameraIntrinsicsOCULUS *in, XrExternalCameraIntrinsicsOCULUS32 *out)
+{
+    if (!in) return;
+
+    out->lastChangeTime = in->lastChangeTime;
+    out->fov = in->fov;
+    out->virtualNearPlaneDistance = in->virtualNearPlaneDistance;
+    out->virtualFarPlaneDistance = in->virtualFarPlaneDistance;
+    out->imageSensorPixelResolution = in->imageSensorPixelResolution;
+}
+
 static inline void convert_XrExternalCameraExtrinsicsOCULUS_win32_to_host(const XrExternalCameraExtrinsicsOCULUS32 *in, XrExternalCameraExtrinsicsOCULUS *out)
 {
     if (!in) return;
@@ -2668,7 +2673,7 @@ static inline void convert_XrExternalCameraOCULUS_host_to_win32(const XrExternal
     if (!in) return;
 
     memcpy(out->name, in->name, XR_MAX_EXTERNAL_CAMERA_NAME_SIZE_OCULUS * sizeof(char));
-    out->intrinsics = in->intrinsics;
+    convert_XrExternalCameraIntrinsicsOCULUS_host_to_win32(&in->intrinsics, &out->intrinsics);
     convert_XrExternalCameraExtrinsicsOCULUS_host_to_win32(&in->extrinsics, &out->extrinsics);
 }
 
@@ -4516,6 +4521,86 @@ static inline void convert_XrSceneMeshMSFT_array_host_to_win32(const XrSceneMesh
     }
 }
 
+static inline void convert_XrSceneMarkerMSFT_host_to_win32(const XrSceneMarkerMSFT *in, XrSceneMarkerMSFT32 *out)
+{
+    if (!in) return;
+
+    out->markerType = in->markerType;
+    out->lastSeenTime = in->lastSeenTime;
+    out->center = in->center;
+    out->size = in->size;
+}
+
+static inline XrSceneMarkerMSFT *convert_XrSceneMarkerMSFT_array_win32_to_host(struct conversion_context *ctx, const XrSceneMarkerMSFT32 *in, uint32_t count)
+{
+    XrSceneMarkerMSFT *out;
+    if (!in || !count) return NULL;
+
+    out = conversion_context_alloc(ctx, count * sizeof(*out));
+
+    return out;
+}
+
+static inline void convert_XrSceneMarkerMSFT_array_host_to_win32(const XrSceneMarkerMSFT *in, XrSceneMarkerMSFT32 *out, uint32_t count)
+{
+    unsigned int i;
+
+    if (!in) return;
+
+    for (i = 0; i < count; i++)
+    {
+        convert_XrSceneMarkerMSFT_host_to_win32(&in[i], &out[i]);
+    }
+}
+
+static inline void convert_XrSceneComponentMSFT_win32_to_host(const XrSceneComponentMSFT32 *in, XrSceneComponentMSFT *out)
+{
+    if (!in) return;
+
+    out->componentType = in->componentType;
+    out->id = in->id;
+    out->parentId = in->parentId;
+    out->updateTime = in->updateTime;
+}
+
+static inline void convert_XrSceneComponentMSFT_host_to_win32(const XrSceneComponentMSFT *in, XrSceneComponentMSFT32 *out)
+{
+    if (!in) return;
+
+    out->componentType = in->componentType;
+    out->id = in->id;
+    out->parentId = in->parentId;
+    out->updateTime = in->updateTime;
+}
+
+static inline XrSceneComponentMSFT *convert_XrSceneComponentMSFT_array_win32_to_host(struct conversion_context *ctx, const XrSceneComponentMSFT32 *in, uint32_t count)
+{
+    XrSceneComponentMSFT *out;
+    unsigned int i;
+
+    if (!in || !count) return NULL;
+
+    out = conversion_context_alloc(ctx, count * sizeof(*out));
+    for (i = 0; i < count; i++)
+    {
+        convert_XrSceneComponentMSFT_win32_to_host(&in[i], &out[i]);
+    }
+
+    return out;
+}
+
+static inline void convert_XrSceneComponentMSFT_array_host_to_win32(const XrSceneComponentMSFT *in, XrSceneComponentMSFT32 *out, uint32_t count)
+{
+    unsigned int i;
+
+    if (!in) return;
+
+    for (i = 0; i < count; i++)
+    {
+        convert_XrSceneComponentMSFT_host_to_win32(&in[i], &out[i]);
+    }
+}
+
 static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion_context *ctx, const XrSceneComponentsMSFT32 *in, XrSceneComponentsMSFT *out)
 {
     const XrBaseInStructure32 *in_header;
@@ -4528,7 +4613,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
     out->next = NULL;
     out->componentCapacityInput = in->componentCapacityInput;
     out->componentCountOutput = in->componentCountOutput;
-    out->components = (XrSceneComponentMSFT *)(uintptr_t)UlongToPtr(in->components);
+    out->components = convert_XrSceneComponentMSFT_array_win32_to_host(ctx, (XrSceneComponentMSFT32 *)(uintptr_t)UlongToPtr(in->components), in->componentCapacityInput);
 
     for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
     {
@@ -4577,7 +4662,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
             out_ext->type = XR_TYPE_SCENE_MARKERS_MSFT;
             out_ext->next = NULL;
             out_ext->sceneMarkerCapacityInput = in_ext->sceneMarkerCapacityInput;
-            out_ext->sceneMarkers = (XrSceneMarkerMSFT *)(uintptr_t)UlongToPtr(in_ext->sceneMarkers);
+            out_ext->sceneMarkers = convert_XrSceneMarkerMSFT_array_win32_to_host(ctx, (XrSceneMarkerMSFT32 *)(uintptr_t)UlongToPtr(in_ext->sceneMarkers), in_ext->sceneMarkerCapacityInput);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4622,7 +4707,7 @@ static inline void convert_XrSceneComponentsMSFT_host_to_win32(const XrSceneComp
 
     out->componentCapacityInput = in->componentCapacityInput;
     out->componentCountOutput = in->componentCountOutput;
-    out->components = PtrToUlong(in->components);
+    convert_XrSceneComponentMSFT_array_host_to_win32(in->components, (XrSceneComponentMSFT32 *)(uintptr_t)UlongToPtr(out->components), in->componentCapacityInput);
 
     for (in_header = (void *)in->next; in_header; in_header = (void *)in_header->next)
     {
@@ -4664,7 +4749,7 @@ static inline void convert_XrSceneComponentsMSFT_host_to_win32(const XrSceneComp
             const XrSceneMarkersMSFT *in_ext = (const XrSceneMarkersMSFT *)in_header;
             out_ext->type = XR_TYPE_SCENE_MARKERS_MSFT;
             out_ext->sceneMarkerCapacityInput = in_ext->sceneMarkerCapacityInput;
-            out_ext->sceneMarkers = PtrToUlong(in_ext->sceneMarkers);
+            convert_XrSceneMarkerMSFT_array_host_to_win32(in_ext->sceneMarkers, (XrSceneMarkerMSFT32 *)(uintptr_t)UlongToPtr(out_ext->sceneMarkers), in_ext->sceneMarkerCapacityInput);
             out_header = (void *)out_ext;
             break;
         }
@@ -9874,7 +9959,7 @@ static NTSTATUS thunk32_xrAcquireEnvironmentDepthImageMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthProviderMETA environmentDepthProvider;
+        XrEnvironmentDepthProviderMETA DECLSPEC_ALIGN(8) environmentDepthProvider;
         PTR32 acquireInfo;
         PTR32 environmentDepthImage;
         XrResult result;
@@ -9909,7 +9994,7 @@ static NTSTATUS thunk32_xrAcquireSwapchainImage(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         PTR32 acquireInfo;
         PTR32 index;
         XrResult result;
@@ -9949,7 +10034,7 @@ static NTSTATUS thunk32_xrAllocateWorldMeshBufferML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         PTR32 size;
         PTR32 buffer;
         XrResult result;
@@ -9984,7 +10069,7 @@ static NTSTATUS thunk32_xrApplyForceFeedbackCurlMNDX(void *args)
 {
     struct
     {
-        XrHandTrackerEXT handTracker;
+        XrHandTrackerEXT DECLSPEC_ALIGN(8) handTracker;
         PTR32 locations;
         XrResult result;
     } *params = args;
@@ -10015,7 +10100,7 @@ static NTSTATUS thunk32_xrApplyHapticFeedback(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 hapticActionInfo;
         PTR32 hapticFeedback;
         XrResult result;
@@ -10049,7 +10134,7 @@ static NTSTATUS thunk32_xrAttachSessionActionSets(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 attachInfo;
         XrResult result;
     } *params = args;
@@ -10084,7 +10169,7 @@ static NTSTATUS thunk32_xrBeginFrame(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 frameBeginInfo;
         XrResult result;
     } *params = args;
@@ -10123,7 +10208,7 @@ static NTSTATUS thunk32_xrBeginPlaneDetectionEXT(void *args)
 {
     struct
     {
-        XrPlaneDetectorEXT planeDetector;
+        XrPlaneDetectorEXT DECLSPEC_ALIGN(8) planeDetector;
         PTR32 beginInfo;
         XrResult result;
     } *params = args;
@@ -10154,7 +10239,7 @@ static NTSTATUS thunk32_xrBeginSession(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 beginInfo;
         XrResult result;
     } *params = args;
@@ -10189,7 +10274,7 @@ static NTSTATUS thunk32_xrCancelFutureEXT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 cancelInfo;
         XrResult result;
     } *params = args;
@@ -10220,7 +10305,7 @@ static NTSTATUS thunk32_xrCaptureSceneAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 info;
         PTR32 future;
         XrResult result;
@@ -10252,7 +10337,7 @@ static NTSTATUS thunk32_xrCaptureSceneCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -10285,7 +10370,7 @@ static NTSTATUS thunk32_xrChangeVirtualKeyboardTextContextMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 changeInfo;
         XrResult result;
     } *params = args;
@@ -10316,7 +10401,7 @@ static NTSTATUS thunk32_xrClearSpatialAnchorStoreMSFT(void *args)
 {
     struct
     {
-        XrSpatialAnchorStoreConnectionMSFT spatialAnchorStore;
+        XrSpatialAnchorStoreConnectionMSFT DECLSPEC_ALIGN(8) spatialAnchorStore;
         XrResult result;
     } *params = args;
 
@@ -10344,7 +10429,7 @@ static NTSTATUS thunk32_xrComputeNewSceneMSFT(void *args)
 {
     struct
     {
-        XrSceneObserverMSFT sceneObserver;
+        XrSceneObserverMSFT DECLSPEC_ALIGN(8) sceneObserver;
         PTR32 computeInfo;
         XrResult result;
     } *params = args;
@@ -10379,15 +10464,15 @@ static NTSTATUS thunk32_xrConvertTimeToTimespecTimeKHR(void *args)
 {
     struct
     {
-        PTR32 instance;
-        XrTime time;
+        XrInstance DECLSPEC_ALIGN(8) instance;
+        XrTime DECLSPEC_ALIGN(8) time;
         PTR32 timespecTime;
         XrResult result;
     } *params = args;
 
-    TRACE("%#x, 0x%s, %#x\n", params->instance, wine_dbgstr_longlong(params->time), params->timespecTime);
+    TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->time), params->timespecTime);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle((XrInstance)(uintptr_t)UlongToPtr(params->instance))->host_instance, params->time, (const timespec *)(uintptr_t)UlongToPtr(params->timespecTime));
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->time, (struct timespec *)(uintptr_t)UlongToPtr(params->timespecTime));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10397,7 +10482,7 @@ static NTSTATUS thunk64_xrConvertTimeToTimespecTimeKHR(void *args)
 {
     struct xrConvertTimeToTimespecTimeKHR_params *params = args;
 
-    TRACE("%p, 0x%s, %p\n", params->instance, wine_dbgstr_longlong(params->time), params->timespecTime);
+    TRACE("0x%s, 0x%s, %p\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->time), params->timespecTime);
 
     params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->time, params->timespecTime);
     return STATUS_SUCCESS;
@@ -10409,15 +10494,15 @@ static NTSTATUS thunk32_xrConvertTimespecTimeToTimeKHR(void *args)
 {
     struct
     {
-        PTR32 instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 timespecTime;
         PTR32 time;
         XrResult result;
     } *params = args;
 
-    TRACE("%#x, %#x, %#x\n", params->instance, params->timespecTime, params->time);
+    TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->timespecTime, params->time);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle((XrInstance)(uintptr_t)UlongToPtr(params->instance))->host_instance, (const timespec *)(uintptr_t)UlongToPtr(params->timespecTime), (XrTime *)(uintptr_t)UlongToPtr(params->time));
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle(params->instance)->host_instance, (const struct timespec *)(uintptr_t)UlongToPtr(params->timespecTime), (XrTime *)(uintptr_t)UlongToPtr(params->time));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10427,7 +10512,7 @@ static NTSTATUS thunk64_xrConvertTimespecTimeToTimeKHR(void *args)
 {
     struct xrConvertTimespecTimeToTimeKHR_params *params = args;
 
-    TRACE("%p, %p, %p\n", params->instance, params->timespecTime, params->time);
+    TRACE("0x%s, %p, %p\n", TRACE_HANDLE(params->instance), params->timespecTime, params->time);
 
     params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->timespecTime, params->time);
     return STATUS_SUCCESS;
@@ -10439,7 +10524,7 @@ static NTSTATUS thunk32_xrCreateAction(void *args)
 {
     struct
     {
-        XrActionSet actionSet;
+        XrActionSet DECLSPEC_ALIGN(8) actionSet;
         PTR32 createInfo;
         PTR32 action;
         XrResult result;
@@ -10474,7 +10559,7 @@ static NTSTATUS thunk32_xrCreateActionSet(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 createInfo;
         PTR32 actionSet;
         XrResult result;
@@ -10509,7 +10594,7 @@ static NTSTATUS thunk32_xrCreateActionSpace(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -10544,7 +10629,7 @@ static NTSTATUS thunk32_xrCreateAnchorSpaceANDROID(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 anchorOutput;
         XrResult result;
@@ -10579,7 +10664,7 @@ static NTSTATUS thunk32_xrCreateAnchorSpaceBD(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -10614,7 +10699,7 @@ static NTSTATUS thunk32_xrCreateBodyTrackerBD(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 bodyTracker;
         XrResult result;
@@ -10649,7 +10734,7 @@ static NTSTATUS thunk32_xrCreateBodyTrackerFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 bodyTracker;
         XrResult result;
@@ -10684,7 +10769,7 @@ static NTSTATUS thunk32_xrCreateBodyTrackerHTC(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 bodyTracker;
         XrResult result;
@@ -10719,7 +10804,7 @@ static NTSTATUS thunk32_xrCreateDeviceAnchorPersistenceANDROID(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 outHandle;
         XrResult result;
@@ -10754,7 +10839,7 @@ static NTSTATUS thunk32_xrCreateEnvironmentDepthProviderMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 environmentDepthProvider;
         XrResult result;
@@ -10789,7 +10874,7 @@ static NTSTATUS thunk32_xrCreateEnvironmentDepthSwapchainMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthProviderMETA environmentDepthProvider;
+        XrEnvironmentDepthProviderMETA DECLSPEC_ALIGN(8) environmentDepthProvider;
         PTR32 createInfo;
         PTR32 swapchain;
         XrResult result;
@@ -10824,7 +10909,7 @@ static NTSTATUS thunk32_xrCreateExportedLocalizationMapML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 mapUuid;
         PTR32 map;
         XrResult result;
@@ -10857,7 +10942,7 @@ static NTSTATUS thunk32_xrCreateEyeTrackerFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 eyeTracker;
         XrResult result;
@@ -10892,7 +10977,7 @@ static NTSTATUS thunk32_xrCreateFaceTracker2FB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 faceTracker;
         XrResult result;
@@ -10927,7 +11012,7 @@ static NTSTATUS thunk32_xrCreateFaceTrackerFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 faceTracker;
         XrResult result;
@@ -10962,7 +11047,7 @@ static NTSTATUS thunk32_xrCreateFacialExpressionClientML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 facialExpressionClient;
         XrResult result;
@@ -10997,7 +11082,7 @@ static NTSTATUS thunk32_xrCreateFacialTrackerHTC(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 facialTracker;
         XrResult result;
@@ -11032,7 +11117,7 @@ static NTSTATUS thunk32_xrCreateFoveationProfileFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 profile;
         XrResult result;
@@ -11072,7 +11157,7 @@ static NTSTATUS thunk32_xrCreateGeometryInstanceFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 outGeometryInstance;
         XrResult result;
@@ -11107,7 +11192,7 @@ static NTSTATUS thunk32_xrCreateHandMeshSpaceMSFT(void *args)
 {
     struct
     {
-        XrHandTrackerEXT handTracker;
+        XrHandTrackerEXT DECLSPEC_ALIGN(8) handTracker;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -11142,7 +11227,7 @@ static NTSTATUS thunk32_xrCreateHandTrackerEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 handTracker;
         XrResult result;
@@ -11225,7 +11310,7 @@ static NTSTATUS thunk32_xrCreateKeyboardSpaceFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 keyboardSpace;
         XrResult result;
@@ -11260,7 +11345,7 @@ static NTSTATUS thunk32_xrCreateMarkerDetectorML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 markerDetector;
         XrResult result;
@@ -11299,7 +11384,7 @@ static NTSTATUS thunk32_xrCreateMarkerSpaceML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -11334,7 +11419,7 @@ static NTSTATUS thunk32_xrCreateMarkerSpaceVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -11369,7 +11454,7 @@ static NTSTATUS thunk32_xrCreatePassthroughColorLutMETA(void *args)
 {
     struct
     {
-        XrPassthroughFB passthrough;
+        XrPassthroughFB DECLSPEC_ALIGN(8) passthrough;
         PTR32 createInfo;
         PTR32 colorLut;
         XrResult result;
@@ -11404,7 +11489,7 @@ static NTSTATUS thunk32_xrCreatePassthroughFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 outPassthrough;
         XrResult result;
@@ -11439,7 +11524,7 @@ static NTSTATUS thunk32_xrCreatePassthroughHTC(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 passthrough;
         XrResult result;
@@ -11474,7 +11559,7 @@ static NTSTATUS thunk32_xrCreatePassthroughLayerFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 outLayer;
         XrResult result;
@@ -11509,7 +11594,7 @@ static NTSTATUS thunk32_xrCreatePersistedAnchorSpaceANDROID(void *args)
 {
     struct
     {
-        XrDeviceAnchorPersistenceANDROID handle;
+        XrDeviceAnchorPersistenceANDROID DECLSPEC_ALIGN(8) handle;
         PTR32 createInfo;
         PTR32 anchorOutput;
         XrResult result;
@@ -11544,7 +11629,7 @@ static NTSTATUS thunk32_xrCreatePlaneDetectorEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 planeDetector;
         XrResult result;
@@ -11579,7 +11664,7 @@ static NTSTATUS thunk32_xrCreateReferenceSpace(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -11614,7 +11699,7 @@ static NTSTATUS thunk32_xrCreateRenderModelAssetEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 asset;
         XrResult result;
@@ -11649,7 +11734,7 @@ static NTSTATUS thunk32_xrCreateRenderModelEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 renderModel;
         XrResult result;
@@ -11688,7 +11773,7 @@ static NTSTATUS thunk32_xrCreateRenderModelSpaceEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -11723,7 +11808,7 @@ static NTSTATUS thunk32_xrCreateSceneMSFT(void *args)
 {
     struct
     {
-        XrSceneObserverMSFT sceneObserver;
+        XrSceneObserverMSFT DECLSPEC_ALIGN(8) sceneObserver;
         PTR32 createInfo;
         PTR32 scene;
         XrResult result;
@@ -11766,7 +11851,7 @@ static NTSTATUS thunk32_xrCreateSceneObserverMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 sceneObserver;
         XrResult result;
@@ -11809,7 +11894,7 @@ static NTSTATUS thunk32_xrCreateSenseDataProviderBD(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 provider;
         XrResult result;
@@ -11848,7 +11933,7 @@ static NTSTATUS thunk32_xrCreateSession(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 createInfo;
         PTR32 session;
         XrResult result;
@@ -11887,7 +11972,7 @@ static NTSTATUS thunk32_xrCreateSpaceUserFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 user;
         XrResult result;
@@ -11922,7 +12007,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 info;
         PTR32 future;
         XrResult result;
@@ -11954,7 +12039,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -11987,7 +12072,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorEXT(void *args)
 {
     struct
     {
-        XrSpatialContextEXT spatialContext;
+        XrSpatialContextEXT DECLSPEC_ALIGN(8) spatialContext;
         PTR32 createInfo;
         PTR32 anchorEntityId;
         PTR32 anchorEntity;
@@ -12023,7 +12108,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -12055,7 +12140,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorFromPersistedNameMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 spatialAnchorCreateInfo;
         PTR32 spatialAnchor;
         XrResult result;
@@ -12090,7 +12175,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorHTC(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 anchor;
         XrResult result;
@@ -12125,7 +12210,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 anchor;
         XrResult result;
@@ -12160,7 +12245,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorSpaceMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -12195,7 +12280,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorStoreConnectionMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 spatialAnchorStore;
         XrResult result;
     } *params = args;
@@ -12227,7 +12312,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorsAsyncML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 future;
         XrResult result;
@@ -12259,7 +12344,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorsCompleteML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -12296,7 +12381,7 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorsStorageML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 storage;
         XrResult result;
@@ -12331,7 +12416,7 @@ static NTSTATUS thunk32_xrCreateSpatialContextAsyncEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 future;
         XrResult result;
@@ -12367,7 +12452,7 @@ static NTSTATUS thunk32_xrCreateSpatialContextCompleteEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -12400,7 +12485,7 @@ static NTSTATUS thunk32_xrCreateSpatialDiscoverySnapshotAsyncEXT(void *args)
 {
     struct
     {
-        XrSpatialContextEXT spatialContext;
+        XrSpatialContextEXT DECLSPEC_ALIGN(8) spatialContext;
         PTR32 createInfo;
         PTR32 future;
         XrResult result;
@@ -12436,7 +12521,7 @@ static NTSTATUS thunk32_xrCreateSpatialDiscoverySnapshotCompleteEXT(void *args)
 {
     struct
     {
-        XrSpatialContextEXT spatialContext;
+        XrSpatialContextEXT DECLSPEC_ALIGN(8) spatialContext;
         PTR32 createSnapshotCompletionInfo;
         PTR32 completion;
         XrResult result;
@@ -12471,7 +12556,7 @@ static NTSTATUS thunk32_xrCreateSpatialEntityAnchorBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 createInfo;
         PTR32 anchor;
         XrResult result;
@@ -12506,7 +12591,7 @@ static NTSTATUS thunk32_xrCreateSpatialEntityFromIdEXT(void *args)
 {
     struct
     {
-        XrSpatialContextEXT spatialContext;
+        XrSpatialContextEXT DECLSPEC_ALIGN(8) spatialContext;
         PTR32 createInfo;
         PTR32 spatialEntity;
         XrResult result;
@@ -12541,7 +12626,7 @@ static NTSTATUS thunk32_xrCreateSpatialGraphNodeSpaceMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 space;
         XrResult result;
@@ -12576,7 +12661,7 @@ static NTSTATUS thunk32_xrCreateSpatialPersistenceContextAsyncEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 future;
         XrResult result;
@@ -12608,7 +12693,7 @@ static NTSTATUS thunk32_xrCreateSpatialPersistenceContextCompleteEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -12641,7 +12726,7 @@ static NTSTATUS thunk32_xrCreateSpatialUpdateSnapshotEXT(void *args)
 {
     struct
     {
-        XrSpatialContextEXT spatialContext;
+        XrSpatialContextEXT DECLSPEC_ALIGN(8) spatialContext;
         PTR32 createInfo;
         PTR32 snapshot;
         XrResult result;
@@ -12680,7 +12765,7 @@ static NTSTATUS thunk32_xrCreateSwapchain(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 swapchain;
         XrResult result;
@@ -12719,7 +12804,7 @@ static NTSTATUS thunk32_xrCreateTrackableTrackerANDROID(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 trackableTracker;
         XrResult result;
@@ -12758,7 +12843,7 @@ static NTSTATUS thunk32_xrCreateTriangleMeshFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 outTriangleMesh;
         XrResult result;
@@ -12793,7 +12878,7 @@ static NTSTATUS thunk32_xrCreateVirtualKeyboardMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 keyboard;
         XrResult result;
@@ -12828,8 +12913,8 @@ static NTSTATUS thunk32_xrCreateVirtualKeyboardSpaceMETA(void *args)
 {
     struct
     {
-        XrSession session;
-        XrVirtualKeyboardMETA keyboard;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 createInfo;
         PTR32 keyboardSpace;
         XrResult result;
@@ -12864,7 +12949,7 @@ static NTSTATUS thunk32_xrCreateWorldMeshDetectorML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 detector;
         XrResult result;
@@ -12899,7 +12984,7 @@ static NTSTATUS thunk32_xrDeleteSpatialAnchorsAsyncML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         PTR32 deleteInfo;
         PTR32 future;
         XrResult result;
@@ -12931,7 +13016,7 @@ static NTSTATUS thunk32_xrDeleteSpatialAnchorsCompleteML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -12968,7 +13053,7 @@ static NTSTATUS thunk32_xrDeserializeSceneMSFT(void *args)
 {
     struct
     {
-        XrSceneObserverMSFT sceneObserver;
+        XrSceneObserverMSFT DECLSPEC_ALIGN(8) sceneObserver;
         PTR32 deserializeInfo;
         XrResult result;
     } *params = args;
@@ -13003,7 +13088,7 @@ static NTSTATUS thunk32_xrDestroyAction(void *args)
 {
     struct
     {
-        XrAction action;
+        XrAction DECLSPEC_ALIGN(8) action;
         XrResult result;
     } *params = args;
 
@@ -13031,7 +13116,7 @@ static NTSTATUS thunk32_xrDestroyActionSet(void *args)
 {
     struct
     {
-        XrActionSet actionSet;
+        XrActionSet DECLSPEC_ALIGN(8) actionSet;
         XrResult result;
     } *params = args;
 
@@ -13059,7 +13144,7 @@ static NTSTATUS thunk32_xrDestroyAnchorBD(void *args)
 {
     struct
     {
-        XrAnchorBD anchor;
+        XrAnchorBD DECLSPEC_ALIGN(8) anchor;
         XrResult result;
     } *params = args;
 
@@ -13087,7 +13172,7 @@ static NTSTATUS thunk32_xrDestroyBodyTrackerBD(void *args)
 {
     struct
     {
-        XrBodyTrackerBD bodyTracker;
+        XrBodyTrackerBD DECLSPEC_ALIGN(8) bodyTracker;
         XrResult result;
     } *params = args;
 
@@ -13115,7 +13200,7 @@ static NTSTATUS thunk32_xrDestroyBodyTrackerFB(void *args)
 {
     struct
     {
-        XrBodyTrackerFB bodyTracker;
+        XrBodyTrackerFB DECLSPEC_ALIGN(8) bodyTracker;
         XrResult result;
     } *params = args;
 
@@ -13143,7 +13228,7 @@ static NTSTATUS thunk32_xrDestroyBodyTrackerHTC(void *args)
 {
     struct
     {
-        XrBodyTrackerHTC bodyTracker;
+        XrBodyTrackerHTC DECLSPEC_ALIGN(8) bodyTracker;
         XrResult result;
     } *params = args;
 
@@ -13171,7 +13256,7 @@ static NTSTATUS thunk32_xrDestroyDeviceAnchorPersistenceANDROID(void *args)
 {
     struct
     {
-        XrDeviceAnchorPersistenceANDROID handle;
+        XrDeviceAnchorPersistenceANDROID DECLSPEC_ALIGN(8) handle;
         XrResult result;
     } *params = args;
 
@@ -13199,7 +13284,7 @@ static NTSTATUS thunk32_xrDestroyEnvironmentDepthProviderMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthProviderMETA environmentDepthProvider;
+        XrEnvironmentDepthProviderMETA DECLSPEC_ALIGN(8) environmentDepthProvider;
         XrResult result;
     } *params = args;
 
@@ -13227,7 +13312,7 @@ static NTSTATUS thunk32_xrDestroyEnvironmentDepthSwapchainMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthSwapchainMETA swapchain;
+        XrEnvironmentDepthSwapchainMETA DECLSPEC_ALIGN(8) swapchain;
         XrResult result;
     } *params = args;
 
@@ -13255,7 +13340,7 @@ static NTSTATUS thunk32_xrDestroyExportedLocalizationMapML(void *args)
 {
     struct
     {
-        XrExportedLocalizationMapML map;
+        XrExportedLocalizationMapML DECLSPEC_ALIGN(8) map;
         XrResult result;
     } *params = args;
 
@@ -13283,7 +13368,7 @@ static NTSTATUS thunk32_xrDestroyEyeTrackerFB(void *args)
 {
     struct
     {
-        XrEyeTrackerFB eyeTracker;
+        XrEyeTrackerFB DECLSPEC_ALIGN(8) eyeTracker;
         XrResult result;
     } *params = args;
 
@@ -13311,7 +13396,7 @@ static NTSTATUS thunk32_xrDestroyFaceTracker2FB(void *args)
 {
     struct
     {
-        XrFaceTracker2FB faceTracker;
+        XrFaceTracker2FB DECLSPEC_ALIGN(8) faceTracker;
         XrResult result;
     } *params = args;
 
@@ -13339,7 +13424,7 @@ static NTSTATUS thunk32_xrDestroyFaceTrackerFB(void *args)
 {
     struct
     {
-        XrFaceTrackerFB faceTracker;
+        XrFaceTrackerFB DECLSPEC_ALIGN(8) faceTracker;
         XrResult result;
     } *params = args;
 
@@ -13367,7 +13452,7 @@ static NTSTATUS thunk32_xrDestroyFacialExpressionClientML(void *args)
 {
     struct
     {
-        XrFacialExpressionClientML facialExpressionClient;
+        XrFacialExpressionClientML DECLSPEC_ALIGN(8) facialExpressionClient;
         XrResult result;
     } *params = args;
 
@@ -13395,7 +13480,7 @@ static NTSTATUS thunk32_xrDestroyFacialTrackerHTC(void *args)
 {
     struct
     {
-        XrFacialTrackerHTC facialTracker;
+        XrFacialTrackerHTC DECLSPEC_ALIGN(8) facialTracker;
         XrResult result;
     } *params = args;
 
@@ -13423,7 +13508,7 @@ static NTSTATUS thunk32_xrDestroyFoveationProfileFB(void *args)
 {
     struct
     {
-        XrFoveationProfileFB profile;
+        XrFoveationProfileFB DECLSPEC_ALIGN(8) profile;
         XrResult result;
     } *params = args;
 
@@ -13451,7 +13536,7 @@ static NTSTATUS thunk32_xrDestroyGeometryInstanceFB(void *args)
 {
     struct
     {
-        XrGeometryInstanceFB instance;
+        XrGeometryInstanceFB DECLSPEC_ALIGN(8) instance;
         XrResult result;
     } *params = args;
 
@@ -13479,7 +13564,7 @@ static NTSTATUS thunk32_xrDestroyHandTrackerEXT(void *args)
 {
     struct
     {
-        XrHandTrackerEXT handTracker;
+        XrHandTrackerEXT DECLSPEC_ALIGN(8) handTracker;
         XrResult result;
     } *params = args;
 
@@ -13507,7 +13592,7 @@ static NTSTATUS thunk32_xrDestroyInstance(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrResult result;
     } *params = args;
 
@@ -13535,7 +13620,7 @@ static NTSTATUS thunk32_xrDestroyMarkerDetectorML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         XrResult result;
     } *params = args;
 
@@ -13563,7 +13648,7 @@ static NTSTATUS thunk32_xrDestroyPassthroughColorLutMETA(void *args)
 {
     struct
     {
-        XrPassthroughColorLutMETA colorLut;
+        XrPassthroughColorLutMETA DECLSPEC_ALIGN(8) colorLut;
         XrResult result;
     } *params = args;
 
@@ -13591,7 +13676,7 @@ static NTSTATUS thunk32_xrDestroyPassthroughFB(void *args)
 {
     struct
     {
-        XrPassthroughFB passthrough;
+        XrPassthroughFB DECLSPEC_ALIGN(8) passthrough;
         XrResult result;
     } *params = args;
 
@@ -13619,7 +13704,7 @@ static NTSTATUS thunk32_xrDestroyPassthroughHTC(void *args)
 {
     struct
     {
-        XrPassthroughHTC passthrough;
+        XrPassthroughHTC DECLSPEC_ALIGN(8) passthrough;
         XrResult result;
     } *params = args;
 
@@ -13647,7 +13732,7 @@ static NTSTATUS thunk32_xrDestroyPassthroughLayerFB(void *args)
 {
     struct
     {
-        XrPassthroughLayerFB layer;
+        XrPassthroughLayerFB DECLSPEC_ALIGN(8) layer;
         XrResult result;
     } *params = args;
 
@@ -13675,7 +13760,7 @@ static NTSTATUS thunk32_xrDestroyPlaneDetectorEXT(void *args)
 {
     struct
     {
-        XrPlaneDetectorEXT planeDetector;
+        XrPlaneDetectorEXT DECLSPEC_ALIGN(8) planeDetector;
         XrResult result;
     } *params = args;
 
@@ -13703,7 +13788,7 @@ static NTSTATUS thunk32_xrDestroyRenderModelAssetEXT(void *args)
 {
     struct
     {
-        XrRenderModelAssetEXT asset;
+        XrRenderModelAssetEXT DECLSPEC_ALIGN(8) asset;
         XrResult result;
     } *params = args;
 
@@ -13731,7 +13816,7 @@ static NTSTATUS thunk32_xrDestroyRenderModelEXT(void *args)
 {
     struct
     {
-        XrRenderModelEXT renderModel;
+        XrRenderModelEXT DECLSPEC_ALIGN(8) renderModel;
         XrResult result;
     } *params = args;
 
@@ -13759,7 +13844,7 @@ static NTSTATUS thunk32_xrDestroySceneMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         XrResult result;
     } *params = args;
 
@@ -13787,7 +13872,7 @@ static NTSTATUS thunk32_xrDestroySceneObserverMSFT(void *args)
 {
     struct
     {
-        XrSceneObserverMSFT sceneObserver;
+        XrSceneObserverMSFT DECLSPEC_ALIGN(8) sceneObserver;
         XrResult result;
     } *params = args;
 
@@ -13815,7 +13900,7 @@ static NTSTATUS thunk32_xrDestroySenseDataProviderBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrResult result;
     } *params = args;
 
@@ -13843,7 +13928,7 @@ static NTSTATUS thunk32_xrDestroySenseDataSnapshotBD(void *args)
 {
     struct
     {
-        XrSenseDataSnapshotBD snapshot;
+        XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
         XrResult result;
     } *params = args;
 
@@ -13871,7 +13956,7 @@ static NTSTATUS thunk32_xrDestroySession(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrResult result;
     } *params = args;
 
@@ -13899,7 +13984,7 @@ static NTSTATUS thunk32_xrDestroySpace(void *args)
 {
     struct
     {
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         XrResult result;
     } *params = args;
 
@@ -13927,7 +14012,7 @@ static NTSTATUS thunk32_xrDestroySpaceUserFB(void *args)
 {
     struct
     {
-        XrSpaceUserFB user;
+        XrSpaceUserFB DECLSPEC_ALIGN(8) user;
         XrResult result;
     } *params = args;
 
@@ -13955,7 +14040,7 @@ static NTSTATUS thunk32_xrDestroySpatialAnchorMSFT(void *args)
 {
     struct
     {
-        XrSpatialAnchorMSFT anchor;
+        XrSpatialAnchorMSFT DECLSPEC_ALIGN(8) anchor;
         XrResult result;
     } *params = args;
 
@@ -13983,7 +14068,7 @@ static NTSTATUS thunk32_xrDestroySpatialAnchorStoreConnectionMSFT(void *args)
 {
     struct
     {
-        XrSpatialAnchorStoreConnectionMSFT spatialAnchorStore;
+        XrSpatialAnchorStoreConnectionMSFT DECLSPEC_ALIGN(8) spatialAnchorStore;
         XrResult result;
     } *params = args;
 
@@ -14011,7 +14096,7 @@ static NTSTATUS thunk32_xrDestroySpatialAnchorsStorageML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         XrResult result;
     } *params = args;
 
@@ -14039,7 +14124,7 @@ static NTSTATUS thunk32_xrDestroySpatialContextEXT(void *args)
 {
     struct
     {
-        XrSpatialContextEXT spatialContext;
+        XrSpatialContextEXT DECLSPEC_ALIGN(8) spatialContext;
         XrResult result;
     } *params = args;
 
@@ -14067,7 +14152,7 @@ static NTSTATUS thunk32_xrDestroySpatialEntityEXT(void *args)
 {
     struct
     {
-        XrSpatialEntityEXT spatialEntity;
+        XrSpatialEntityEXT DECLSPEC_ALIGN(8) spatialEntity;
         XrResult result;
     } *params = args;
 
@@ -14095,7 +14180,7 @@ static NTSTATUS thunk32_xrDestroySpatialGraphNodeBindingMSFT(void *args)
 {
     struct
     {
-        XrSpatialGraphNodeBindingMSFT nodeBinding;
+        XrSpatialGraphNodeBindingMSFT DECLSPEC_ALIGN(8) nodeBinding;
         XrResult result;
     } *params = args;
 
@@ -14123,7 +14208,7 @@ static NTSTATUS thunk32_xrDestroySpatialPersistenceContextEXT(void *args)
 {
     struct
     {
-        XrSpatialPersistenceContextEXT persistenceContext;
+        XrSpatialPersistenceContextEXT DECLSPEC_ALIGN(8) persistenceContext;
         XrResult result;
     } *params = args;
 
@@ -14151,7 +14236,7 @@ static NTSTATUS thunk32_xrDestroySpatialSnapshotEXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         XrResult result;
     } *params = args;
 
@@ -14179,7 +14264,7 @@ static NTSTATUS thunk32_xrDestroySwapchain(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         XrResult result;
     } *params = args;
 
@@ -14207,7 +14292,7 @@ static NTSTATUS thunk32_xrDestroyTrackableTrackerANDROID(void *args)
 {
     struct
     {
-        XrTrackableTrackerANDROID trackableTracker;
+        XrTrackableTrackerANDROID DECLSPEC_ALIGN(8) trackableTracker;
         XrResult result;
     } *params = args;
 
@@ -14235,7 +14320,7 @@ static NTSTATUS thunk32_xrDestroyTriangleMeshFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         XrResult result;
     } *params = args;
 
@@ -14263,7 +14348,7 @@ static NTSTATUS thunk32_xrDestroyVirtualKeyboardMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         XrResult result;
     } *params = args;
 
@@ -14291,7 +14376,7 @@ static NTSTATUS thunk32_xrDestroyWorldMeshDetectorML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         XrResult result;
     } *params = args;
 
@@ -14319,7 +14404,7 @@ static NTSTATUS thunk32_xrDiscoverSpacesMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -14355,7 +14440,7 @@ static NTSTATUS thunk32_xrDownloadSharedSpatialAnchorAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 info;
         PTR32 future;
         XrResult result;
@@ -14387,7 +14472,7 @@ static NTSTATUS thunk32_xrDownloadSharedSpatialAnchorCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -14420,7 +14505,7 @@ static NTSTATUS thunk32_xrEnableLocalizationEventsML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         XrResult result;
     } *params = args;
@@ -14451,7 +14536,7 @@ static NTSTATUS thunk32_xrEnableUserCalibrationEventsML(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 enableInfo;
         XrResult result;
     } *params = args;
@@ -14482,7 +14567,7 @@ static NTSTATUS thunk32_xrEndFrame(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 frameEndInfo;
         XrResult result;
     } *params = args;
@@ -14517,7 +14602,7 @@ static NTSTATUS thunk32_xrEndSession(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrResult result;
     } *params = args;
 
@@ -14582,7 +14667,7 @@ static NTSTATUS thunk32_xrEnumerateBoundSourcesForAction(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 enumerateInfo;
         uint32_t sourceCapacityInput;
         PTR32 sourceCountOutput;
@@ -14616,7 +14701,7 @@ static NTSTATUS thunk32_xrEnumerateColorSpacesFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint32_t colorSpaceCapacityInput;
         PTR32 colorSpaceCountOutput;
         PTR32 colorSpaces;
@@ -14647,7 +14732,7 @@ static NTSTATUS thunk32_xrEnumerateDisplayRefreshRatesFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint32_t displayRefreshRateCapacityInput;
         PTR32 displayRefreshRateCountOutput;
         PTR32 displayRefreshRates;
@@ -14678,7 +14763,7 @@ static NTSTATUS thunk32_xrEnumerateEnvironmentBlendModes(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         XrViewConfigurationType viewConfigurationType;
         uint32_t environmentBlendModeCapacityInput;
@@ -14711,7 +14796,7 @@ static NTSTATUS thunk32_xrEnumerateEnvironmentDepthSwapchainImagesMETA(void *arg
 {
     struct
     {
-        XrEnvironmentDepthSwapchainMETA swapchain;
+        XrEnvironmentDepthSwapchainMETA DECLSPEC_ALIGN(8) swapchain;
         uint32_t imageCapacityInput;
         PTR32 imageCountOutput;
         PTR32 images;
@@ -14749,7 +14834,7 @@ static NTSTATUS thunk32_xrEnumerateExternalCamerasOCULUS(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint32_t cameraCapacityInput;
         PTR32 cameraCountOutput;
         PTR32 cameras;
@@ -14825,7 +14910,7 @@ static NTSTATUS thunk32_xrEnumerateInteractionRenderModelIdsEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         uint32_t renderModelIdCapacityInput;
         PTR32 renderModelIdCountOutput;
@@ -14859,7 +14944,7 @@ static NTSTATUS thunk32_xrEnumeratePerformanceMetricsCounterPathsMETA(void *args
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         uint32_t counterPathCapacityInput;
         PTR32 counterPathCountOutput;
         PTR32 counterPaths;
@@ -14890,7 +14975,7 @@ static NTSTATUS thunk32_xrEnumeratePersistedAnchorsANDROID(void *args)
 {
     struct
     {
-        XrDeviceAnchorPersistenceANDROID handle;
+        XrDeviceAnchorPersistenceANDROID DECLSPEC_ALIGN(8) handle;
         uint32_t anchorIdCapacityInput;
         PTR32 anchorIdCountOutput;
         PTR32 anchorIds;
@@ -14921,7 +15006,7 @@ static NTSTATUS thunk32_xrEnumeratePersistedSpatialAnchorNamesMSFT(void *args)
 {
     struct
     {
-        XrSpatialAnchorStoreConnectionMSFT spatialAnchorStore;
+        XrSpatialAnchorStoreConnectionMSFT DECLSPEC_ALIGN(8) spatialAnchorStore;
         uint32_t spatialAnchorNameCapacityInput;
         PTR32 spatialAnchorNameCountOutput;
         PTR32 spatialAnchorNames;
@@ -14952,7 +15037,7 @@ static NTSTATUS thunk32_xrEnumerateRaycastSupportedTrackableTypesANDROID(void *a
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
@@ -14984,7 +15069,7 @@ static NTSTATUS thunk32_xrEnumerateReferenceSpaces(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint32_t spaceCapacityInput;
         PTR32 spaceCountOutput;
         PTR32 spaces;
@@ -15015,7 +15100,7 @@ static NTSTATUS thunk32_xrEnumerateRenderModelPathsFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint32_t pathCapacityInput;
         PTR32 pathCountOutput;
         PTR32 paths;
@@ -15053,7 +15138,7 @@ static NTSTATUS thunk32_xrEnumerateRenderModelSubactionPathsEXT(void *args)
 {
     struct
     {
-        XrRenderModelEXT renderModel;
+        XrRenderModelEXT DECLSPEC_ALIGN(8) renderModel;
         PTR32 info;
         uint32_t pathCapacityInput;
         PTR32 pathCountOutput;
@@ -15095,7 +15180,7 @@ static NTSTATUS thunk32_xrEnumerateReprojectionModesMSFT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         XrViewConfigurationType viewConfigurationType;
         uint32_t modeCapacityInput;
@@ -15128,7 +15213,7 @@ static NTSTATUS thunk32_xrEnumerateSceneComputeFeaturesMSFT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t featureCapacityInput;
         PTR32 featureCountOutput;
@@ -15160,7 +15245,7 @@ static NTSTATUS thunk32_xrEnumerateSpaceSupportedComponentsFB(void *args)
 {
     struct
     {
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         uint32_t componentTypeCapacityInput;
         PTR32 componentTypeCountOutput;
         PTR32 componentTypes;
@@ -15191,7 +15276,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilitiesEXT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t capabilityCapacityInput;
         PTR32 capabilityCountOutput;
@@ -15223,7 +15308,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilityComponentTypesEXT(void *args
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         XrSpatialCapabilityEXT capability;
         PTR32 capabilityComponents;
@@ -15257,7 +15342,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilityFeaturesEXT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         XrSpatialCapabilityEXT capability;
         uint32_t capabilityFeatureCapacityInput;
@@ -15290,7 +15375,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialEntityComponentTypesBD(void *args)
 {
     struct
     {
-        XrSenseDataSnapshotBD snapshot;
+        XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
         XrSpatialEntityIdBD entityId;
         uint32_t componentTypeCapacityInput;
         PTR32 componentTypeCountOutput;
@@ -15322,7 +15407,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialPersistenceScopesEXT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t persistenceScopeCapacityInput;
         PTR32 persistenceScopeCountOutput;
@@ -15354,7 +15439,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedAnchorTrackableTypesANDROID(void *ar
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
@@ -15386,7 +15471,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedPersistenceAnchorTypesANDROID(void *
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
@@ -15418,7 +15503,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedTrackableTypesANDROID(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t trackableTypeCapacityInput;
         PTR32 trackableTypeCountOutput;
@@ -15450,7 +15535,7 @@ static NTSTATUS thunk32_xrEnumerateSwapchainFormats(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint32_t formatCapacityInput;
         PTR32 formatCountOutput;
         PTR32 formats;
@@ -15481,7 +15566,7 @@ static NTSTATUS thunk32_xrEnumerateSwapchainImages(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         uint32_t imageCapacityInput;
         PTR32 imageCountOutput;
         PTR32 images;
@@ -15519,7 +15604,7 @@ static NTSTATUS thunk32_xrEnumerateViewConfigurationViews(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         XrViewConfigurationType viewConfigurationType;
         uint32_t viewCapacityInput;
@@ -15559,7 +15644,7 @@ static NTSTATUS thunk32_xrEnumerateViewConfigurations(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t viewConfigurationTypeCapacityInput;
         PTR32 viewConfigurationTypeCountOutput;
@@ -15591,7 +15676,7 @@ static NTSTATUS thunk32_xrEnumerateViveTrackerPathsHTCX(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         uint32_t pathCapacityInput;
         PTR32 pathCountOutput;
         PTR32 paths;
@@ -15629,7 +15714,7 @@ static NTSTATUS thunk32_xrEraseSpaceFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -15661,7 +15746,7 @@ static NTSTATUS thunk32_xrEraseSpacesMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -15698,7 +15783,7 @@ static NTSTATUS thunk32_xrFreeWorldMeshBufferML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         PTR32 buffer;
         XrResult result;
     } *params = args;
@@ -15729,7 +15814,7 @@ static NTSTATUS thunk32_xrGeometryInstanceSetTransformFB(void *args)
 {
     struct
     {
-        XrGeometryInstanceFB instance;
+        XrGeometryInstanceFB DECLSPEC_ALIGN(8) instance;
         PTR32 transformation;
         XrResult result;
     } *params = args;
@@ -15760,7 +15845,7 @@ static NTSTATUS thunk32_xrGetActionStateBoolean(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         PTR32 state;
         XrResult result;
@@ -15795,7 +15880,7 @@ static NTSTATUS thunk32_xrGetActionStateFloat(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         PTR32 state;
         XrResult result;
@@ -15830,7 +15915,7 @@ static NTSTATUS thunk32_xrGetActionStatePose(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         PTR32 state;
         XrResult result;
@@ -15865,7 +15950,7 @@ static NTSTATUS thunk32_xrGetActionStateVector2f(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         PTR32 state;
         XrResult result;
@@ -15900,7 +15985,7 @@ static NTSTATUS thunk32_xrGetAllTrackablesANDROID(void *args)
 {
     struct
     {
-        XrTrackableTrackerANDROID trackableTracker;
+        XrTrackableTrackerANDROID DECLSPEC_ALIGN(8) trackableTracker;
         uint32_t trackableCapacityInput;
         PTR32 trackableCountOutput;
         PTR32 trackables;
@@ -15931,7 +16016,7 @@ static NTSTATUS thunk32_xrGetAnchorPersistStateANDROID(void *args)
 {
     struct
     {
-        XrDeviceAnchorPersistenceANDROID handle;
+        XrDeviceAnchorPersistenceANDROID DECLSPEC_ALIGN(8) handle;
         PTR32 anchorId;
         PTR32 persistState;
         XrResult result;
@@ -15961,7 +16046,7 @@ static NTSTATUS thunk32_xrGetAnchorUuidBD(void *args)
 {
     struct
     {
-        XrAnchorBD anchor;
+        XrAnchorBD DECLSPEC_ALIGN(8) anchor;
         PTR32 uuid;
         XrResult result;
     } *params = args;
@@ -15990,7 +16075,7 @@ static NTSTATUS thunk32_xrGetAudioInputDeviceGuidOculus(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 buffer;
         XrResult result;
     } *params = args;
@@ -16019,7 +16104,7 @@ static NTSTATUS thunk32_xrGetAudioOutputDeviceGuidOculus(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 buffer;
         XrResult result;
     } *params = args;
@@ -16048,7 +16133,7 @@ static NTSTATUS thunk32_xrGetBodySkeletonFB(void *args)
 {
     struct
     {
-        XrBodyTrackerFB bodyTracker;
+        XrBodyTrackerFB DECLSPEC_ALIGN(8) bodyTracker;
         PTR32 skeleton;
         XrResult result;
     } *params = args;
@@ -16080,8 +16165,8 @@ static NTSTATUS thunk32_xrGetBodySkeletonHTC(void *args)
 {
     struct
     {
-        XrBodyTrackerHTC bodyTracker;
-        XrSpace baseSpace;
+        XrBodyTrackerHTC DECLSPEC_ALIGN(8) bodyTracker;
+        XrSpace DECLSPEC_ALIGN(8) baseSpace;
         uint32_t skeletonGenerationId;
         PTR32 skeleton;
         XrResult result;
@@ -16114,7 +16199,7 @@ static NTSTATUS thunk32_xrGetControllerModelKeyMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath topLevelUserPath;
         PTR32 controllerModelKeyState;
         XrResult result;
@@ -16147,7 +16232,7 @@ static NTSTATUS thunk32_xrGetControllerModelPropertiesMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrControllerModelKeyMSFT modelKey;
         PTR32 properties;
         XrResult result;
@@ -16184,7 +16269,7 @@ static NTSTATUS thunk32_xrGetControllerModelStateMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrControllerModelKeyMSFT modelKey;
         PTR32 state;
         XrResult result;
@@ -16221,7 +16306,7 @@ static NTSTATUS thunk32_xrGetCurrentInteractionProfile(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath topLevelUserPath;
         PTR32 interactionProfile;
         XrResult result;
@@ -16254,7 +16339,7 @@ static NTSTATUS thunk32_xrGetDeviceSampleRateFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 hapticActionInfo;
         PTR32 deviceSampleRate;
         XrResult result;
@@ -16289,7 +16374,7 @@ static NTSTATUS thunk32_xrGetDisplayRefreshRateFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 displayRefreshRate;
         XrResult result;
     } *params = args;
@@ -16318,7 +16403,7 @@ static NTSTATUS thunk32_xrGetEnvironmentDepthSwapchainStateMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthSwapchainMETA swapchain;
+        XrEnvironmentDepthSwapchainMETA DECLSPEC_ALIGN(8) swapchain;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -16350,7 +16435,7 @@ static NTSTATUS thunk32_xrGetExportedLocalizationMapDataML(void *args)
 {
     struct
     {
-        XrExportedLocalizationMapML map;
+        XrExportedLocalizationMapML DECLSPEC_ALIGN(8) map;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
         PTR32 buffer;
@@ -16381,7 +16466,7 @@ static NTSTATUS thunk32_xrGetEyeGazesFB(void *args)
 {
     struct
     {
-        XrEyeTrackerFB eyeTracker;
+        XrEyeTrackerFB DECLSPEC_ALIGN(8) eyeTracker;
         PTR32 gazeInfo;
         PTR32 eyeGazes;
         XrResult result;
@@ -16416,7 +16501,7 @@ static NTSTATUS thunk32_xrGetFaceExpressionWeights2FB(void *args)
 {
     struct
     {
-        XrFaceTracker2FB faceTracker;
+        XrFaceTracker2FB DECLSPEC_ALIGN(8) faceTracker;
         PTR32 expressionInfo;
         PTR32 expressionWeights;
         XrResult result;
@@ -16451,7 +16536,7 @@ static NTSTATUS thunk32_xrGetFaceExpressionWeightsFB(void *args)
 {
     struct
     {
-        XrFaceTrackerFB faceTracker;
+        XrFaceTrackerFB DECLSPEC_ALIGN(8) faceTracker;
         PTR32 expressionInfo;
         PTR32 expressionWeights;
         XrResult result;
@@ -16486,7 +16571,7 @@ static NTSTATUS thunk32_xrGetFacialExpressionBlendShapePropertiesML(void *args)
 {
     struct
     {
-        XrFacialExpressionClientML facialExpressionClient;
+        XrFacialExpressionClientML DECLSPEC_ALIGN(8) facialExpressionClient;
         PTR32 blendShapeGetInfo;
         uint32_t blendShapeCount;
         PTR32 blendShapes;
@@ -16526,7 +16611,7 @@ static NTSTATUS thunk32_xrGetFacialExpressionsHTC(void *args)
 {
     struct
     {
-        XrFacialTrackerHTC facialTracker;
+        XrFacialTrackerHTC DECLSPEC_ALIGN(8) facialTracker;
         PTR32 facialExpressions;
         XrResult result;
     } *params = args;
@@ -16558,7 +16643,7 @@ static NTSTATUS thunk32_xrGetFoveationEyeTrackedStateMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 foveationState;
         XrResult result;
     } *params = args;
@@ -16590,7 +16675,7 @@ static NTSTATUS thunk32_xrGetHandMeshFB(void *args)
 {
     struct
     {
-        XrHandTrackerEXT handTracker;
+        XrHandTrackerEXT DECLSPEC_ALIGN(8) handTracker;
         PTR32 mesh;
         XrResult result;
     } *params = args;
@@ -16622,7 +16707,7 @@ static NTSTATUS thunk32_xrGetInputSourceLocalizedName(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -16656,7 +16741,7 @@ static NTSTATUS thunk32_xrGetInstanceProperties(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 instanceProperties;
         XrResult result;
     } *params = args;
@@ -16688,7 +16773,7 @@ static NTSTATUS thunk32_xrGetMarkerDetectorStateML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -16720,7 +16805,7 @@ static NTSTATUS thunk32_xrGetMarkerLengthML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         XrMarkerML marker;
         PTR32 meters;
         XrResult result;
@@ -16750,7 +16835,7 @@ static NTSTATUS thunk32_xrGetMarkerNumberML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         XrMarkerML marker;
         PTR32 number;
         XrResult result;
@@ -16780,7 +16865,7 @@ static NTSTATUS thunk32_xrGetMarkerReprojectionErrorML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         XrMarkerML marker;
         PTR32 reprojectionErrorMeters;
         XrResult result;
@@ -16810,7 +16895,7 @@ static NTSTATUS thunk32_xrGetMarkerSizeVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint64_t DECLSPEC_ALIGN(8) markerId;
         PTR32 size;
         XrResult result;
@@ -16840,7 +16925,7 @@ static NTSTATUS thunk32_xrGetMarkerStringML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         XrMarkerML marker;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -16872,7 +16957,7 @@ static NTSTATUS thunk32_xrGetMarkersML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         uint32_t markerCapacityInput;
         PTR32 markerCountOutput;
         PTR32 markers;
@@ -16903,7 +16988,7 @@ static NTSTATUS thunk32_xrGetOpenGLGraphicsRequirementsKHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         PTR32 graphicsRequirements;
         XrResult result;
@@ -16936,7 +17021,7 @@ static NTSTATUS thunk32_xrGetPassthroughCameraStateANDROID(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 getInfo;
         PTR32 cameraStateOutput;
         XrResult result;
@@ -16968,7 +17053,7 @@ static NTSTATUS thunk32_xrGetPassthroughPreferencesMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 preferences;
         XrResult result;
     } *params = args;
@@ -17000,7 +17085,7 @@ static NTSTATUS thunk32_xrGetPerformanceMetricsStateMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -17032,7 +17117,7 @@ static NTSTATUS thunk32_xrGetPlaneDetectionStateEXT(void *args)
 {
     struct
     {
-        XrPlaneDetectorEXT planeDetector;
+        XrPlaneDetectorEXT DECLSPEC_ALIGN(8) planeDetector;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -17061,7 +17146,7 @@ static NTSTATUS thunk32_xrGetPlaneDetectionsEXT(void *args)
 {
     struct
     {
-        XrPlaneDetectorEXT planeDetector;
+        XrPlaneDetectorEXT DECLSPEC_ALIGN(8) planeDetector;
         PTR32 info;
         PTR32 locations;
         XrResult result;
@@ -17100,7 +17185,7 @@ static NTSTATUS thunk32_xrGetPlanePolygonBufferEXT(void *args)
 {
     struct
     {
-        XrPlaneDetectorEXT planeDetector;
+        XrPlaneDetectorEXT DECLSPEC_ALIGN(8) planeDetector;
         uint64_t DECLSPEC_ALIGN(8) planeId;
         uint32_t polygonBufferIndex;
         PTR32 polygonBuffer;
@@ -17134,7 +17219,7 @@ static NTSTATUS thunk32_xrGetQueriedSenseDataBD(void *args)
 {
     struct
     {
-        XrSenseDataSnapshotBD snapshot;
+        XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
         PTR32 getInfo;
         PTR32 queriedSenseData;
         XrResult result;
@@ -17174,7 +17259,7 @@ static NTSTATUS thunk32_xrGetRecommendedLayerResolutionMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 resolution;
         XrResult result;
@@ -17213,7 +17298,7 @@ static NTSTATUS thunk32_xrGetReferenceSpaceBoundsRect(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrReferenceSpaceType referenceSpaceType;
         PTR32 bounds;
         XrResult result;
@@ -17243,7 +17328,7 @@ static NTSTATUS thunk32_xrGetRenderModelAssetDataEXT(void *args)
 {
     struct
     {
-        XrRenderModelAssetEXT asset;
+        XrRenderModelAssetEXT DECLSPEC_ALIGN(8) asset;
         PTR32 getInfo;
         PTR32 buffer;
         XrResult result;
@@ -17286,7 +17371,7 @@ static NTSTATUS thunk32_xrGetRenderModelAssetPropertiesEXT(void *args)
 {
     struct
     {
-        XrRenderModelAssetEXT asset;
+        XrRenderModelAssetEXT DECLSPEC_ALIGN(8) asset;
         PTR32 getInfo;
         PTR32 properties;
         XrResult result;
@@ -17329,7 +17414,7 @@ static NTSTATUS thunk32_xrGetRenderModelPoseTopLevelUserPathEXT(void *args)
 {
     struct
     {
-        XrRenderModelEXT renderModel;
+        XrRenderModelEXT DECLSPEC_ALIGN(8) renderModel;
         PTR32 info;
         PTR32 topLevelUserPath;
         XrResult result;
@@ -17361,7 +17446,7 @@ static NTSTATUS thunk32_xrGetRenderModelPropertiesEXT(void *args)
 {
     struct
     {
-        XrRenderModelEXT renderModel;
+        XrRenderModelEXT DECLSPEC_ALIGN(8) renderModel;
         PTR32 getInfo;
         PTR32 properties;
         XrResult result;
@@ -17404,7 +17489,7 @@ static NTSTATUS thunk32_xrGetRenderModelPropertiesFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath path;
         PTR32 properties;
         XrResult result;
@@ -17441,7 +17526,7 @@ static NTSTATUS thunk32_xrGetRenderModelStateEXT(void *args)
 {
     struct
     {
-        XrRenderModelEXT renderModel;
+        XrRenderModelEXT DECLSPEC_ALIGN(8) renderModel;
         PTR32 getInfo;
         PTR32 state;
         XrResult result;
@@ -17476,7 +17561,7 @@ static NTSTATUS thunk32_xrGetSceneComponentsMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         PTR32 getInfo;
         PTR32 components;
         XrResult result;
@@ -17515,7 +17600,7 @@ static NTSTATUS thunk32_xrGetSceneComputeStateMSFT(void *args)
 {
     struct
     {
-        XrSceneObserverMSFT sceneObserver;
+        XrSceneObserverMSFT DECLSPEC_ALIGN(8) sceneObserver;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -17544,7 +17629,7 @@ static NTSTATUS thunk32_xrGetSceneMarkerDecodedStringMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         PTR32 markerId;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -17576,7 +17661,7 @@ static NTSTATUS thunk32_xrGetSceneMarkerRawDataMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         PTR32 markerId;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -17608,7 +17693,7 @@ static NTSTATUS thunk32_xrGetSceneMeshBuffersMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         PTR32 getInfo;
         PTR32 buffers;
         XrResult result;
@@ -17643,7 +17728,7 @@ static NTSTATUS thunk32_xrGetSenseDataProviderStateBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -17672,7 +17757,7 @@ static NTSTATUS thunk32_xrGetSerializedSceneFragmentDataMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         PTR32 getInfo;
         uint32_t countInput;
         PTR32 readOutput;
@@ -17706,8 +17791,8 @@ static NTSTATUS thunk32_xrGetSpaceBoundary2DFB(void *args)
 {
     struct
     {
-        XrSession session;
-        XrSpace space;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 boundary2DOutput;
         XrResult result;
     } *params = args;
@@ -17739,8 +17824,8 @@ static NTSTATUS thunk32_xrGetSpaceBoundingBox2DFB(void *args)
 {
     struct
     {
-        XrSession session;
-        XrSpace space;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 boundingBox2DOutput;
         XrResult result;
     } *params = args;
@@ -17769,8 +17854,8 @@ static NTSTATUS thunk32_xrGetSpaceBoundingBox3DFB(void *args)
 {
     struct
     {
-        XrSession session;
-        XrSpace space;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 boundingBox3DOutput;
         XrResult result;
     } *params = args;
@@ -17799,7 +17884,7 @@ static NTSTATUS thunk32_xrGetSpaceComponentStatusFB(void *args)
 {
     struct
     {
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         XrSpaceComponentTypeFB componentType;
         PTR32 status;
         XrResult result;
@@ -17832,8 +17917,8 @@ static NTSTATUS thunk32_xrGetSpaceContainerFB(void *args)
 {
     struct
     {
-        XrSession session;
-        XrSpace space;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 spaceContainerOutput;
         XrResult result;
     } *params = args;
@@ -17865,8 +17950,8 @@ static NTSTATUS thunk32_xrGetSpaceRoomLayoutFB(void *args)
 {
     struct
     {
-        XrSession session;
-        XrSpace space;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 roomLayoutOutput;
         XrResult result;
     } *params = args;
@@ -17898,8 +17983,8 @@ static NTSTATUS thunk32_xrGetSpaceSemanticLabelsFB(void *args)
 {
     struct
     {
-        XrSession session;
-        XrSpace space;
+        XrSession DECLSPEC_ALIGN(8) session;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 semanticLabelsOutput;
         XrResult result;
     } *params = args;
@@ -17931,7 +18016,7 @@ static NTSTATUS thunk32_xrGetSpaceTriangleMeshMETA(void *args)
 {
     struct
     {
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 getInfo;
         PTR32 triangleMeshOutput;
         XrResult result;
@@ -17966,7 +18051,7 @@ static NTSTATUS thunk32_xrGetSpaceUserIdFB(void *args)
 {
     struct
     {
-        XrSpaceUserFB user;
+        XrSpaceUserFB DECLSPEC_ALIGN(8) user;
         PTR32 userId;
         XrResult result;
     } *params = args;
@@ -17995,7 +18080,7 @@ static NTSTATUS thunk32_xrGetSpaceUuidFB(void *args)
 {
     struct
     {
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 uuid;
         XrResult result;
     } *params = args;
@@ -18024,7 +18109,7 @@ static NTSTATUS thunk32_xrGetSpatialAnchorNameHTC(void *args)
 {
     struct
     {
-        XrSpace anchor;
+        XrSpace DECLSPEC_ALIGN(8) anchor;
         PTR32 name;
         XrResult result;
     } *params = args;
@@ -18053,7 +18138,7 @@ static NTSTATUS thunk32_xrGetSpatialAnchorStateML(void *args)
 {
     struct
     {
-        XrSpace anchor;
+        XrSpace DECLSPEC_ALIGN(8) anchor;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -18085,7 +18170,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferFloatEXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18119,7 +18204,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferStringEXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18153,7 +18238,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferUint16EXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18187,7 +18272,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferUint32EXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18221,7 +18306,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferUint8EXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18255,7 +18340,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferVector2fEXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18289,7 +18374,7 @@ static NTSTATUS thunk32_xrGetSpatialBufferVector3fEXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 info;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18323,7 +18408,7 @@ static NTSTATUS thunk32_xrGetSpatialEntityComponentDataBD(void *args)
 {
     struct
     {
-        XrSenseDataSnapshotBD snapshot;
+        XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
         PTR32 getInfo;
         PTR32 componentData;
         XrResult result;
@@ -18362,7 +18447,7 @@ static NTSTATUS thunk32_xrGetSpatialEntityUuidBD(void *args)
 {
     struct
     {
-        XrSenseDataSnapshotBD snapshot;
+        XrSenseDataSnapshotBD DECLSPEC_ALIGN(8) snapshot;
         XrSpatialEntityIdBD entityId;
         PTR32 uuid;
         XrResult result;
@@ -18392,7 +18477,7 @@ static NTSTATUS thunk32_xrGetSpatialGraphNodeBindingPropertiesMSFT(void *args)
 {
     struct
     {
-        XrSpatialGraphNodeBindingMSFT nodeBinding;
+        XrSpatialGraphNodeBindingMSFT DECLSPEC_ALIGN(8) nodeBinding;
         PTR32 getInfo;
         PTR32 properties;
         XrResult result;
@@ -18435,7 +18520,7 @@ static NTSTATUS thunk32_xrGetSwapchainStateFB(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -18467,7 +18552,7 @@ static NTSTATUS thunk32_xrGetSystem(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 getInfo;
         PTR32 systemId;
         XrResult result;
@@ -18499,7 +18584,7 @@ static NTSTATUS thunk32_xrGetSystemProperties(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         PTR32 properties;
         XrResult result;
@@ -18536,7 +18621,7 @@ static NTSTATUS thunk32_xrGetTrackableMarkerANDROID(void *args)
 {
     struct
     {
-        XrTrackableTrackerANDROID tracker;
+        XrTrackableTrackerANDROID DECLSPEC_ALIGN(8) tracker;
         PTR32 getInfo;
         PTR32 markerOutput;
         XrResult result;
@@ -18571,7 +18656,7 @@ static NTSTATUS thunk32_xrGetTrackableObjectANDROID(void *args)
 {
     struct
     {
-        XrTrackableTrackerANDROID tracker;
+        XrTrackableTrackerANDROID DECLSPEC_ALIGN(8) tracker;
         PTR32 getInfo;
         PTR32 objectOutput;
         XrResult result;
@@ -18606,7 +18691,7 @@ static NTSTATUS thunk32_xrGetTrackablePlaneANDROID(void *args)
 {
     struct
     {
-        XrTrackableTrackerANDROID trackableTracker;
+        XrTrackableTrackerANDROID DECLSPEC_ALIGN(8) trackableTracker;
         PTR32 getInfo;
         PTR32 planeOutput;
         XrResult result;
@@ -18641,7 +18726,7 @@ static NTSTATUS thunk32_xrGetViewConfigurationProperties(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         XrViewConfigurationType viewConfigurationType;
         PTR32 configurationProperties;
@@ -18675,7 +18760,7 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardDirtyTexturesMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         uint32_t textureIdCapacityInput;
         PTR32 textureIdCountOutput;
         PTR32 textureIds;
@@ -18706,7 +18791,7 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardModelAnimationStatesMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 animationStates;
         XrResult result;
     } *params = args;
@@ -18742,7 +18827,7 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardScaleMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 scale;
         XrResult result;
     } *params = args;
@@ -18771,7 +18856,7 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardTextureDataMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         uint64_t DECLSPEC_ALIGN(8) textureId;
         PTR32 textureData;
         XrResult result;
@@ -18804,7 +18889,7 @@ static NTSTATUS thunk32_xrGetVisibilityMaskKHR(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrViewConfigurationType viewConfigurationType;
         uint32_t viewIndex;
         XrVisibilityMaskTypeKHR visibilityMaskType;
@@ -18839,7 +18924,7 @@ static NTSTATUS thunk32_xrGetVulkanDeviceExtensionsKHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -18871,7 +18956,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsDevice2KHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 getInfo;
         PTR32 vulkanPhysicalDevice;
         XrResult result;
@@ -18903,7 +18988,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsDeviceKHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         VkInstance vkInstance;
         PTR32 vkPhysicalDevice;
@@ -18934,7 +19019,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsRequirements2KHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         PTR32 graphicsRequirements;
         XrResult result;
@@ -18967,7 +19052,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsRequirementsKHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         PTR32 graphicsRequirements;
         XrResult result;
@@ -19000,7 +19085,7 @@ static NTSTATUS thunk32_xrGetVulkanInstanceExtensionsKHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrSystemId systemId;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -19032,7 +19117,7 @@ static NTSTATUS thunk32_xrGetWorldMeshBufferRecommendSizeML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         PTR32 sizeInfo;
         PTR32 size;
         XrResult result;
@@ -19067,7 +19152,7 @@ static NTSTATUS thunk32_xrImportLocalizationMapML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 importInfo;
         PTR32 mapUuid;
         XrResult result;
@@ -19099,7 +19184,7 @@ static NTSTATUS thunk32_xrLoadControllerModelMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrControllerModelKeyMSFT modelKey;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -19131,7 +19216,7 @@ static NTSTATUS thunk32_xrLoadRenderModelFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 buffer;
         XrResult result;
@@ -19166,7 +19251,7 @@ static NTSTATUS thunk32_xrLocateBodyJointsBD(void *args)
 {
     struct
     {
-        XrBodyTrackerBD bodyTracker;
+        XrBodyTrackerBD DECLSPEC_ALIGN(8) bodyTracker;
         PTR32 locateInfo;
         PTR32 locations;
         XrResult result;
@@ -19205,7 +19290,7 @@ static NTSTATUS thunk32_xrLocateBodyJointsFB(void *args)
 {
     struct
     {
-        XrBodyTrackerFB bodyTracker;
+        XrBodyTrackerFB DECLSPEC_ALIGN(8) bodyTracker;
         PTR32 locateInfo;
         PTR32 locations;
         XrResult result;
@@ -19244,7 +19329,7 @@ static NTSTATUS thunk32_xrLocateBodyJointsHTC(void *args)
 {
     struct
     {
-        XrBodyTrackerHTC bodyTracker;
+        XrBodyTrackerHTC DECLSPEC_ALIGN(8) bodyTracker;
         PTR32 locateInfo;
         PTR32 locations;
         XrResult result;
@@ -19283,7 +19368,7 @@ static NTSTATUS thunk32_xrLocateHandJointsEXT(void *args)
 {
     struct
     {
-        XrHandTrackerEXT handTracker;
+        XrHandTrackerEXT DECLSPEC_ALIGN(8) handTracker;
         PTR32 locateInfo;
         PTR32 locations;
         XrResult result;
@@ -19322,7 +19407,7 @@ static NTSTATUS thunk32_xrLocateSceneComponentsMSFT(void *args)
 {
     struct
     {
-        XrSceneMSFT scene;
+        XrSceneMSFT DECLSPEC_ALIGN(8) scene;
         PTR32 locateInfo;
         PTR32 locations;
         XrResult result;
@@ -19361,9 +19446,9 @@ static NTSTATUS thunk32_xrLocateSpace(void *args)
 {
     struct
     {
-        XrSpace space;
-        XrSpace baseSpace;
-        XrTime time;
+        XrSpace DECLSPEC_ALIGN(8) space;
+        XrSpace DECLSPEC_ALIGN(8) baseSpace;
+        XrTime DECLSPEC_ALIGN(8) time;
         PTR32 location;
         XrResult result;
     } *params = args;
@@ -19399,7 +19484,7 @@ static NTSTATUS thunk32_xrLocateSpaces(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 locateInfo;
         PTR32 spaceLocations;
         XrResult result;
@@ -19438,7 +19523,7 @@ static NTSTATUS thunk32_xrLocateSpacesKHR(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 locateInfo;
         PTR32 spaceLocations;
         XrResult result;
@@ -19477,7 +19562,7 @@ static NTSTATUS thunk32_xrLocateViews(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 viewLocateInfo;
         PTR32 viewState;
         uint32_t viewCapacityInput;
@@ -19522,7 +19607,7 @@ static NTSTATUS thunk32_xrPassthroughLayerPauseFB(void *args)
 {
     struct
     {
-        XrPassthroughLayerFB layer;
+        XrPassthroughLayerFB DECLSPEC_ALIGN(8) layer;
         XrResult result;
     } *params = args;
 
@@ -19550,7 +19635,7 @@ static NTSTATUS thunk32_xrPassthroughLayerResumeFB(void *args)
 {
     struct
     {
-        XrPassthroughLayerFB layer;
+        XrPassthroughLayerFB DECLSPEC_ALIGN(8) layer;
         XrResult result;
     } *params = args;
 
@@ -19578,7 +19663,7 @@ static NTSTATUS thunk32_xrPassthroughLayerSetKeyboardHandsIntensityFB(void *args
 {
     struct
     {
-        XrPassthroughLayerFB layer;
+        XrPassthroughLayerFB DECLSPEC_ALIGN(8) layer;
         PTR32 intensity;
         XrResult result;
     } *params = args;
@@ -19609,7 +19694,7 @@ static NTSTATUS thunk32_xrPassthroughLayerSetStyleFB(void *args)
 {
     struct
     {
-        XrPassthroughLayerFB layer;
+        XrPassthroughLayerFB DECLSPEC_ALIGN(8) layer;
         PTR32 style;
         XrResult result;
     } *params = args;
@@ -19644,7 +19729,7 @@ static NTSTATUS thunk32_xrPassthroughPauseFB(void *args)
 {
     struct
     {
-        XrPassthroughFB passthrough;
+        XrPassthroughFB DECLSPEC_ALIGN(8) passthrough;
         XrResult result;
     } *params = args;
 
@@ -19672,7 +19757,7 @@ static NTSTATUS thunk32_xrPassthroughStartFB(void *args)
 {
     struct
     {
-        XrPassthroughFB passthrough;
+        XrPassthroughFB DECLSPEC_ALIGN(8) passthrough;
         XrResult result;
     } *params = args;
 
@@ -19700,7 +19785,7 @@ static NTSTATUS thunk32_xrPathToString(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrPath path;
         uint32_t bufferCapacityInput;
         PTR32 bufferCountOutput;
@@ -19732,7 +19817,7 @@ static NTSTATUS thunk32_xrPauseSimultaneousHandsAndControllersTrackingMETA(void 
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 pauseInfo;
         XrResult result;
     } *params = args;
@@ -19763,7 +19848,7 @@ static NTSTATUS thunk32_xrPerfSettingsSetPerformanceLevelEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPerfSettingsDomainEXT domain;
         XrPerfSettingsLevelEXT level;
         XrResult result;
@@ -19793,7 +19878,7 @@ static NTSTATUS thunk32_xrPersistAnchorANDROID(void *args)
 {
     struct
     {
-        XrDeviceAnchorPersistenceANDROID handle;
+        XrDeviceAnchorPersistenceANDROID DECLSPEC_ALIGN(8) handle;
         PTR32 persistedInfo;
         PTR32 anchorIdOutput;
         XrResult result;
@@ -19825,7 +19910,7 @@ static NTSTATUS thunk32_xrPersistSpatialAnchorAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 info;
         PTR32 future;
         XrResult result;
@@ -19857,7 +19942,7 @@ static NTSTATUS thunk32_xrPersistSpatialAnchorCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -19890,7 +19975,7 @@ static NTSTATUS thunk32_xrPersistSpatialAnchorMSFT(void *args)
 {
     struct
     {
-        XrSpatialAnchorStoreConnectionMSFT spatialAnchorStore;
+        XrSpatialAnchorStoreConnectionMSFT DECLSPEC_ALIGN(8) spatialAnchorStore;
         PTR32 spatialAnchorPersistenceInfo;
         XrResult result;
     } *params = args;
@@ -19921,7 +20006,7 @@ static NTSTATUS thunk32_xrPersistSpatialEntityAsyncEXT(void *args)
 {
     struct
     {
-        XrSpatialPersistenceContextEXT persistenceContext;
+        XrSpatialPersistenceContextEXT DECLSPEC_ALIGN(8) persistenceContext;
         PTR32 persistInfo;
         PTR32 future;
         XrResult result;
@@ -19953,7 +20038,7 @@ static NTSTATUS thunk32_xrPersistSpatialEntityCompleteEXT(void *args)
 {
     struct
     {
-        XrSpatialPersistenceContextEXT persistenceContext;
+        XrSpatialPersistenceContextEXT DECLSPEC_ALIGN(8) persistenceContext;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -19986,7 +20071,7 @@ static NTSTATUS thunk32_xrPollEvent(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 eventData;
         XrResult result;
     } *params = args;
@@ -20018,7 +20103,7 @@ static NTSTATUS thunk32_xrPollFutureEXT(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 pollInfo;
         PTR32 pollResult;
         XrResult result;
@@ -20057,7 +20142,7 @@ static NTSTATUS thunk32_xrPublishSpatialAnchorsAsyncML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         PTR32 publishInfo;
         PTR32 future;
         XrResult result;
@@ -20093,7 +20178,7 @@ static NTSTATUS thunk32_xrPublishSpatialAnchorsCompleteML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -20130,7 +20215,7 @@ static NTSTATUS thunk32_xrQueryLocalizationMapsML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 queryInfo;
         uint32_t mapCapacityInput;
         PTR32 mapCountOutput;
@@ -20175,7 +20260,7 @@ static NTSTATUS thunk32_xrQueryPerformanceMetricsCounterMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath counterPath;
         PTR32 counter;
         XrResult result;
@@ -20208,7 +20293,7 @@ static NTSTATUS thunk32_xrQuerySenseDataAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 queryInfo;
         PTR32 future;
         XrResult result;
@@ -20244,7 +20329,7 @@ static NTSTATUS thunk32_xrQuerySenseDataCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -20277,7 +20362,7 @@ static NTSTATUS thunk32_xrQuerySpacesFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -20309,7 +20394,7 @@ static NTSTATUS thunk32_xrQuerySpatialAnchorsAsyncML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         PTR32 queryInfo;
         PTR32 future;
         XrResult result;
@@ -20341,7 +20426,7 @@ static NTSTATUS thunk32_xrQuerySpatialAnchorsCompleteML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -20374,7 +20459,7 @@ static NTSTATUS thunk32_xrQuerySpatialComponentDataEXT(void *args)
 {
     struct
     {
-        XrSpatialSnapshotEXT snapshot;
+        XrSpatialSnapshotEXT DECLSPEC_ALIGN(8) snapshot;
         PTR32 queryCondition;
         PTR32 queryResult;
         XrResult result;
@@ -20413,7 +20498,7 @@ static NTSTATUS thunk32_xrQuerySystemTrackedKeyboardFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 queryInfo;
         PTR32 keyboard;
         XrResult result;
@@ -20447,7 +20532,7 @@ static NTSTATUS thunk32_xrRaycastANDROID(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 rayInfo;
         PTR32 results;
         XrResult result;
@@ -20486,7 +20571,7 @@ static NTSTATUS thunk32_xrReleaseSwapchainImage(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         PTR32 releaseInfo;
         XrResult result;
     } *params = args;
@@ -20525,7 +20610,7 @@ static NTSTATUS thunk32_xrRequestDisplayRefreshRateFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         float displayRefreshRate;
         XrResult result;
     } *params = args;
@@ -20554,7 +20639,7 @@ static NTSTATUS thunk32_xrRequestExitSession(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrResult result;
     } *params = args;
 
@@ -20582,7 +20667,7 @@ static NTSTATUS thunk32_xrRequestMapLocalizationML(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 requestInfo;
         XrResult result;
     } *params = args;
@@ -20613,7 +20698,7 @@ static NTSTATUS thunk32_xrRequestSceneCaptureFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -20645,7 +20730,7 @@ static NTSTATUS thunk32_xrRequestWorldMeshAsyncML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         PTR32 getInfo;
         PTR32 buffer;
         PTR32 future;
@@ -20686,7 +20771,7 @@ static NTSTATUS thunk32_xrRequestWorldMeshCompleteML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         PTR32 completionInfo;
         XrFutureEXT future;
         PTR32 completion;
@@ -20726,7 +20811,7 @@ static NTSTATUS thunk32_xrRequestWorldMeshStateAsyncML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         PTR32 stateRequest;
         PTR32 future;
         XrResult result;
@@ -20758,7 +20843,7 @@ static NTSTATUS thunk32_xrRequestWorldMeshStateCompleteML(void *args)
 {
     struct
     {
-        XrWorldMeshDetectorML detector;
+        XrWorldMeshDetectorML DECLSPEC_ALIGN(8) detector;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -20795,7 +20880,7 @@ static NTSTATUS thunk32_xrResetBodyTrackingCalibrationMETA(void *args)
 {
     struct
     {
-        XrBodyTrackerFB bodyTracker;
+        XrBodyTrackerFB DECLSPEC_ALIGN(8) bodyTracker;
         XrResult result;
     } *params = args;
 
@@ -20823,7 +20908,7 @@ static NTSTATUS thunk32_xrResultToString(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrResult value;
         PTR32 buffer;
         XrResult result;
@@ -20853,7 +20938,7 @@ static NTSTATUS thunk32_xrResumeSimultaneousHandsAndControllersTrackingMETA(void
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 resumeInfo;
         XrResult result;
     } *params = args;
@@ -20884,7 +20969,7 @@ static NTSTATUS thunk32_xrRetrieveSpaceDiscoveryResultsMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrAsyncRequestIdFB requestId;
         PTR32 results;
         XrResult result;
@@ -20921,7 +21006,7 @@ static NTSTATUS thunk32_xrRetrieveSpaceQueryResultsFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrAsyncRequestIdFB requestId;
         PTR32 results;
         XrResult result;
@@ -20958,7 +21043,7 @@ static NTSTATUS thunk32_xrSaveSpaceFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -20990,7 +21075,7 @@ static NTSTATUS thunk32_xrSaveSpaceListFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -21027,7 +21112,7 @@ static NTSTATUS thunk32_xrSaveSpacesMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -21064,7 +21149,7 @@ static NTSTATUS thunk32_xrSendVirtualKeyboardInputMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 info;
         PTR32 interactorRootPose;
         XrResult result;
@@ -21096,7 +21181,7 @@ static NTSTATUS thunk32_xrSetColorSpaceFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrColorSpaceFB colorSpace;
         XrResult result;
     } *params = args;
@@ -21125,7 +21210,7 @@ static NTSTATUS thunk32_xrSetDigitalLensControlALMALENCE(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 digitalLensControl;
         XrResult result;
     } *params = args;
@@ -21156,7 +21241,7 @@ static NTSTATUS thunk32_xrSetEnvironmentDepthEstimationVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrBool32 enabled;
         XrResult result;
     } *params = args;
@@ -21185,7 +21270,7 @@ static NTSTATUS thunk32_xrSetEnvironmentDepthHandRemovalMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthProviderMETA environmentDepthProvider;
+        XrEnvironmentDepthProviderMETA DECLSPEC_ALIGN(8) environmentDepthProvider;
         PTR32 setInfo;
         XrResult result;
     } *params = args;
@@ -21216,7 +21301,7 @@ static NTSTATUS thunk32_xrSetInputDeviceActiveEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath interactionProfile;
         XrPath topLevelPath;
         XrBool32 isActive;
@@ -21247,10 +21332,10 @@ static NTSTATUS thunk32_xrSetInputDeviceLocationEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath topLevelPath;
         XrPath inputSourcePath;
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         XrPosef pose;
         XrResult result;
     } *params = args;
@@ -21279,7 +21364,7 @@ static NTSTATUS thunk32_xrSetInputDeviceStateBoolEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath topLevelPath;
         XrPath inputSourcePath;
         XrBool32 state;
@@ -21310,7 +21395,7 @@ static NTSTATUS thunk32_xrSetInputDeviceStateFloatEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath topLevelPath;
         XrPath inputSourcePath;
         float state;
@@ -21341,7 +21426,7 @@ static NTSTATUS thunk32_xrSetInputDeviceStateVector2fEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPath topLevelPath;
         XrPath inputSourcePath;
         XrVector2f state;
@@ -21372,7 +21457,7 @@ static NTSTATUS thunk32_xrSetMarkerTrackingPredictionVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint64_t DECLSPEC_ALIGN(8) markerId;
         XrBool32 enable;
         XrResult result;
@@ -21402,7 +21487,7 @@ static NTSTATUS thunk32_xrSetMarkerTrackingTimeoutVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         uint64_t DECLSPEC_ALIGN(8) markerId;
         XrDuration timeout;
         XrResult result;
@@ -21432,7 +21517,7 @@ static NTSTATUS thunk32_xrSetMarkerTrackingVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrBool32 enabled;
         XrResult result;
     } *params = args;
@@ -21461,7 +21546,7 @@ static NTSTATUS thunk32_xrSetPerformanceMetricsStateMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -21492,7 +21577,7 @@ static NTSTATUS thunk32_xrSetSpaceComponentStatusFB(void *args)
 {
     struct
     {
-        XrSpace space;
+        XrSpace DECLSPEC_ALIGN(8) space;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -21524,7 +21609,7 @@ static NTSTATUS thunk32_xrSetSystemNotificationsML(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 info;
         XrResult result;
     } *params = args;
@@ -21555,7 +21640,7 @@ static NTSTATUS thunk32_xrSetTrackingOptimizationSettingsHintQCOM(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrTrackingOptimizationSettingsDomainQCOM domain;
         XrTrackingOptimizationSettingsHintQCOM hint;
         XrResult result;
@@ -21585,7 +21670,7 @@ static NTSTATUS thunk32_xrSetViewOffsetVARJO(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         float offset;
         XrResult result;
     } *params = args;
@@ -21614,7 +21699,7 @@ static NTSTATUS thunk32_xrSetVirtualKeyboardModelVisibilityMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 modelVisibility;
         XrResult result;
     } *params = args;
@@ -21645,7 +21730,7 @@ static NTSTATUS thunk32_xrShareSpacesFB(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -21682,7 +21767,7 @@ static NTSTATUS thunk32_xrShareSpacesMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -21719,7 +21804,7 @@ static NTSTATUS thunk32_xrShareSpatialAnchorAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 info;
         PTR32 future;
         XrResult result;
@@ -21751,7 +21836,7 @@ static NTSTATUS thunk32_xrShareSpatialAnchorCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -21784,7 +21869,7 @@ static NTSTATUS thunk32_xrSnapshotMarkerDetectorML(void *args)
 {
     struct
     {
-        XrMarkerDetectorML markerDetector;
+        XrMarkerDetectorML DECLSPEC_ALIGN(8) markerDetector;
         PTR32 snapshotInfo;
         XrResult result;
     } *params = args;
@@ -21816,7 +21901,7 @@ static NTSTATUS thunk32_xrStartColocationAdvertisementMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 advertisementRequestId;
         XrResult result;
@@ -21848,7 +21933,7 @@ static NTSTATUS thunk32_xrStartColocationDiscoveryMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 discoveryRequestId;
         XrResult result;
@@ -21880,7 +21965,7 @@ static NTSTATUS thunk32_xrStartEnvironmentDepthProviderMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthProviderMETA environmentDepthProvider;
+        XrEnvironmentDepthProviderMETA DECLSPEC_ALIGN(8) environmentDepthProvider;
         XrResult result;
     } *params = args;
 
@@ -21908,7 +21993,7 @@ static NTSTATUS thunk32_xrStartSenseDataProviderAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 startInfo;
         PTR32 future;
         XrResult result;
@@ -21940,7 +22025,7 @@ static NTSTATUS thunk32_xrStartSenseDataProviderCompleteBD(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -21973,7 +22058,7 @@ static NTSTATUS thunk32_xrStopColocationAdvertisementMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -22005,7 +22090,7 @@ static NTSTATUS thunk32_xrStopColocationDiscoveryMETA(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 info;
         PTR32 requestId;
         XrResult result;
@@ -22037,7 +22122,7 @@ static NTSTATUS thunk32_xrStopEnvironmentDepthProviderMETA(void *args)
 {
     struct
     {
-        XrEnvironmentDepthProviderMETA environmentDepthProvider;
+        XrEnvironmentDepthProviderMETA DECLSPEC_ALIGN(8) environmentDepthProvider;
         XrResult result;
     } *params = args;
 
@@ -22065,7 +22150,7 @@ static NTSTATUS thunk32_xrStopHapticFeedback(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 hapticActionInfo;
         XrResult result;
     } *params = args;
@@ -22096,7 +22181,7 @@ static NTSTATUS thunk32_xrStopSenseDataProviderBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrResult result;
     } *params = args;
 
@@ -22124,7 +22209,7 @@ static NTSTATUS thunk32_xrStringToPath(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 pathString;
         PTR32 path;
         XrResult result;
@@ -22154,7 +22239,7 @@ static NTSTATUS thunk32_xrStructureTypeToString(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrStructureType value;
         PTR32 buffer;
         XrResult result;
@@ -22184,7 +22269,7 @@ static NTSTATUS thunk32_xrStructureTypeToString2KHR(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         XrStructureType value;
         PTR32 buffer;
         XrResult result;
@@ -22214,7 +22299,7 @@ static NTSTATUS thunk32_xrSuggestBodyTrackingCalibrationOverrideMETA(void *args)
 {
     struct
     {
-        XrBodyTrackerFB bodyTracker;
+        XrBodyTrackerFB DECLSPEC_ALIGN(8) bodyTracker;
         PTR32 calibrationInfo;
         XrResult result;
     } *params = args;
@@ -22245,7 +22330,7 @@ static NTSTATUS thunk32_xrSuggestInteractionProfileBindings(void *args)
 {
     struct
     {
-        XrInstance instance;
+        XrInstance DECLSPEC_ALIGN(8) instance;
         PTR32 suggestedBindings;
         XrResult result;
     } *params = args;
@@ -22280,7 +22365,7 @@ static NTSTATUS thunk32_xrSuggestVirtualKeyboardLocationMETA(void *args)
 {
     struct
     {
-        XrVirtualKeyboardMETA keyboard;
+        XrVirtualKeyboardMETA DECLSPEC_ALIGN(8) keyboard;
         PTR32 locationInfo;
         XrResult result;
     } *params = args;
@@ -22311,7 +22396,7 @@ static NTSTATUS thunk32_xrSyncActions(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 syncInfo;
         XrResult result;
     } *params = args;
@@ -22346,7 +22431,7 @@ static NTSTATUS thunk32_xrThermalGetTemperatureTrendEXT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         XrPerfSettingsDomainEXT domain;
         PTR32 notificationLevel;
         PTR32 tempHeadroom;
@@ -22378,7 +22463,7 @@ static NTSTATUS thunk32_xrTriangleMeshBeginUpdateFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         XrResult result;
     } *params = args;
 
@@ -22406,7 +22491,7 @@ static NTSTATUS thunk32_xrTriangleMeshBeginVertexBufferUpdateFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         PTR32 outVertexCount;
         XrResult result;
     } *params = args;
@@ -22435,7 +22520,7 @@ static NTSTATUS thunk32_xrTriangleMeshEndUpdateFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         uint32_t vertexCount;
         uint32_t triangleCount;
         XrResult result;
@@ -22465,7 +22550,7 @@ static NTSTATUS thunk32_xrTriangleMeshEndVertexBufferUpdateFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         XrResult result;
     } *params = args;
 
@@ -22493,7 +22578,7 @@ static NTSTATUS thunk32_xrTriangleMeshGetIndexBufferFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         PTR32 outIndexBuffer;
         XrResult result;
     } *params = args;
@@ -22522,7 +22607,7 @@ static NTSTATUS thunk32_xrTriangleMeshGetVertexBufferFB(void *args)
 {
     struct
     {
-        XrTriangleMeshFB mesh;
+        XrTriangleMeshFB DECLSPEC_ALIGN(8) mesh;
         PTR32 outVertexBuffer;
         XrResult result;
     } *params = args;
@@ -22551,7 +22636,7 @@ static NTSTATUS thunk32_xrTryCreateSpatialGraphStaticNodeBindingMSFT(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 createInfo;
         PTR32 nodeBinding;
         XrResult result;
@@ -22586,7 +22671,7 @@ static NTSTATUS thunk32_xrUnpersistAnchorANDROID(void *args)
 {
     struct
     {
-        XrDeviceAnchorPersistenceANDROID handle;
+        XrDeviceAnchorPersistenceANDROID DECLSPEC_ALIGN(8) handle;
         PTR32 anchorId;
         XrResult result;
     } *params = args;
@@ -22615,7 +22700,7 @@ static NTSTATUS thunk32_xrUnpersistSpatialAnchorAsyncBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         PTR32 info;
         PTR32 future;
         XrResult result;
@@ -22647,7 +22732,7 @@ static NTSTATUS thunk32_xrUnpersistSpatialAnchorCompleteBD(void *args)
 {
     struct
     {
-        XrSenseDataProviderBD provider;
+        XrSenseDataProviderBD DECLSPEC_ALIGN(8) provider;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -22680,7 +22765,7 @@ static NTSTATUS thunk32_xrUnpersistSpatialAnchorMSFT(void *args)
 {
     struct
     {
-        XrSpatialAnchorStoreConnectionMSFT spatialAnchorStore;
+        XrSpatialAnchorStoreConnectionMSFT DECLSPEC_ALIGN(8) spatialAnchorStore;
         PTR32 spatialAnchorPersistenceName;
         XrResult result;
     } *params = args;
@@ -22709,7 +22794,7 @@ static NTSTATUS thunk32_xrUnpersistSpatialEntityAsyncEXT(void *args)
 {
     struct
     {
-        XrSpatialPersistenceContextEXT persistenceContext;
+        XrSpatialPersistenceContextEXT DECLSPEC_ALIGN(8) persistenceContext;
         PTR32 unpersistInfo;
         PTR32 future;
         XrResult result;
@@ -22741,7 +22826,7 @@ static NTSTATUS thunk32_xrUnpersistSpatialEntityCompleteEXT(void *args)
 {
     struct
     {
-        XrSpatialPersistenceContextEXT persistenceContext;
+        XrSpatialPersistenceContextEXT DECLSPEC_ALIGN(8) persistenceContext;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -22774,7 +22859,7 @@ static NTSTATUS thunk32_xrUpdateHandMeshMSFT(void *args)
 {
     struct
     {
-        XrHandTrackerEXT handTracker;
+        XrHandTrackerEXT DECLSPEC_ALIGN(8) handTracker;
         PTR32 updateInfo;
         PTR32 handMesh;
         XrResult result;
@@ -22809,7 +22894,7 @@ static NTSTATUS thunk32_xrUpdatePassthroughColorLutMETA(void *args)
 {
     struct
     {
-        XrPassthroughColorLutMETA colorLut;
+        XrPassthroughColorLutMETA DECLSPEC_ALIGN(8) colorLut;
         PTR32 updateInfo;
         XrResult result;
     } *params = args;
@@ -22840,7 +22925,7 @@ static NTSTATUS thunk32_xrUpdateSpatialAnchorsExpirationAsyncML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         PTR32 updateInfo;
         PTR32 future;
         XrResult result;
@@ -22872,7 +22957,7 @@ static NTSTATUS thunk32_xrUpdateSpatialAnchorsExpirationCompleteML(void *args)
 {
     struct
     {
-        XrSpatialAnchorsStorageML storage;
+        XrSpatialAnchorsStorageML DECLSPEC_ALIGN(8) storage;
         XrFutureEXT future;
         PTR32 completion;
         XrResult result;
@@ -22909,7 +22994,7 @@ static NTSTATUS thunk32_xrUpdateSwapchainFB(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         PTR32 state;
         XrResult result;
     } *params = args;
@@ -22940,7 +23025,7 @@ static NTSTATUS thunk32_xrWaitFrame(void *args)
 {
     struct
     {
-        XrSession session;
+        XrSession DECLSPEC_ALIGN(8) session;
         PTR32 frameWaitInfo;
         PTR32 frameState;
         XrResult result;
@@ -22983,7 +23068,7 @@ static NTSTATUS thunk32_xrWaitSwapchainImage(void *args)
 {
     struct
     {
-        XrSwapchain swapchain;
+        XrSwapchain DECLSPEC_ALIGN(8) swapchain;
         PTR32 waitInfo;
         XrResult result;
     } *params = args;

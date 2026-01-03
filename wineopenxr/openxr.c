@@ -274,6 +274,61 @@ XrResult WINAPI wine_xrGetVulkanInstanceExtensionsKHR(XrInstance instance,
   return res;
 }
 
+XrCompositionLayerProjectionView* convert_xrcompositionlayerviews(struct conversion_context *ctx, const XrCompositionLayerProjectionView32 *views, uint32_t count)
+{
+    int i;
+    XrCompositionLayerProjectionView *out;
+
+    out = conversion_context_alloc(ctx, count * sizeof(XrCompositionLayerProjectionView));
+    for (i = 0; i < count; ++i)
+    {
+        out[i].type = views[i].type;
+        out[i].next = NULL;
+        out[i].pose = views[i].pose;
+        out[i].fov = views[i].fov;
+        out[i].subImage.swapchain = views[i].subImage.swapchain;
+        out[i].subImage.imageRect = views[i].subImage.imageRect;
+        out[i].subImage.imageArrayIndex = views[i].subImage.imageArrayIndex;
+    }
+    
+    return out;
+}
+
+const XrCompositionLayerBaseHeader * const* wine_convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(struct conversion_context *ctx, const XrCompositionLayerBaseHeader32 * const* in, uint32_t count)
+{
+    XrCompositionLayerBaseHeader **out;
+    int i;
+
+    out = conversion_context_alloc(ctx, count * sizeof(*out));
+
+    for (i = 0; i < count; ++i)
+    {
+        switch (in[i]->type)
+        {
+            case XR_TYPE_COMPOSITION_LAYER_PROJECTION:
+            {
+                XrCompositionLayerProjection* layer;
+                XrCompositionLayerProjection32* in_layer = (XrCompositionLayerProjection32*)in[i];
+
+                layer = conversion_context_alloc(ctx, sizeof(XrCompositionLayerProjection));
+                layer->type = in_layer->type;
+                layer->next = NULL;
+                layer->layerFlags = in_layer->layerFlags;
+                layer->space = in_layer->space;
+                layer->viewCount = in_layer->viewCount;
+                layer->views = convert_xrcompositionlayerviews(ctx, (const XrCompositionLayerProjectionView32*)(uintptr_t)in_layer->views, in_layer->viewCount);
+
+                out[i] = (XrCompositionLayerBaseHeader*)layer;
+                break;
+            }
+            default:
+                assert(false && "Unsupported composition layer");
+        }
+    }
+
+    return (const XrCompositionLayerBaseHeader * const*) out;
+}
+
 static VkResult WINAPI vk_create_instance_callback(const VkInstanceCreateInfo *create_info,
                                                    const VkAllocationCallbacks *allocator,
                                                    VkInstance *vk_instance,
