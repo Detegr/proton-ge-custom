@@ -152,7 +152,7 @@ static inline void convert_XrWorldMeshBufferML_win32_to_host(const XrWorldMeshBu
     out->type = in->type;
     out->next = NULL;
     out->bufferSize = in->bufferSize;
-    out->buffer = (void *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (void *)UlongToPtr(in->buffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -172,7 +172,7 @@ static inline void convert_XrForceFeedbackCurlApplyLocationsMNDX_win32_to_host(c
     out->type = in->type;
     out->next = NULL;
     out->locationCount = in->locationCount;
-    out->locations = (XrForceFeedbackCurlApplyLocationMNDX *)(uintptr_t)UlongToPtr(in->locations);
+    out->locations = (XrForceFeedbackCurlApplyLocationMNDX *)UlongToPtr(in->locations);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -199,7 +199,7 @@ static inline void convert_XrHapticBaseHeader_win32_to_host(const XrHapticBaseHe
         FIXME("Unexpected next\n");
 }
 
-static inline const XrActionSet *convert_XrActionSet_array_win32_to_host(struct conversion_context *ctx, const PTR32 *in, uint32_t count)
+static inline const XrActionSet *convert_XrActionSet_array_win32_to_host(struct conversion_context *ctx, const XrActionSet *in, uint32_t count)
 {
     XrActionSet *out;
     unsigned int i;
@@ -209,7 +209,7 @@ static inline const XrActionSet *convert_XrActionSet_array_win32_to_host(struct 
     out = conversion_context_alloc(ctx, count * sizeof(*out));
     for (i = 0; i < count; i++)
     {
-        out[i] = (XrActionSet)(uintptr_t)UlongToPtr(in[i]);
+        out[i] = *(XrActionSet*)(uintptr_t)&in[i];
     }
 
     return out;
@@ -222,7 +222,7 @@ static inline void convert_XrSessionActionSetsAttachInfo_win32_to_host(struct co
     out->type = in->type;
     out->next = NULL;
     out->countActionSets = in->countActionSets;
-    out->actionSets = convert_XrActionSet_array_win32_to_host(ctx, (const PTR32 *)(uintptr_t)UlongToPtr(in->actionSets), in->countActionSets);
+    out->actionSets = convert_XrActionSet_array_win32_to_host(ctx, (const XrActionSet *)UlongToPtr(in->actionSets), in->countActionSets);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -246,9 +246,9 @@ static inline void convert_XrPlaneDetectorBeginInfoEXT_win32_to_host(const XrPla
     out->baseSpace = in->baseSpace;
     out->time = in->time;
     out->orientationCount = in->orientationCount;
-    out->orientations = (const XrPlaneDetectorOrientationEXT *)(uintptr_t)UlongToPtr(in->orientations);
+    out->orientations = (const XrPlaneDetectorOrientationEXT *)UlongToPtr(in->orientations);
     out->semanticTypeCount = in->semanticTypeCount;
-    out->semanticTypes = (const XrPlaneDetectorSemanticTypeEXT *)(uintptr_t)UlongToPtr(in->semanticTypes);
+    out->semanticTypes = (const XrPlaneDetectorSemanticTypeEXT *)UlongToPtr(in->semanticTypes);
     out->maxPlanes = in->maxPlanes;
     out->minArea = in->minArea;
     out->boundingBoxPose = in->boundingBoxPose;
@@ -269,7 +269,7 @@ static inline void convert_XrSessionBeginInfo_win32_to_host(struct conversion_co
     out->next = NULL;
     out->primaryViewConfigurationType = in->primaryViewConfigurationType;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -280,7 +280,7 @@ static inline void convert_XrSessionBeginInfo_win32_to_host(struct conversion_co
             out_ext->type = XR_TYPE_SECONDARY_VIEW_CONFIGURATION_SESSION_BEGIN_INFO_MSFT;
             out_ext->next = NULL;
             out_ext->viewConfigurationCount = in_ext->viewConfigurationCount;
-            out_ext->enabledViewConfigurationTypes = (const XrViewConfigurationType *)(uintptr_t)UlongToPtr(in_ext->enabledViewConfigurationTypes);
+            out_ext->enabledViewConfigurationTypes = (const XrViewConfigurationType *)UlongToPtr(in_ext->enabledViewConfigurationTypes);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -348,7 +348,7 @@ static inline void convert_XrVirtualKeyboardTextContextChangeInfoMETA_win32_to_h
 
     out->type = in->type;
     out->next = NULL;
-    out->textContext = (const char *)(uintptr_t)UlongToPtr(in->textContext);
+    out->textContext = (const char *)UlongToPtr(in->textContext);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -360,11 +360,11 @@ static inline void convert_XrSceneBoundsMSFT_win32_to_host(const XrSceneBoundsMS
     out->space = in->space;
     out->time = in->time;
     out->sphereCount = in->sphereCount;
-    out->spheres = (const XrSceneSphereBoundMSFT *)(uintptr_t)UlongToPtr(in->spheres);
+    out->spheres = (const XrSceneSphereBoundMSFT *)UlongToPtr(in->spheres);
     out->boxCount = in->boxCount;
-    out->boxes = (const XrSceneOrientedBoxBoundMSFT *)(uintptr_t)UlongToPtr(in->boxes);
+    out->boxes = (const XrSceneOrientedBoxBoundMSFT *)UlongToPtr(in->boxes);
     out->frustumCount = in->frustumCount;
-    out->frustums = (const XrSceneFrustumBoundMSFT *)(uintptr_t)UlongToPtr(in->frustums);
+    out->frustums = (const XrSceneFrustumBoundMSFT *)UlongToPtr(in->frustums);
 }
 
 static inline void convert_XrNewSceneComputeInfoMSFT_win32_to_host(struct conversion_context *ctx, const XrNewSceneComputeInfoMSFT32 *in, XrNewSceneComputeInfoMSFT *out)
@@ -378,11 +378,11 @@ static inline void convert_XrNewSceneComputeInfoMSFT_win32_to_host(struct conver
     out->type = in->type;
     out->next = NULL;
     out->requestedFeatureCount = in->requestedFeatureCount;
-    out->requestedFeatures = (const XrSceneComputeFeatureMSFT *)(uintptr_t)UlongToPtr(in->requestedFeatures);
+    out->requestedFeatures = (const XrSceneComputeFeatureMSFT *)UlongToPtr(in->requestedFeatures);
     out->consistency = in->consistency;
     convert_XrSceneBoundsMSFT_win32_to_host(&in->bounds, &out->bounds);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -424,7 +424,7 @@ static inline void convert_XrActionCreateInfo_win32_to_host(const XrActionCreate
     memcpy(out->actionName, in->actionName, XR_MAX_ACTION_NAME_SIZE * sizeof(char));
     out->actionType = in->actionType;
     out->countSubactionPaths = in->countSubactionPaths;
-    out->subactionPaths = (const XrPath *)(uintptr_t)UlongToPtr(in->subactionPaths);
+    out->subactionPaths = (const XrPath *)UlongToPtr(in->subactionPaths);
     memcpy(out->localizedActionName, in->localizedActionName, XR_MAX_LOCALIZED_ACTION_NAME_SIZE * sizeof(char));
     if (in->next)
         FIXME("Unexpected next\n");
@@ -511,11 +511,11 @@ static inline void convert_XrInstanceCreateInfo_win32_to_host(struct conversion_
     out->createFlags = in->createFlags;
     out->applicationInfo = in->applicationInfo;
     out->enabledApiLayerCount = in->enabledApiLayerCount;
-    out->enabledApiLayerNames = convert_char_pointer_array_win32_to_host(ctx, (const char * const*)(uintptr_t)UlongToPtr(in->enabledApiLayerNames), in->enabledApiLayerCount);
+    out->enabledApiLayerNames = convert_char_pointer_array_win32_to_host(ctx, (const char * const*)UlongToPtr(in->enabledApiLayerNames), in->enabledApiLayerCount);
     out->enabledExtensionCount = in->enabledExtensionCount;
-    out->enabledExtensionNames = convert_char_pointer_array_win32_to_host(ctx, (const char * const*)(uintptr_t)UlongToPtr(in->enabledExtensionNames), in->enabledExtensionCount);
+    out->enabledExtensionNames = convert_char_pointer_array_win32_to_host(ctx, (const char * const*)UlongToPtr(in->enabledExtensionNames), in->enabledExtensionCount);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -640,9 +640,9 @@ static inline void convert_XrApiLayerCreateInfo_win32_to_host(struct conversion_
     out->structType = in->structType;
     out->structVersion = in->structVersion;
     out->structSize = in->structSize;
-    out->loaderInstance = (void *)(uintptr_t)UlongToPtr(in->loaderInstance);
+    out->loaderInstance = (void *)UlongToPtr(in->loaderInstance);
     memcpy(out->settings_file_location, in->settings_file_location, XR_API_LAYER_MAX_SETTINGS_PATH_SIZE * sizeof(char));
-    out->nextInfo = convert_XrApiLayerNextInfo_array_win32_to_host(ctx, (XrApiLayerNextInfo32 *)(uintptr_t)UlongToPtr(in->nextInfo), 1);
+    out->nextInfo = convert_XrApiLayerNextInfo_array_win32_to_host(ctx, (XrApiLayerNextInfo32 *)UlongToPtr(in->nextInfo), 1);
 }
 
 static inline void convert_XrApiLayerCreateInfo_host_to_win32(const XrApiLayerCreateInfo *in, XrApiLayerCreateInfo32 *out)
@@ -650,7 +650,7 @@ static inline void convert_XrApiLayerCreateInfo_host_to_win32(const XrApiLayerCr
     if (!in) return;
 
     out->loaderInstance = PtrToUlong(in->loaderInstance);
-    convert_XrApiLayerNextInfo_array_host_to_win32(in->nextInfo, (XrApiLayerNextInfo32 *)(uintptr_t)UlongToPtr(out->nextInfo), 1);
+    convert_XrApiLayerNextInfo_array_host_to_win32(in->nextInfo, (XrApiLayerNextInfo32 *)UlongToPtr(out->nextInfo), 1);
 }
 
 static inline void convert_XrBodyTrackerCreateInfoBD_win32_to_host(const XrBodyTrackerCreateInfoBD32 *in, XrBodyTrackerCreateInfoBD *out)
@@ -736,7 +736,7 @@ static inline void convert_XrFaceTrackerCreateInfo2FB_win32_to_host(const XrFace
     out->next = NULL;
     out->faceExpressionSet = in->faceExpressionSet;
     out->requestedDataSourceCount = in->requestedDataSourceCount;
-    out->requestedDataSources = (XrFaceTrackingDataSource2FB *)(uintptr_t)UlongToPtr(in->requestedDataSources);
+    out->requestedDataSources = (XrFaceTrackingDataSource2FB *)UlongToPtr(in->requestedDataSources);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -759,7 +759,7 @@ static inline void convert_XrFacialExpressionClientCreateInfoML_win32_to_host(co
     out->type = in->type;
     out->next = NULL;
     out->requestedCount = in->requestedCount;
-    out->requestedFacialBlendShapes = (const XrFacialBlendShapeML *)(uintptr_t)UlongToPtr(in->requestedFacialBlendShapes);
+    out->requestedFacialBlendShapes = (const XrFacialBlendShapeML *)UlongToPtr(in->requestedFacialBlendShapes);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -786,7 +786,7 @@ static inline void convert_XrFoveationProfileCreateInfoFB_win32_to_host(struct c
     out->type = in->type;
     out->next = NULL;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -880,7 +880,7 @@ static inline void convert_XrHandTrackerCreateInfoEXT_win32_to_host(struct conve
     out->hand = in->hand;
     out->handJointSet = in->handJointSet;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -891,7 +891,7 @@ static inline void convert_XrHandTrackerCreateInfoEXT_win32_to_host(struct conve
             out_ext->type = XR_TYPE_HAND_TRACKING_DATA_SOURCE_INFO_EXT;
             out_ext->next = NULL;
             out_ext->requestedDataSourceCount = in_ext->requestedDataSourceCount;
-            out_ext->requestedDataSources = (XrHandTrackingDataSourceEXT *)(uintptr_t)UlongToPtr(in_ext->requestedDataSources);
+            out_ext->requestedDataSources = (XrHandTrackingDataSourceEXT *)UlongToPtr(in_ext->requestedDataSources);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -949,7 +949,7 @@ static inline void convert_XrMarkerDetectorCreateInfoML_win32_to_host(struct con
     out->profile = in->profile;
     out->markerType = in->markerType;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1050,7 +1050,7 @@ static inline void convert_XrPassthroughColorLutDataMETA_win32_to_host(const XrP
     if (!in) return;
 
     out->bufferSize = in->bufferSize;
-    out->buffer = (const uint8_t *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (const uint8_t *)UlongToPtr(in->buffer);
 }
 
 static inline void convert_XrPassthroughColorLutCreateInfoMETA_win32_to_host(const XrPassthroughColorLutCreateInfoMETA32 *in, XrPassthroughColorLutCreateInfoMETA *out)
@@ -1154,7 +1154,7 @@ static inline void convert_XrRenderModelCreateInfoEXT_win32_to_host(struct conve
     out->next = NULL;
     out->renderModelId = in->renderModelId;
     out->gltfExtensionCount = in->gltfExtensionCount;
-    out->gltfExtensions = convert_char_pointer_array_win32_to_host(ctx, (const char * const*)(uintptr_t)UlongToPtr(in->gltfExtensions), in->gltfExtensionCount);
+    out->gltfExtensions = convert_char_pointer_array_win32_to_host(ctx, (const char * const*)UlongToPtr(in->gltfExtensions), in->gltfExtensionCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -1202,7 +1202,7 @@ static inline void convert_XrSenseDataProviderCreateInfoBD_win32_to_host(struct 
     out->next = NULL;
     out->providerType = in->providerType;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1249,7 +1249,7 @@ static inline void convert_XrSessionCreateInfo_win32_to_host(struct conversion_c
     out->createFlags = in->createFlags;
     out->systemId = in->systemId;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1271,7 +1271,7 @@ static inline void convert_XrSessionCreateInfo_win32_to_host(struct conversion_c
             const XrGraphicsBindingD3D11KHR32 *in_ext = (const XrGraphicsBindingD3D11KHR32 *)in_header;
             out_ext->type = XR_TYPE_GRAPHICS_BINDING_D3D11_KHR;
             out_ext->next = NULL;
-            out_ext->device = (ID3D11Device *)(uintptr_t)UlongToPtr(in_ext->device);
+            out_ext->device = (ID3D11Device *)UlongToPtr(in_ext->device);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -1282,8 +1282,8 @@ static inline void convert_XrSessionCreateInfo_win32_to_host(struct conversion_c
             const XrGraphicsBindingD3D12KHR32 *in_ext = (const XrGraphicsBindingD3D12KHR32 *)in_header;
             out_ext->type = XR_TYPE_GRAPHICS_BINDING_D3D12_KHR;
             out_ext->next = NULL;
-            out_ext->device = (ID3D12Device *)(uintptr_t)UlongToPtr(in_ext->device);
-            out_ext->queue = (ID3D12CommandQueue *)(uintptr_t)UlongToPtr(in_ext->queue);
+            out_ext->device = (ID3D12Device *)UlongToPtr(in_ext->device);
+            out_ext->queue = (ID3D12CommandQueue *)UlongToPtr(in_ext->queue);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -1321,8 +1321,8 @@ static inline void convert_XrSessionCreateInfo_win32_to_host(struct conversion_c
             const XrHolographicWindowAttachmentMSFT32 *in_ext = (const XrHolographicWindowAttachmentMSFT32 *)in_header;
             out_ext->type = XR_TYPE_HOLOGRAPHIC_WINDOW_ATTACHMENT_MSFT;
             out_ext->next = NULL;
-            out_ext->holographicSpace = (IUnknown *)(uintptr_t)UlongToPtr(in_ext->holographicSpace);
-            out_ext->coreWindow = (IUnknown *)(uintptr_t)UlongToPtr(in_ext->coreWindow);
+            out_ext->holographicSpace = (IUnknown *)UlongToPtr(in_ext->holographicSpace);
+            out_ext->coreWindow = (IUnknown *)UlongToPtr(in_ext->coreWindow);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -1477,7 +1477,7 @@ static inline void convert_XrSpatialAnchorsCreateInfoBaseHeaderML_win32_to_host(
         FIXME("Unexpected next\n");
 }
 
-static inline XrSpace *convert_XrSpace_array_win32_to_host(struct conversion_context *ctx, const PTR32 *in, uint32_t count)
+static inline XrSpace *convert_XrSpace_array_win32_to_host(struct conversion_context *ctx, const XrSpace *in, uint32_t count)
 {
     XrSpace *out;
     unsigned int i;
@@ -1487,13 +1487,13 @@ static inline XrSpace *convert_XrSpace_array_win32_to_host(struct conversion_con
     out = conversion_context_alloc(ctx, count * sizeof(*out));
     for (i = 0; i < count; i++)
     {
-        out[i] = (XrSpace)(uintptr_t)UlongToPtr(in[i]);
+        out[i] = *(XrSpace*)(uintptr_t)&in[i];
     }
 
     return out;
 }
 
-static inline void convert_XrSpace_array_host_to_win32(const XrSpace *in, PTR32 *out, uint32_t count)
+static inline void convert_XrSpace_array_host_to_win32(const XrSpace *in, XrSpace *out, uint32_t count)
 {
     unsigned int i;
 
@@ -1501,7 +1501,7 @@ static inline void convert_XrSpace_array_host_to_win32(const XrSpace *in, PTR32 
 
     for (i = 0; i < count; i++)
     {
-        out[i] = PtrToUlong(in[i]);
+        out[i] = in[i];
     }
 }
 
@@ -1513,7 +1513,7 @@ static inline void convert_XrCreateSpatialAnchorsCompletionML_win32_to_host(stru
     out->next = NULL;
     out->futureResult = in->futureResult;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -1524,7 +1524,7 @@ static inline void convert_XrCreateSpatialAnchorsCompletionML_host_to_win32(cons
 
     out->futureResult = in->futureResult;
     out->spaceCount = in->spaceCount;
-    convert_XrSpace_array_host_to_win32(in->spaces, (PTR32 *)(uintptr_t)UlongToPtr(out->spaces), in->spaceCount);
+    convert_XrSpace_array_host_to_win32(in->spaces, (XrSpace *)UlongToPtr(out->spaces), in->spaceCount);
 }
 
 static inline void convert_XrSpatialAnchorsCreateStorageInfoML_win32_to_host(const XrSpatialAnchorsCreateStorageInfoML32 *in, XrSpatialAnchorsCreateStorageInfoML *out)
@@ -1537,7 +1537,7 @@ static inline void convert_XrSpatialAnchorsCreateStorageInfoML_win32_to_host(con
         FIXME("Unexpected next\n");
 }
 
-static inline const XrSpatialPersistenceContextEXT *convert_XrSpatialPersistenceContextEXT_array_win32_to_host(struct conversion_context *ctx, const PTR32 *in, uint32_t count)
+static inline const XrSpatialPersistenceContextEXT *convert_XrSpatialPersistenceContextEXT_array_win32_to_host(struct conversion_context *ctx, const XrSpatialPersistenceContextEXT *in, uint32_t count)
 {
     XrSpatialPersistenceContextEXT *out;
     unsigned int i;
@@ -1547,7 +1547,7 @@ static inline const XrSpatialPersistenceContextEXT *convert_XrSpatialPersistence
     out = conversion_context_alloc(ctx, count * sizeof(*out));
     for (i = 0; i < count; i++)
     {
-        out[i] = (XrSpatialPersistenceContextEXT)(uintptr_t)UlongToPtr(in[i]);
+        out[i] = *(XrSpatialPersistenceContextEXT*)(uintptr_t)&in[i];
     }
 
     return out;
@@ -1561,7 +1561,7 @@ static inline void convert_XrSpatialCapabilityConfigurationBaseHeaderEXT_win32_t
     out->next = NULL;
     out->capability = in->capability;
     out->enabledComponentCount = in->enabledComponentCount;
-    out->enabledComponents = (const XrSpatialComponentTypeEXT *)(uintptr_t)UlongToPtr(in->enabledComponents);
+    out->enabledComponents = (const XrSpatialComponentTypeEXT *)UlongToPtr(in->enabledComponents);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -1599,9 +1599,9 @@ static inline void convert_XrSpatialContextCreateInfoEXT_win32_to_host(struct co
     out->type = in->type;
     out->next = NULL;
     out->capabilityConfigCount = in->capabilityConfigCount;
-    out->capabilityConfigs = convert_XrSpatialCapabilityConfigurationBaseHeaderEXT_pointer_array_win32_to_host(ctx, (const XrSpatialCapabilityConfigurationBaseHeaderEXT32 * const*)(uintptr_t)UlongToPtr(in->capabilityConfigs), in->capabilityConfigCount);
+    out->capabilityConfigs = convert_XrSpatialCapabilityConfigurationBaseHeaderEXT_pointer_array_win32_to_host(ctx, (const XrSpatialCapabilityConfigurationBaseHeaderEXT32 * const*)UlongToPtr(in->capabilityConfigs), in->capabilityConfigCount);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1612,7 +1612,7 @@ static inline void convert_XrSpatialContextCreateInfoEXT_win32_to_host(struct co
             out_ext->type = XR_TYPE_SPATIAL_CONTEXT_PERSISTENCE_CONFIG_EXT;
             out_ext->next = NULL;
             out_ext->persistenceContextCount = in_ext->persistenceContextCount;
-            out_ext->persistenceContexts = convert_XrSpatialPersistenceContextEXT_array_win32_to_host(ctx, (const PTR32 *)(uintptr_t)UlongToPtr(in_ext->persistenceContexts), in_ext->persistenceContextCount);
+            out_ext->persistenceContexts = convert_XrSpatialPersistenceContextEXT_array_win32_to_host(ctx, (const XrSpatialPersistenceContextEXT *)UlongToPtr(in_ext->persistenceContexts), in_ext->persistenceContextCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -1666,9 +1666,9 @@ static inline void convert_XrSpatialDiscoverySnapshotCreateInfoEXT_win32_to_host
     out->type = in->type;
     out->next = NULL;
     out->componentTypeCount = in->componentTypeCount;
-    out->componentTypes = (const XrSpatialComponentTypeEXT *)(uintptr_t)UlongToPtr(in->componentTypes);
+    out->componentTypes = (const XrSpatialComponentTypeEXT *)UlongToPtr(in->componentTypes);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1690,7 +1690,7 @@ static inline void convert_XrSpatialDiscoverySnapshotCreateInfoEXT_win32_to_host
             out_ext->type = XR_TYPE_SPATIAL_DISCOVERY_PERSISTENCE_UUID_FILTER_EXT;
             out_ext->next = NULL;
             out_ext->persistedUuidCount = in_ext->persistedUuidCount;
-            out_ext->persistedUuids = (const XrUuid *)(uintptr_t)UlongToPtr(in_ext->persistedUuids);
+            out_ext->persistedUuids = (const XrUuid *)UlongToPtr(in_ext->persistedUuids);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -1815,7 +1815,7 @@ static inline void convert_XrCreateSpatialPersistenceContextCompletionEXT_host_t
     out->persistenceContext = in->persistenceContext;
 }
 
-static inline const XrSpatialEntityEXT *convert_XrSpatialEntityEXT_array_win32_to_host(struct conversion_context *ctx, const PTR32 *in, uint32_t count)
+static inline const XrSpatialEntityEXT *convert_XrSpatialEntityEXT_array_win32_to_host(struct conversion_context *ctx, const XrSpatialEntityEXT *in, uint32_t count)
 {
     XrSpatialEntityEXT *out;
     unsigned int i;
@@ -1825,7 +1825,7 @@ static inline const XrSpatialEntityEXT *convert_XrSpatialEntityEXT_array_win32_t
     out = conversion_context_alloc(ctx, count * sizeof(*out));
     for (i = 0; i < count; i++)
     {
-        out[i] = (XrSpatialEntityEXT)(uintptr_t)UlongToPtr(in[i]);
+        out[i] = *(XrSpatialEntityEXT*)(uintptr_t)&in[i];
     }
 
     return out;
@@ -1838,9 +1838,9 @@ static inline void convert_XrSpatialUpdateSnapshotCreateInfoEXT_win32_to_host(st
     out->type = in->type;
     out->next = NULL;
     out->entityCount = in->entityCount;
-    out->entities = convert_XrSpatialEntityEXT_array_win32_to_host(ctx, (const PTR32 *)(uintptr_t)UlongToPtr(in->entities), in->entityCount);
+    out->entities = convert_XrSpatialEntityEXT_array_win32_to_host(ctx, (const XrSpatialEntityEXT *)UlongToPtr(in->entities), in->entityCount);
     out->componentTypeCount = in->componentTypeCount;
-    out->componentTypes = (const XrSpatialComponentTypeEXT *)(uintptr_t)UlongToPtr(in->componentTypes);
+    out->componentTypes = (const XrSpatialComponentTypeEXT *)UlongToPtr(in->componentTypes);
     out->baseSpace = in->baseSpace;
     out->time = in->time;
     if (in->next)
@@ -1867,7 +1867,7 @@ static inline void convert_XrSwapchainCreateInfo_win32_to_host(struct conversion
     out->arraySize = in->arraySize;
     out->mipCount = in->mipCount;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1929,7 +1929,7 @@ static inline void convert_XrTrackableMarkerDatabaseANDROID_win32_to_host(const 
 
     out->dictionary = in->dictionary;
     out->entryCount = in->entryCount;
-    out->entries = (const XrTrackableMarkerDatabaseEntryANDROID *)(uintptr_t)UlongToPtr(in->entries);
+    out->entries = (const XrTrackableMarkerDatabaseEntryANDROID *)UlongToPtr(in->entries);
 }
 
 static inline const XrTrackableMarkerDatabaseANDROID *convert_XrTrackableMarkerDatabaseANDROID_array_win32_to_host(struct conversion_context *ctx, const XrTrackableMarkerDatabaseANDROID32 *in, uint32_t count)
@@ -1960,7 +1960,7 @@ static inline void convert_XrTrackableTrackerCreateInfoANDROID_win32_to_host(str
     out->next = NULL;
     out->trackableType = in->trackableType;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -1971,7 +1971,7 @@ static inline void convert_XrTrackableTrackerCreateInfoANDROID_win32_to_host(str
             out_ext->type = XR_TYPE_TRACKABLE_OBJECT_CONFIGURATION_ANDROID;
             out_ext->next = NULL;
             out_ext->labelCount = in_ext->labelCount;
-            out_ext->activeLabels = (const XrObjectLabelANDROID *)(uintptr_t)UlongToPtr(in_ext->activeLabels);
+            out_ext->activeLabels = (const XrObjectLabelANDROID *)UlongToPtr(in_ext->activeLabels);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -1984,7 +1984,7 @@ static inline void convert_XrTrackableTrackerCreateInfoANDROID_win32_to_host(str
             out_ext->next = NULL;
             out_ext->trackingMode = in_ext->trackingMode;
             out_ext->databaseCount = in_ext->databaseCount;
-            out_ext->databases = convert_XrTrackableMarkerDatabaseANDROID_array_win32_to_host(ctx, (const XrTrackableMarkerDatabaseANDROID32 *)(uintptr_t)UlongToPtr(in_ext->databases), in_ext->databaseCount);
+            out_ext->databases = convert_XrTrackableMarkerDatabaseANDROID_array_win32_to_host(ctx, (const XrTrackableMarkerDatabaseANDROID32 *)UlongToPtr(in_ext->databases), in_ext->databaseCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -2016,9 +2016,9 @@ static inline void convert_XrTriangleMeshCreateInfoFB_win32_to_host(const XrTria
     out->flags = in->flags;
     out->windingOrder = in->windingOrder;
     out->vertexCount = in->vertexCount;
-    out->vertexBuffer = (const XrVector3f *)(uintptr_t)UlongToPtr(in->vertexBuffer);
+    out->vertexBuffer = (const XrVector3f *)UlongToPtr(in->vertexBuffer);
     out->triangleCount = in->triangleCount;
-    out->indexBuffer = (const uint32_t *)(uintptr_t)UlongToPtr(in->indexBuffer);
+    out->indexBuffer = (const uint32_t *)UlongToPtr(in->indexBuffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2056,8 +2056,8 @@ static inline void convert_XrVulkanDeviceCreateInfoKHR_win32_to_host(const XrVul
     out->createFlags = in->createFlags;
     out->pfnGetInstanceProcAddr = in->pfnGetInstanceProcAddr;
     out->vulkanPhysicalDevice = in->vulkanPhysicalDevice;
-    out->vulkanCreateInfo = (const VkDeviceCreateInfo *)(uintptr_t)UlongToPtr(in->vulkanCreateInfo);
-    out->vulkanAllocator = (const VkAllocationCallbacks *)(uintptr_t)UlongToPtr(in->vulkanAllocator);
+    out->vulkanCreateInfo = (const VkDeviceCreateInfo *)UlongToPtr(in->vulkanCreateInfo);
+    out->vulkanAllocator = (const VkAllocationCallbacks *)UlongToPtr(in->vulkanAllocator);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2071,8 +2071,8 @@ static inline void convert_XrVulkanInstanceCreateInfoKHR_win32_to_host(const XrV
     out->systemId = in->systemId;
     out->createFlags = in->createFlags;
     out->pfnGetInstanceProcAddr = in->pfnGetInstanceProcAddr;
-    out->vulkanCreateInfo = (const VkInstanceCreateInfo *)(uintptr_t)UlongToPtr(in->vulkanCreateInfo);
-    out->vulkanAllocator = (const VkAllocationCallbacks *)(uintptr_t)UlongToPtr(in->vulkanAllocator);
+    out->vulkanCreateInfo = (const VkInstanceCreateInfo *)UlongToPtr(in->vulkanCreateInfo);
+    out->vulkanAllocator = (const VkAllocationCallbacks *)UlongToPtr(in->vulkanAllocator);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2094,7 +2094,7 @@ static inline void convert_XrSpatialAnchorsDeleteInfoML_win32_to_host(const XrSp
     out->type = in->type;
     out->next = NULL;
     out->uuidCount = in->uuidCount;
-    out->uuids = (const XrUuidEXT *)(uintptr_t)UlongToPtr(in->uuids);
+    out->uuids = (const XrUuidEXT *)UlongToPtr(in->uuids);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2111,7 +2111,7 @@ static inline void convert_XrSpatialAnchorsDeleteCompletionML_win32_to_host(stru
     out->next = NULL;
     out->futureResult = in->futureResult;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -2122,7 +2122,7 @@ static inline void convert_XrSpatialAnchorsDeleteCompletionML_win32_to_host(stru
             out_ext->type = XR_TYPE_SPATIAL_ANCHORS_DELETE_COMPLETION_DETAILS_ML;
             out_ext->next = NULL;
             out_ext->resultCount = in_ext->resultCount;
-            out_ext->results = (XrSpatialAnchorCompletionResultML *)(uintptr_t)UlongToPtr(in_ext->results);
+            out_ext->results = (XrSpatialAnchorCompletionResultML *)UlongToPtr(in_ext->results);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -2180,7 +2180,7 @@ static inline void convert_XrDeserializeSceneFragmentMSFT_win32_to_host(const Xr
     if (!in) return;
 
     out->bufferSize = in->bufferSize;
-    out->buffer = (const uint8_t *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (const uint8_t *)UlongToPtr(in->buffer);
 }
 
 static inline const XrDeserializeSceneFragmentMSFT *convert_XrDeserializeSceneFragmentMSFT_array_win32_to_host(struct conversion_context *ctx, const XrDeserializeSceneFragmentMSFT32 *in, uint32_t count)
@@ -2206,7 +2206,7 @@ static inline void convert_XrSceneDeserializeInfoMSFT_win32_to_host(struct conve
     out->type = in->type;
     out->next = NULL;
     out->fragmentCount = in->fragmentCount;
-    out->fragments = convert_XrDeserializeSceneFragmentMSFT_array_win32_to_host(ctx, (const XrDeserializeSceneFragmentMSFT32 *)(uintptr_t)UlongToPtr(in->fragments), in->fragmentCount);
+    out->fragments = convert_XrDeserializeSceneFragmentMSFT_array_win32_to_host(ctx, (const XrDeserializeSceneFragmentMSFT32 *)UlongToPtr(in->fragments), in->fragmentCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2250,7 +2250,7 @@ static inline void convert_XrSpaceDiscoveryInfoMETA_win32_to_host(struct convers
     out->type = in->type;
     out->next = NULL;
     out->filterCount = in->filterCount;
-    out->filters = convert_XrSpaceFilterBaseHeaderMETA_pointer_array_win32_to_host(ctx, (const XrSpaceFilterBaseHeaderMETA32 * const *)(uintptr_t)UlongToPtr(in->filters), in->filterCount);
+    out->filters = convert_XrSpaceFilterBaseHeaderMETA_pointer_array_win32_to_host(ctx, (const XrSpaceFilterBaseHeaderMETA32 * const *)UlongToPtr(in->filters), in->filterCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2301,7 +2301,7 @@ static inline void convert_XrCompositionLayerBaseHeader_win32_to_host(struct con
     out->layerFlags = in->layerFlags;
     out->space = in->space;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -2408,7 +2408,7 @@ static inline void convert_XrSecondaryViewConfigurationLayerInfoMSFT_win32_to_ho
     out->viewConfigurationType = in->viewConfigurationType;
     out->environmentBlendMode = in->environmentBlendMode;
     out->layerCount = in->layerCount;
-    out->layers = convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(ctx, (const XrCompositionLayerBaseHeader32 * const*)(uintptr_t)UlongToPtr(in->layers), in->layerCount);
+    out->layers = convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(ctx, (const XrCompositionLayerBaseHeader32 * const*)UlongToPtr(in->layers), in->layerCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2442,9 +2442,9 @@ static inline void convert_XrFrameEndInfo_win32_to_host(struct conversion_contex
     out->displayTime = in->displayTime;
     out->environmentBlendMode = in->environmentBlendMode;
     out->layerCount = in->layerCount;
-    out->layers = convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(ctx, (const XrCompositionLayerBaseHeader32 * const*)(uintptr_t)UlongToPtr(in->layers), in->layerCount);
+    out->layers = convert_XrCompositionLayerBaseHeader_pointer_array_win32_to_host(ctx, (const XrCompositionLayerBaseHeader32 * const*)UlongToPtr(in->layers), in->layerCount);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -2455,7 +2455,7 @@ static inline void convert_XrFrameEndInfo_win32_to_host(struct conversion_contex
             out_ext->type = XR_TYPE_SECONDARY_VIEW_CONFIGURATION_FRAME_END_INFO_MSFT;
             out_ext->next = NULL;
             out_ext->viewConfigurationCount = in_ext->viewConfigurationCount;
-            out_ext->viewConfigurationLayersInfo = convert_XrSecondaryViewConfigurationLayerInfoMSFT_array_win32_to_host(ctx, (const XrSecondaryViewConfigurationLayerInfoMSFT32 *)(uintptr_t)UlongToPtr(in_ext->viewConfigurationLayersInfo), in_ext->viewConfigurationCount);
+            out_ext->viewConfigurationLayersInfo = convert_XrSecondaryViewConfigurationLayerInfoMSFT_array_win32_to_host(ctx, (const XrSecondaryViewConfigurationLayerInfoMSFT32 *)UlongToPtr(in_ext->viewConfigurationLayersInfo), in_ext->viewConfigurationCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -2807,7 +2807,7 @@ static inline void convert_XrSpatialCapabilityComponentTypesEXT_win32_to_host(co
     out->next = NULL;
     out->componentTypeCapacityInput = in->componentTypeCapacityInput;
     out->componentTypeCountOutput = in->componentTypeCountOutput;
-    out->componentTypes = (XrSpatialComponentTypeEXT *)(uintptr_t)UlongToPtr(in->componentTypes);
+    out->componentTypes = (XrSpatialComponentTypeEXT *)UlongToPtr(in->componentTypes);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -2838,7 +2838,7 @@ static inline void convert_XrViewConfigurationView_win32_to_host(struct conversi
     out->recommendedSwapchainSampleCount = in->recommendedSwapchainSampleCount;
     out->maxSwapchainSampleCount = in->maxSwapchainSampleCount;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -3068,9 +3068,9 @@ static inline void convert_XrSpacesEraseInfoMETA_win32_to_host(struct conversion
     out->type = in->type;
     out->next = NULL;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
     out->uuidCount = in->uuidCount;
-    out->uuids = (XrUuidEXT *)(uintptr_t)UlongToPtr(in->uuids);
+    out->uuids = (XrUuidEXT *)UlongToPtr(in->uuids);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3079,7 +3079,7 @@ static inline void convert_XrSpacesEraseInfoMETA_host_to_win32(const XrSpacesEra
 {
     if (!in) return;
 
-    convert_XrSpace_array_host_to_win32(in->spaces, (PTR32 *)(uintptr_t)UlongToPtr(out->spaces), in->spaceCount);
+    convert_XrSpace_array_host_to_win32(in->spaces, (XrSpace *)UlongToPtr(out->spaces), in->spaceCount);
     out->uuids = PtrToUlong(in->uuids);
 }
 
@@ -3206,7 +3206,7 @@ static inline void convert_XrBodySkeletonFB_win32_to_host(const XrBodySkeletonFB
     out->type = in->type;
     out->next = NULL;
     out->jointCount = in->jointCount;
-    out->joints = (XrBodySkeletonJointFB *)(uintptr_t)UlongToPtr(in->joints);
+    out->joints = (XrBodySkeletonJointFB *)UlongToPtr(in->joints);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3226,7 +3226,7 @@ static inline void convert_XrBodySkeletonHTC_win32_to_host(const XrBodySkeletonH
     out->type = in->type;
     out->next = NULL;
     out->jointCount = in->jointCount;
-    out->joints = (XrBodySkeletonJointHTC *)(uintptr_t)UlongToPtr(in->joints);
+    out->joints = (XrBodySkeletonJointHTC *)UlongToPtr(in->joints);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3313,7 +3313,7 @@ static inline void convert_XrControllerModelPropertiesMSFT_win32_to_host(struct 
     out->next = NULL;
     out->nodeCapacityInput = in->nodeCapacityInput;
     out->nodeCountOutput = in->nodeCountOutput;
-    out->nodeProperties = convert_XrControllerModelNodePropertiesMSFT_array_win32_to_host(ctx, (XrControllerModelNodePropertiesMSFT32 *)(uintptr_t)UlongToPtr(in->nodeProperties), in->nodeCapacityInput);
+    out->nodeProperties = convert_XrControllerModelNodePropertiesMSFT_array_win32_to_host(ctx, (XrControllerModelNodePropertiesMSFT32 *)UlongToPtr(in->nodeProperties), in->nodeCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3324,7 +3324,7 @@ static inline void convert_XrControllerModelPropertiesMSFT_host_to_win32(const X
 
     out->nodeCapacityInput = in->nodeCapacityInput;
     out->nodeCountOutput = in->nodeCountOutput;
-    convert_XrControllerModelNodePropertiesMSFT_array_host_to_win32(in->nodeProperties, (XrControllerModelNodePropertiesMSFT32 *)(uintptr_t)UlongToPtr(out->nodeProperties), in->nodeCapacityInput);
+    convert_XrControllerModelNodePropertiesMSFT_array_host_to_win32(in->nodeProperties, (XrControllerModelNodePropertiesMSFT32 *)UlongToPtr(out->nodeProperties), in->nodeCapacityInput);
 }
 
 static inline void convert_XrControllerModelNodeStateMSFT_win32_to_host(const XrControllerModelNodeStateMSFT32 *in, XrControllerModelNodeStateMSFT *out)
@@ -3381,7 +3381,7 @@ static inline void convert_XrControllerModelStateMSFT_win32_to_host(struct conve
     out->next = NULL;
     out->nodeCapacityInput = in->nodeCapacityInput;
     out->nodeCountOutput = in->nodeCountOutput;
-    out->nodeStates = convert_XrControllerModelNodeStateMSFT_array_win32_to_host(ctx, (XrControllerModelNodeStateMSFT32 *)(uintptr_t)UlongToPtr(in->nodeStates), in->nodeCapacityInput);
+    out->nodeStates = convert_XrControllerModelNodeStateMSFT_array_win32_to_host(ctx, (XrControllerModelNodeStateMSFT32 *)UlongToPtr(in->nodeStates), in->nodeCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3392,7 +3392,7 @@ static inline void convert_XrControllerModelStateMSFT_host_to_win32(const XrCont
 
     out->nodeCapacityInput = in->nodeCapacityInput;
     out->nodeCountOutput = in->nodeCountOutput;
-    convert_XrControllerModelNodeStateMSFT_array_host_to_win32(in->nodeStates, (XrControllerModelNodeStateMSFT32 *)(uintptr_t)UlongToPtr(out->nodeStates), in->nodeCapacityInput);
+    convert_XrControllerModelNodeStateMSFT_array_host_to_win32(in->nodeStates, (XrControllerModelNodeStateMSFT32 *)UlongToPtr(out->nodeStates), in->nodeCapacityInput);
 }
 
 static inline void convert_XrInteractionProfileState_win32_to_host(const XrInteractionProfileState32 *in, XrInteractionProfileState *out)
@@ -3541,9 +3541,9 @@ static inline void convert_XrFaceExpressionWeights2FB_win32_to_host(const XrFace
     out->type = in->type;
     out->next = NULL;
     out->weightCount = in->weightCount;
-    out->weights = (float *)(uintptr_t)UlongToPtr(in->weights);
+    out->weights = (float *)UlongToPtr(in->weights);
     out->confidenceCount = in->confidenceCount;
-    out->confidences = (float *)(uintptr_t)UlongToPtr(in->confidences);
+    out->confidences = (float *)UlongToPtr(in->confidences);
     out->isValid = in->isValid;
     out->isEyeFollowingBlendshapesValid = in->isEyeFollowingBlendshapesValid;
     out->dataSource = in->dataSource;
@@ -3584,9 +3584,9 @@ static inline void convert_XrFaceExpressionWeightsFB_win32_to_host(const XrFaceE
     out->type = in->type;
     out->next = NULL;
     out->weightCount = in->weightCount;
-    out->weights = (float *)(uintptr_t)UlongToPtr(in->weights);
+    out->weights = (float *)UlongToPtr(in->weights);
     out->confidenceCount = in->confidenceCount;
-    out->confidences = (float *)(uintptr_t)UlongToPtr(in->confidences);
+    out->confidences = (float *)UlongToPtr(in->confidences);
     out->status = in->status;
     out->time = in->time;
     if (in->next)
@@ -3676,7 +3676,7 @@ static inline void convert_XrFacialExpressionsHTC_win32_to_host(const XrFacialEx
     out->isActive = in->isActive;
     out->sampleTime = in->sampleTime;
     out->expressionCount = in->expressionCount;
-    out->expressionWeightings = (float *)(uintptr_t)UlongToPtr(in->expressionWeightings);
+    out->expressionWeightings = (float *)UlongToPtr(in->expressionWeightings);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3717,19 +3717,19 @@ static inline void convert_XrHandTrackingMeshFB_win32_to_host(const XrHandTracki
     out->next = NULL;
     out->jointCapacityInput = in->jointCapacityInput;
     out->jointCountOutput = in->jointCountOutput;
-    out->jointBindPoses = (XrPosef *)(uintptr_t)UlongToPtr(in->jointBindPoses);
-    out->jointRadii = (float *)(uintptr_t)UlongToPtr(in->jointRadii);
-    out->jointParents = (XrHandJointEXT *)(uintptr_t)UlongToPtr(in->jointParents);
+    out->jointBindPoses = (XrPosef *)UlongToPtr(in->jointBindPoses);
+    out->jointRadii = (float *)UlongToPtr(in->jointRadii);
+    out->jointParents = (XrHandJointEXT *)UlongToPtr(in->jointParents);
     out->vertexCapacityInput = in->vertexCapacityInput;
     out->vertexCountOutput = in->vertexCountOutput;
-    out->vertexPositions = (XrVector3f *)(uintptr_t)UlongToPtr(in->vertexPositions);
-    out->vertexNormals = (XrVector3f *)(uintptr_t)UlongToPtr(in->vertexNormals);
-    out->vertexUVs = (XrVector2f *)(uintptr_t)UlongToPtr(in->vertexUVs);
-    out->vertexBlendIndices = (XrVector4sFB *)(uintptr_t)UlongToPtr(in->vertexBlendIndices);
-    out->vertexBlendWeights = (XrVector4f *)(uintptr_t)UlongToPtr(in->vertexBlendWeights);
+    out->vertexPositions = (XrVector3f *)UlongToPtr(in->vertexPositions);
+    out->vertexNormals = (XrVector3f *)UlongToPtr(in->vertexNormals);
+    out->vertexUVs = (XrVector2f *)UlongToPtr(in->vertexUVs);
+    out->vertexBlendIndices = (XrVector4sFB *)UlongToPtr(in->vertexBlendIndices);
+    out->vertexBlendWeights = (XrVector4f *)UlongToPtr(in->vertexBlendWeights);
     out->indexCapacityInput = in->indexCapacityInput;
     out->indexCountOutput = in->indexCountOutput;
-    out->indices = (int16_t *)(uintptr_t)UlongToPtr(in->indices);
+    out->indices = (int16_t *)UlongToPtr(in->indices);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3945,7 +3945,7 @@ static inline void convert_XrPlaneDetectorLocationsEXT_win32_to_host(struct conv
     out->next = NULL;
     out->planeLocationCapacityInput = in->planeLocationCapacityInput;
     out->planeLocationCountOutput = in->planeLocationCountOutput;
-    out->planeLocations = convert_XrPlaneDetectorLocationEXT_array_win32_to_host(ctx, (XrPlaneDetectorLocationEXT32 *)(uintptr_t)UlongToPtr(in->planeLocations), in->planeLocationCapacityInput);
+    out->planeLocations = convert_XrPlaneDetectorLocationEXT_array_win32_to_host(ctx, (XrPlaneDetectorLocationEXT32 *)UlongToPtr(in->planeLocations), in->planeLocationCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -3956,7 +3956,7 @@ static inline void convert_XrPlaneDetectorLocationsEXT_host_to_win32(const XrPla
 
     out->planeLocationCapacityInput = in->planeLocationCapacityInput;
     out->planeLocationCountOutput = in->planeLocationCountOutput;
-    convert_XrPlaneDetectorLocationEXT_array_host_to_win32(in->planeLocations, (XrPlaneDetectorLocationEXT32 *)(uintptr_t)UlongToPtr(out->planeLocations), in->planeLocationCapacityInput);
+    convert_XrPlaneDetectorLocationEXT_array_host_to_win32(in->planeLocations, (XrPlaneDetectorLocationEXT32 *)UlongToPtr(out->planeLocations), in->planeLocationCapacityInput);
 }
 
 static inline void convert_XrPlaneDetectorPolygonBufferEXT_win32_to_host(const XrPlaneDetectorPolygonBufferEXT32 *in, XrPlaneDetectorPolygonBufferEXT *out)
@@ -3967,7 +3967,7 @@ static inline void convert_XrPlaneDetectorPolygonBufferEXT_win32_to_host(const X
     out->next = NULL;
     out->vertexCapacityInput = in->vertexCapacityInput;
     out->vertexCountOutput = in->vertexCountOutput;
-    out->vertices = (XrVector2f *)(uintptr_t)UlongToPtr(in->vertices);
+    out->vertices = (XrVector2f *)UlongToPtr(in->vertices);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4055,7 +4055,7 @@ static inline void convert_XrQueriedSenseDataBD_win32_to_host(struct conversion_
     out->next = NULL;
     out->stateCapacityInput = in->stateCapacityInput;
     out->stateCountOutput = in->stateCountOutput;
-    out->states = convert_XrSpatialEntityStateBD_array_win32_to_host(ctx, (XrSpatialEntityStateBD32 *)(uintptr_t)UlongToPtr(in->states), in->stateCapacityInput);
+    out->states = convert_XrSpatialEntityStateBD_array_win32_to_host(ctx, (XrSpatialEntityStateBD32 *)UlongToPtr(in->states), in->stateCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4066,7 +4066,7 @@ static inline void convert_XrQueriedSenseDataBD_host_to_win32(const XrQueriedSen
 
     out->stateCapacityInput = in->stateCapacityInput;
     out->stateCountOutput = in->stateCountOutput;
-    convert_XrSpatialEntityStateBD_array_host_to_win32(in->states, (XrSpatialEntityStateBD32 *)(uintptr_t)UlongToPtr(out->states), in->stateCapacityInput);
+    convert_XrSpatialEntityStateBD_array_host_to_win32(in->states, (XrSpatialEntityStateBD32 *)UlongToPtr(out->states), in->stateCapacityInput);
 }
 
 static inline const XrCompositionLayerBaseHeader *convert_XrCompositionLayerBaseHeader_array_win32_to_host(struct conversion_context *ctx, const XrCompositionLayerBaseHeader32 *in, uint32_t count)
@@ -4091,7 +4091,7 @@ static inline void convert_XrRecommendedLayerResolutionGetInfoMETA_win32_to_host
 
     out->type = in->type;
     out->next = NULL;
-    out->layer = convert_XrCompositionLayerBaseHeader_array_win32_to_host(ctx, (const XrCompositionLayerBaseHeader32 *)(uintptr_t)UlongToPtr(in->layer), 1);
+    out->layer = convert_XrCompositionLayerBaseHeader_array_win32_to_host(ctx, (const XrCompositionLayerBaseHeader32 *)UlongToPtr(in->layer), 1);
     out->predictedDisplayTime = in->predictedDisplayTime;
     if (in->next)
         FIXME("Unexpected next\n");
@@ -4133,7 +4133,7 @@ static inline void convert_XrRenderModelAssetDataEXT_win32_to_host(const XrRende
     out->next = NULL;
     out->bufferCapacityInput = in->bufferCapacityInput;
     out->bufferCountOutput = in->bufferCountOutput;
-    out->buffer = (uint8_t *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (uint8_t *)UlongToPtr(in->buffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4164,7 +4164,7 @@ static inline void convert_XrRenderModelAssetPropertiesEXT_win32_to_host(const X
     out->type = in->type;
     out->next = NULL;
     out->nodePropertyCount = in->nodePropertyCount;
-    out->nodeProperties = (XrRenderModelAssetNodePropertiesEXT *)(uintptr_t)UlongToPtr(in->nodeProperties);
+    out->nodeProperties = (XrRenderModelAssetNodePropertiesEXT *)UlongToPtr(in->nodeProperties);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4184,7 +4184,7 @@ static inline void convert_XrInteractionRenderModelTopLevelUserPathGetInfoEXT_wi
     out->type = in->type;
     out->next = NULL;
     out->topLevelUserPathCount = in->topLevelUserPathCount;
-    out->topLevelUserPaths = (const XrPath *)(uintptr_t)UlongToPtr(in->topLevelUserPaths);
+    out->topLevelUserPaths = (const XrPath *)UlongToPtr(in->topLevelUserPaths);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4233,7 +4233,7 @@ static inline void convert_XrRenderModelPropertiesFB_win32_to_host(struct conver
     out->modelVersion = in->modelVersion;
     out->flags = in->flags;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -4317,7 +4317,7 @@ static inline void convert_XrRenderModelStateEXT_win32_to_host(const XrRenderMod
     out->type = in->type;
     out->next = NULL;
     out->nodeStateCount = in->nodeStateCount;
-    out->nodeStates = (XrRenderModelNodeStateEXT *)(uintptr_t)UlongToPtr(in->nodeStates);
+    out->nodeStates = (XrRenderModelNodeStateEXT *)UlongToPtr(in->nodeStates);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4342,7 +4342,7 @@ static inline void convert_XrSceneComponentsGetInfoMSFT_win32_to_host(struct con
     out->next = NULL;
     out->componentType = in->componentType;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -4364,7 +4364,7 @@ static inline void convert_XrSceneComponentsGetInfoMSFT_win32_to_host(struct con
             out_ext->type = XR_TYPE_SCENE_OBJECT_TYPES_FILTER_INFO_MSFT;
             out_ext->next = NULL;
             out_ext->objectTypeCount = in_ext->objectTypeCount;
-            out_ext->objectTypes = (const XrSceneObjectTypeMSFT *)(uintptr_t)UlongToPtr(in_ext->objectTypes);
+            out_ext->objectTypes = (const XrSceneObjectTypeMSFT *)UlongToPtr(in_ext->objectTypes);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4376,7 +4376,7 @@ static inline void convert_XrSceneComponentsGetInfoMSFT_win32_to_host(struct con
             out_ext->type = XR_TYPE_SCENE_PLANE_ALIGNMENT_FILTER_INFO_MSFT;
             out_ext->next = NULL;
             out_ext->alignmentCount = in_ext->alignmentCount;
-            out_ext->alignments = (const XrScenePlaneAlignmentTypeMSFT *)(uintptr_t)UlongToPtr(in_ext->alignments);
+            out_ext->alignments = (const XrScenePlaneAlignmentTypeMSFT *)UlongToPtr(in_ext->alignments);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4388,7 +4388,7 @@ static inline void convert_XrSceneComponentsGetInfoMSFT_win32_to_host(struct con
             out_ext->type = XR_TYPE_SCENE_MARKER_TYPE_FILTER_MSFT;
             out_ext->next = NULL;
             out_ext->markerTypeCount = in_ext->markerTypeCount;
-            out_ext->markerTypes = (XrSceneMarkerTypeMSFT *)(uintptr_t)UlongToPtr(in_ext->markerTypes);
+            out_ext->markerTypes = (XrSceneMarkerTypeMSFT *)UlongToPtr(in_ext->markerTypes);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4595,9 +4595,9 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
     out->next = NULL;
     out->componentCapacityInput = in->componentCapacityInput;
     out->componentCountOutput = in->componentCountOutput;
-    out->components = convert_XrSceneComponentMSFT_array_win32_to_host(ctx, (XrSceneComponentMSFT32 *)(uintptr_t)UlongToPtr(in->components), in->componentCapacityInput);
+    out->components = convert_XrSceneComponentMSFT_array_win32_to_host(ctx, (XrSceneComponentMSFT32 *)UlongToPtr(in->components), in->componentCapacityInput);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -4608,7 +4608,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
             out_ext->type = XR_TYPE_SCENE_OBJECTS_MSFT;
             out_ext->next = NULL;
             out_ext->sceneObjectCount = in_ext->sceneObjectCount;
-            out_ext->sceneObjects = (XrSceneObjectMSFT *)(uintptr_t)UlongToPtr(in_ext->sceneObjects);
+            out_ext->sceneObjects = (XrSceneObjectMSFT *)UlongToPtr(in_ext->sceneObjects);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4620,7 +4620,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
             out_ext->type = XR_TYPE_SCENE_PLANES_MSFT;
             out_ext->next = NULL;
             out_ext->scenePlaneCount = in_ext->scenePlaneCount;
-            out_ext->scenePlanes = convert_XrScenePlaneMSFT_array_win32_to_host(ctx, (XrScenePlaneMSFT32 *)(uintptr_t)UlongToPtr(in_ext->scenePlanes), in_ext->scenePlaneCount);
+            out_ext->scenePlanes = convert_XrScenePlaneMSFT_array_win32_to_host(ctx, (XrScenePlaneMSFT32 *)UlongToPtr(in_ext->scenePlanes), in_ext->scenePlaneCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4632,7 +4632,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
             out_ext->type = XR_TYPE_SCENE_MESHES_MSFT;
             out_ext->next = NULL;
             out_ext->sceneMeshCount = in_ext->sceneMeshCount;
-            out_ext->sceneMeshes = convert_XrSceneMeshMSFT_array_win32_to_host(ctx, (XrSceneMeshMSFT32 *)(uintptr_t)UlongToPtr(in_ext->sceneMeshes), in_ext->sceneMeshCount);
+            out_ext->sceneMeshes = convert_XrSceneMeshMSFT_array_win32_to_host(ctx, (XrSceneMeshMSFT32 *)UlongToPtr(in_ext->sceneMeshes), in_ext->sceneMeshCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4644,7 +4644,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
             out_ext->type = XR_TYPE_SCENE_MARKERS_MSFT;
             out_ext->next = NULL;
             out_ext->sceneMarkerCapacityInput = in_ext->sceneMarkerCapacityInput;
-            out_ext->sceneMarkers = convert_XrSceneMarkerMSFT_array_win32_to_host(ctx, (XrSceneMarkerMSFT32 *)(uintptr_t)UlongToPtr(in_ext->sceneMarkers), in_ext->sceneMarkerCapacityInput);
+            out_ext->sceneMarkers = convert_XrSceneMarkerMSFT_array_win32_to_host(ctx, (XrSceneMarkerMSFT32 *)UlongToPtr(in_ext->sceneMarkers), in_ext->sceneMarkerCapacityInput);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4656,7 +4656,7 @@ static inline void convert_XrSceneComponentsMSFT_win32_to_host(struct conversion
             out_ext->type = XR_TYPE_SCENE_MARKER_QR_CODES_MSFT;
             out_ext->next = NULL;
             out_ext->qrCodeCapacityInput = in_ext->qrCodeCapacityInput;
-            out_ext->qrCodes = (XrSceneMarkerQRCodeMSFT *)(uintptr_t)UlongToPtr(in_ext->qrCodes);
+            out_ext->qrCodes = (XrSceneMarkerQRCodeMSFT *)UlongToPtr(in_ext->qrCodes);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -4689,7 +4689,7 @@ static inline void convert_XrSceneComponentsMSFT_host_to_win32(const XrSceneComp
 
     out->componentCapacityInput = in->componentCapacityInput;
     out->componentCountOutput = in->componentCountOutput;
-    convert_XrSceneComponentMSFT_array_host_to_win32(in->components, (XrSceneComponentMSFT32 *)(uintptr_t)UlongToPtr(out->components), in->componentCapacityInput);
+    convert_XrSceneComponentMSFT_array_host_to_win32(in->components, (XrSceneComponentMSFT32 *)UlongToPtr(out->components), in->componentCapacityInput);
 
     for (in_header = (void *)in->next; in_header; in_header = (void *)in_header->next)
     {
@@ -4711,7 +4711,7 @@ static inline void convert_XrSceneComponentsMSFT_host_to_win32(const XrSceneComp
             const XrScenePlanesMSFT *in_ext = (const XrScenePlanesMSFT *)in_header;
             out_ext->type = XR_TYPE_SCENE_PLANES_MSFT;
             out_ext->scenePlaneCount = in_ext->scenePlaneCount;
-            convert_XrScenePlaneMSFT_array_host_to_win32(in_ext->scenePlanes, (XrScenePlaneMSFT32 *)(uintptr_t)UlongToPtr(out_ext->scenePlanes), in_ext->scenePlaneCount);
+            convert_XrScenePlaneMSFT_array_host_to_win32(in_ext->scenePlanes, (XrScenePlaneMSFT32 *)UlongToPtr(out_ext->scenePlanes), in_ext->scenePlaneCount);
             out_header = (void *)out_ext;
             break;
         }
@@ -4721,7 +4721,7 @@ static inline void convert_XrSceneComponentsMSFT_host_to_win32(const XrSceneComp
             const XrSceneMeshesMSFT *in_ext = (const XrSceneMeshesMSFT *)in_header;
             out_ext->type = XR_TYPE_SCENE_MESHES_MSFT;
             out_ext->sceneMeshCount = in_ext->sceneMeshCount;
-            convert_XrSceneMeshMSFT_array_host_to_win32(in_ext->sceneMeshes, (XrSceneMeshMSFT32 *)(uintptr_t)UlongToPtr(out_ext->sceneMeshes), in_ext->sceneMeshCount);
+            convert_XrSceneMeshMSFT_array_host_to_win32(in_ext->sceneMeshes, (XrSceneMeshMSFT32 *)UlongToPtr(out_ext->sceneMeshes), in_ext->sceneMeshCount);
             out_header = (void *)out_ext;
             break;
         }
@@ -4731,7 +4731,7 @@ static inline void convert_XrSceneComponentsMSFT_host_to_win32(const XrSceneComp
             const XrSceneMarkersMSFT *in_ext = (const XrSceneMarkersMSFT *)in_header;
             out_ext->type = XR_TYPE_SCENE_MARKERS_MSFT;
             out_ext->sceneMarkerCapacityInput = in_ext->sceneMarkerCapacityInput;
-            convert_XrSceneMarkerMSFT_array_host_to_win32(in_ext->sceneMarkers, (XrSceneMarkerMSFT32 *)(uintptr_t)UlongToPtr(out_ext->sceneMarkers), in_ext->sceneMarkerCapacityInput);
+            convert_XrSceneMarkerMSFT_array_host_to_win32(in_ext->sceneMarkers, (XrSceneMarkerMSFT32 *)UlongToPtr(out_ext->sceneMarkers), in_ext->sceneMarkerCapacityInput);
             out_header = (void *)out_ext;
             break;
         }
@@ -4797,7 +4797,7 @@ static inline void convert_XrBoundary2DFB_win32_to_host(const XrBoundary2DFB32 *
     out->next = NULL;
     out->vertexCapacityInput = in->vertexCapacityInput;
     out->vertexCountOutput = in->vertexCountOutput;
-    out->vertices = (XrVector2f *)(uintptr_t)UlongToPtr(in->vertices);
+    out->vertices = (XrVector2f *)UlongToPtr(in->vertices);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4837,7 +4837,7 @@ static inline void convert_XrSpaceContainerFB_win32_to_host(const XrSpaceContain
     out->next = NULL;
     out->uuidCapacityInput = in->uuidCapacityInput;
     out->uuidCountOutput = in->uuidCountOutput;
-    out->uuids = (XrUuidEXT *)(uintptr_t)UlongToPtr(in->uuids);
+    out->uuids = (XrUuidEXT *)UlongToPtr(in->uuids);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4861,7 +4861,7 @@ static inline void convert_XrRoomLayoutFB_win32_to_host(const XrRoomLayoutFB32 *
     out->ceilingUuid = in->ceilingUuid;
     out->wallUuidCapacityInput = in->wallUuidCapacityInput;
     out->wallUuidCountOutput = in->wallUuidCountOutput;
-    out->wallUuids = (XrUuidEXT *)(uintptr_t)UlongToPtr(in->wallUuids);
+    out->wallUuids = (XrUuidEXT *)UlongToPtr(in->wallUuids);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4885,7 +4885,7 @@ static inline void convert_XrSemanticLabelsFB_win32_to_host(const XrSemanticLabe
     out->next = NULL;
     out->bufferCapacityInput = in->bufferCapacityInput;
     out->bufferCountOutput = in->bufferCountOutput;
-    out->buffer = (char *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (char *)UlongToPtr(in->buffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -4985,7 +4985,7 @@ static inline void convert_XrSpaceLocation_win32_to_host(struct conversion_conte
     out->locationFlags = in->locationFlags;
     out->pose = in->pose;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -5083,7 +5083,7 @@ static inline void convert_XrSpatialEntityComponentDataBaseHeaderBD_win32_to_hos
     out->type = in->type;
     out->next = NULL;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -5106,7 +5106,7 @@ static inline void convert_XrSpatialEntityComponentDataBaseHeaderBD_win32_to_hos
             out_ext->next = NULL;
             out_ext->labelCapacityInput = in_ext->labelCapacityInput;
             out_ext->labelCountOutput = in_ext->labelCountOutput;
-            out_ext->labels = (XrSemanticLabelBD *)(uintptr_t)UlongToPtr(in_ext->labels);
+            out_ext->labels = (XrSemanticLabelBD *)UlongToPtr(in_ext->labels);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -5130,7 +5130,7 @@ static inline void convert_XrSpatialEntityComponentDataBaseHeaderBD_win32_to_hos
             out_ext->next = NULL;
             out_ext->vertexCapacityInput = in_ext->vertexCapacityInput;
             out_ext->vertexCountOutput = in_ext->vertexCountOutput;
-            out_ext->vertices = (XrVector2f *)(uintptr_t)UlongToPtr(in_ext->vertices);
+            out_ext->vertices = (XrVector2f *)UlongToPtr(in_ext->vertices);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -5154,10 +5154,10 @@ static inline void convert_XrSpatialEntityComponentDataBaseHeaderBD_win32_to_hos
             out_ext->next = NULL;
             out_ext->vertexCapacityInput = in_ext->vertexCapacityInput;
             out_ext->vertexCountOutput = in_ext->vertexCountOutput;
-            out_ext->vertices = (XrVector3f *)(uintptr_t)UlongToPtr(in_ext->vertices);
+            out_ext->vertices = (XrVector3f *)UlongToPtr(in_ext->vertices);
             out_ext->indexCapacityInput = in_ext->indexCapacityInput;
             out_ext->indexCountOutput = in_ext->indexCountOutput;
-            out_ext->indices = (uint16_t *)(uintptr_t)UlongToPtr(in_ext->indices);
+            out_ext->indices = (uint16_t *)UlongToPtr(in_ext->indices);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -5350,7 +5350,7 @@ static inline void convert_XrSystemProperties_win32_to_host(struct conversion_co
     out->type = in->type;
     out->next = NULL;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -6350,8 +6350,8 @@ static inline void convert_XrTrackablePlaneANDROID_win32_to_host(const XrTrackab
     out->subsumedByPlane = in->subsumedByPlane;
     out->lastUpdatedTime = in->lastUpdatedTime;
     out->vertexCapacityInput = in->vertexCapacityInput;
-    out->vertexCountOutput = (uint32_t *)(uintptr_t)UlongToPtr(in->vertexCountOutput);
-    out->vertices = (XrVector2f *)(uintptr_t)UlongToPtr(in->vertices);
+    out->vertexCountOutput = (uint32_t *)UlongToPtr(in->vertexCountOutput);
+    out->vertices = (XrVector2f *)UlongToPtr(in->vertices);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6448,7 +6448,7 @@ static inline void convert_XrVirtualKeyboardModelAnimationStatesMETA_win32_to_ho
     out->next = NULL;
     out->stateCapacityInput = in->stateCapacityInput;
     out->stateCountOutput = in->stateCountOutput;
-    out->states = convert_XrVirtualKeyboardAnimationStateMETA_array_win32_to_host(ctx, (XrVirtualKeyboardAnimationStateMETA32 *)(uintptr_t)UlongToPtr(in->states), in->stateCapacityInput);
+    out->states = convert_XrVirtualKeyboardAnimationStateMETA_array_win32_to_host(ctx, (XrVirtualKeyboardAnimationStateMETA32 *)UlongToPtr(in->states), in->stateCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6459,7 +6459,7 @@ static inline void convert_XrVirtualKeyboardModelAnimationStatesMETA_host_to_win
 
     out->stateCapacityInput = in->stateCapacityInput;
     out->stateCountOutput = in->stateCountOutput;
-    convert_XrVirtualKeyboardAnimationStateMETA_array_host_to_win32(in->states, (XrVirtualKeyboardAnimationStateMETA32 *)(uintptr_t)UlongToPtr(out->states), in->stateCapacityInput);
+    convert_XrVirtualKeyboardAnimationStateMETA_array_host_to_win32(in->states, (XrVirtualKeyboardAnimationStateMETA32 *)UlongToPtr(out->states), in->stateCapacityInput);
 }
 
 static inline void convert_XrVirtualKeyboardTextureDataMETA_win32_to_host(const XrVirtualKeyboardTextureDataMETA32 *in, XrVirtualKeyboardTextureDataMETA *out)
@@ -6472,7 +6472,7 @@ static inline void convert_XrVirtualKeyboardTextureDataMETA_win32_to_host(const 
     out->textureHeight = in->textureHeight;
     out->bufferCapacityInput = in->bufferCapacityInput;
     out->bufferCountOutput = in->bufferCountOutput;
-    out->buffer = (uint8_t *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (uint8_t *)UlongToPtr(in->buffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6496,10 +6496,10 @@ static inline void convert_XrVisibilityMaskKHR_win32_to_host(const XrVisibilityM
     out->next = NULL;
     out->vertexCapacityInput = in->vertexCapacityInput;
     out->vertexCountOutput = in->vertexCountOutput;
-    out->vertices = (XrVector2f *)(uintptr_t)UlongToPtr(in->vertices);
+    out->vertices = (XrVector2f *)UlongToPtr(in->vertices);
     out->indexCapacityInput = in->indexCapacityInput;
     out->indexCountOutput = in->indexCountOutput;
-    out->indices = (uint32_t *)(uintptr_t)UlongToPtr(in->indices);
+    out->indices = (uint32_t *)UlongToPtr(in->indices);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6573,7 +6573,7 @@ static inline void convert_XrLocalizationMapImportInfoML_win32_to_host(const XrL
     out->type = in->type;
     out->next = NULL;
     out->size = in->size;
-    out->data = (char *)(uintptr_t)UlongToPtr(in->data);
+    out->data = (char *)UlongToPtr(in->data);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6597,7 +6597,7 @@ static inline void convert_XrRenderModelBufferFB_win32_to_host(const XrRenderMod
     out->next = NULL;
     out->bufferCapacityInput = in->bufferCapacityInput;
     out->bufferCountOutput = in->bufferCountOutput;
-    out->buffer = (uint8_t *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (uint8_t *)UlongToPtr(in->buffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6675,7 +6675,7 @@ static inline void convert_XrBodyJointLocationsBD_win32_to_host(struct conversio
     out->next = NULL;
     out->allJointPosesTracked = in->allJointPosesTracked;
     out->jointLocationCount = in->jointLocationCount;
-    out->jointLocations = convert_XrBodyJointLocationBD_array_win32_to_host(ctx, (XrBodyJointLocationBD32 *)(uintptr_t)UlongToPtr(in->jointLocations), in->jointLocationCount);
+    out->jointLocations = convert_XrBodyJointLocationBD_array_win32_to_host(ctx, (XrBodyJointLocationBD32 *)UlongToPtr(in->jointLocations), in->jointLocationCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -6686,7 +6686,7 @@ static inline void convert_XrBodyJointLocationsBD_host_to_win32(const XrBodyJoin
 
     out->allJointPosesTracked = in->allJointPosesTracked;
     out->jointLocationCount = in->jointLocationCount;
-    convert_XrBodyJointLocationBD_array_host_to_win32(in->jointLocations, (XrBodyJointLocationBD32 *)(uintptr_t)UlongToPtr(out->jointLocations), in->jointLocationCount);
+    convert_XrBodyJointLocationBD_array_host_to_win32(in->jointLocations, (XrBodyJointLocationBD32 *)UlongToPtr(out->jointLocations), in->jointLocationCount);
 }
 
 static inline void convert_XrBodyJointsLocateInfoFB_win32_to_host(const XrBodyJointsLocateInfoFB32 *in, XrBodyJointsLocateInfoFB *out)
@@ -6755,9 +6755,9 @@ static inline void convert_XrBodyJointLocationsFB_win32_to_host(struct conversio
 
     out->type = in->type;
     out->next = NULL;
-    out->jointLocations = convert_XrBodyJointLocationFB_array_win32_to_host(ctx, (XrBodyJointLocationFB32 *)(uintptr_t)UlongToPtr(in->jointLocations), in->jointCount);
+    out->jointLocations = convert_XrBodyJointLocationFB_array_win32_to_host(ctx, (XrBodyJointLocationFB32 *)UlongToPtr(in->jointLocations), in->jointCount);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -6799,7 +6799,7 @@ static inline void convert_XrBodyJointLocationsFB_host_to_win32(const XrBodyJoin
     out->isActive = in->isActive;
     out->confidence = in->confidence;
     out->jointCount = in->jointCount;
-    convert_XrBodyJointLocationFB_array_host_to_win32(in->jointLocations, (XrBodyJointLocationFB32 *)(uintptr_t)UlongToPtr(out->jointLocations), in->jointCount);
+    convert_XrBodyJointLocationFB_array_host_to_win32(in->jointLocations, (XrBodyJointLocationFB32 *)UlongToPtr(out->jointLocations), in->jointCount);
     out->skeletonChangedCount = in->skeletonChangedCount;
     out->time = in->time;
 
@@ -6873,7 +6873,7 @@ static inline void convert_XrBodyJointLocationsHTC_win32_to_host(struct conversi
     out->combinedLocationFlags = in->combinedLocationFlags;
     out->confidenceLevel = in->confidenceLevel;
     out->jointLocationCount = in->jointLocationCount;
-    out->jointLocations = convert_XrBodyJointLocationHTC_array_win32_to_host(ctx, (XrBodyJointLocationHTC32 *)(uintptr_t)UlongToPtr(in->jointLocations), in->jointLocationCount);
+    out->jointLocations = convert_XrBodyJointLocationHTC_array_win32_to_host(ctx, (XrBodyJointLocationHTC32 *)UlongToPtr(in->jointLocations), in->jointLocationCount);
     out->skeletonGenerationId = in->skeletonGenerationId;
     if (in->next)
         FIXME("Unexpected next\n");
@@ -6886,7 +6886,7 @@ static inline void convert_XrBodyJointLocationsHTC_host_to_win32(const XrBodyJoi
     out->combinedLocationFlags = in->combinedLocationFlags;
     out->confidenceLevel = in->confidenceLevel;
     out->jointLocationCount = in->jointLocationCount;
-    convert_XrBodyJointLocationHTC_array_host_to_win32(in->jointLocations, (XrBodyJointLocationHTC32 *)(uintptr_t)UlongToPtr(out->jointLocations), in->jointLocationCount);
+    convert_XrBodyJointLocationHTC_array_host_to_win32(in->jointLocations, (XrBodyJointLocationHTC32 *)UlongToPtr(out->jointLocations), in->jointLocationCount);
     out->skeletonGenerationId = in->skeletonGenerationId;
 }
 
@@ -6903,7 +6903,7 @@ static inline void convert_XrHandJointsLocateInfoEXT_win32_to_host(struct conver
     out->baseSpace = in->baseSpace;
     out->time = in->time;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7025,9 +7025,9 @@ static inline void convert_XrHandJointLocationsEXT_win32_to_host(struct conversi
     out->next = NULL;
     out->isActive = in->isActive;
     out->jointCount = in->jointCount;
-    out->jointLocations = convert_XrHandJointLocationEXT_array_win32_to_host(ctx, (XrHandJointLocationEXT32 *)(uintptr_t)UlongToPtr(in->jointLocations), in->jointCount);
+    out->jointLocations = convert_XrHandJointLocationEXT_array_win32_to_host(ctx, (XrHandJointLocationEXT32 *)UlongToPtr(in->jointLocations), in->jointCount);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7038,7 +7038,7 @@ static inline void convert_XrHandJointLocationsEXT_win32_to_host(struct conversi
             out_ext->type = XR_TYPE_HAND_JOINT_VELOCITIES_EXT;
             out_ext->next = NULL;
             out_ext->jointCount = in_ext->jointCount;
-            out_ext->jointVelocities = convert_XrHandJointVelocityEXT_array_win32_to_host(ctx, (XrHandJointVelocityEXT32 *)(uintptr_t)UlongToPtr(in_ext->jointVelocities), in_ext->jointCount);
+            out_ext->jointVelocities = convert_XrHandJointVelocityEXT_array_win32_to_host(ctx, (XrHandJointVelocityEXT32 *)UlongToPtr(in_ext->jointVelocities), in_ext->jointCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -7107,7 +7107,7 @@ static inline void convert_XrHandJointLocationsEXT_host_to_win32(const XrHandJoi
 
     out->isActive = in->isActive;
     out->jointCount = in->jointCount;
-    convert_XrHandJointLocationEXT_array_host_to_win32(in->jointLocations, (XrHandJointLocationEXT32 *)(uintptr_t)UlongToPtr(out->jointLocations), in->jointCount);
+    convert_XrHandJointLocationEXT_array_host_to_win32(in->jointLocations, (XrHandJointLocationEXT32 *)UlongToPtr(out->jointLocations), in->jointCount);
 
     for (in_header = (void *)in->next; in_header; in_header = (void *)in_header->next)
     {
@@ -7119,7 +7119,7 @@ static inline void convert_XrHandJointLocationsEXT_host_to_win32(const XrHandJoi
             const XrHandJointVelocitiesEXT *in_ext = (const XrHandJointVelocitiesEXT *)in_header;
             out_ext->type = XR_TYPE_HAND_JOINT_VELOCITIES_EXT;
             out_ext->jointCount = in_ext->jointCount;
-            convert_XrHandJointVelocityEXT_array_host_to_win32(in_ext->jointVelocities, (XrHandJointVelocityEXT32 *)(uintptr_t)UlongToPtr(out_ext->jointVelocities), in_ext->jointCount);
+            convert_XrHandJointVelocityEXT_array_host_to_win32(in_ext->jointVelocities, (XrHandJointVelocityEXT32 *)UlongToPtr(out_ext->jointVelocities), in_ext->jointCount);
             out_header = (void *)out_ext;
             break;
         }
@@ -7183,7 +7183,7 @@ static inline void convert_XrSceneComponentsLocateInfoMSFT_win32_to_host(const X
     out->baseSpace = in->baseSpace;
     out->time = in->time;
     out->componentIdCount = in->componentIdCount;
-    out->componentIds = (const XrUuidMSFT *)(uintptr_t)UlongToPtr(in->componentIds);
+    out->componentIds = (const XrUuidMSFT *)UlongToPtr(in->componentIds);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -7239,7 +7239,7 @@ static inline void convert_XrSceneComponentLocationsMSFT_win32_to_host(struct co
     out->type = in->type;
     out->next = NULL;
     out->locationCount = in->locationCount;
-    out->locations = convert_XrSceneComponentLocationMSFT_array_win32_to_host(ctx, (XrSceneComponentLocationMSFT32 *)(uintptr_t)UlongToPtr(in->locations), in->locationCount);
+    out->locations = convert_XrSceneComponentLocationMSFT_array_win32_to_host(ctx, (XrSceneComponentLocationMSFT32 *)UlongToPtr(in->locations), in->locationCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -7249,7 +7249,7 @@ static inline void convert_XrSceneComponentLocationsMSFT_host_to_win32(const XrS
     if (!in) return;
 
     out->locationCount = in->locationCount;
-    convert_XrSceneComponentLocationMSFT_array_host_to_win32(in->locations, (XrSceneComponentLocationMSFT32 *)(uintptr_t)UlongToPtr(out->locations), in->locationCount);
+    convert_XrSceneComponentLocationMSFT_array_host_to_win32(in->locations, (XrSceneComponentLocationMSFT32 *)UlongToPtr(out->locations), in->locationCount);
 }
 
 static inline void convert_XrSpacesLocateInfo_win32_to_host(struct conversion_context *ctx, const XrSpacesLocateInfo32 *in, XrSpacesLocateInfo *out)
@@ -7261,7 +7261,7 @@ static inline void convert_XrSpacesLocateInfo_win32_to_host(struct conversion_co
     out->baseSpace = in->baseSpace;
     out->time = in->time;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (const PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (const XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -7338,9 +7338,9 @@ static inline void convert_XrSpaceLocations_win32_to_host(struct conversion_cont
     out->type = in->type;
     out->next = NULL;
     out->locationCount = in->locationCount;
-    out->locations = convert_XrSpaceLocationData_array_win32_to_host(ctx, (XrSpaceLocationData32 *)(uintptr_t)UlongToPtr(in->locations), in->locationCount);
+    out->locations = convert_XrSpaceLocationData_array_win32_to_host(ctx, (XrSpaceLocationData32 *)UlongToPtr(in->locations), in->locationCount);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7351,7 +7351,7 @@ static inline void convert_XrSpaceLocations_win32_to_host(struct conversion_cont
             out_ext->type = XR_TYPE_SPACE_VELOCITIES;
             out_ext->next = NULL;
             out_ext->velocityCount = in_ext->velocityCount;
-            out_ext->velocities = convert_XrSpaceVelocityData_array_win32_to_host(ctx, (XrSpaceVelocityData32 *)(uintptr_t)UlongToPtr(in_ext->velocities), in_ext->velocityCount);
+            out_ext->velocities = convert_XrSpaceVelocityData_array_win32_to_host(ctx, (XrSpaceVelocityData32 *)UlongToPtr(in_ext->velocities), in_ext->velocityCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -7383,7 +7383,7 @@ static inline void convert_XrSpaceLocations_host_to_win32(const XrSpaceLocations
     if (!in) return;
 
     out->locationCount = in->locationCount;
-    convert_XrSpaceLocationData_array_host_to_win32(in->locations, (XrSpaceLocationData32 *)(uintptr_t)UlongToPtr(out->locations), in->locationCount);
+    convert_XrSpaceLocationData_array_host_to_win32(in->locations, (XrSpaceLocationData32 *)UlongToPtr(out->locations), in->locationCount);
 
     for (in_header = (void *)in->next; in_header; in_header = (void *)in_header->next)
     {
@@ -7395,7 +7395,7 @@ static inline void convert_XrSpaceLocations_host_to_win32(const XrSpaceLocations
             const XrSpaceVelocities *in_ext = (const XrSpaceVelocities *)in_header;
             out_ext->type = XR_TYPE_SPACE_VELOCITIES;
             out_ext->velocityCount = in_ext->velocityCount;
-            convert_XrSpaceVelocityData_array_host_to_win32(in_ext->velocities, (XrSpaceVelocityData32 *)(uintptr_t)UlongToPtr(out_ext->velocities), in_ext->velocityCount);
+            convert_XrSpaceVelocityData_array_host_to_win32(in_ext->velocities, (XrSpaceVelocityData32 *)UlongToPtr(out_ext->velocities), in_ext->velocityCount);
             out_header = (void *)out_ext;
             break;
         }
@@ -7419,7 +7419,7 @@ static inline void convert_XrViewLocateInfo_win32_to_host(struct conversion_cont
     out->displayTime = in->displayTime;
     out->space = in->space;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7606,7 +7606,7 @@ static inline void convert_XrPassthroughStyleFB_win32_to_host(struct conversion_
     out->textureOpacityFactor = in->textureOpacityFactor;
     out->edgeColor = in->edgeColor;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7807,7 +7807,7 @@ static inline void convert_XrFuturePollResultEXT_win32_to_host(struct conversion
     out->type = in->type;
     out->next = NULL;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7875,7 +7875,7 @@ static inline void convert_XrSpatialAnchorsPublishInfoML_win32_to_host(struct co
     out->type = in->type;
     out->next = NULL;
     out->anchorCount = in->anchorCount;
-    out->anchors = convert_XrSpace_array_win32_to_host(ctx, (const PTR32 *)(uintptr_t)UlongToPtr(in->anchors), in->anchorCount);
+    out->anchors = convert_XrSpace_array_win32_to_host(ctx, (const XrSpace *)UlongToPtr(in->anchors), in->anchorCount);
     out->expiration = in->expiration;
     if (in->next)
         FIXME("Unexpected next\n");
@@ -7893,9 +7893,9 @@ static inline void convert_XrSpatialAnchorsPublishCompletionML_win32_to_host(str
     out->next = NULL;
     out->futureResult = in->futureResult;
     out->uuidCount = in->uuidCount;
-    out->uuids = (XrUuidEXT *)(uintptr_t)UlongToPtr(in->uuids);
+    out->uuids = (XrUuidEXT *)UlongToPtr(in->uuids);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -7906,7 +7906,7 @@ static inline void convert_XrSpatialAnchorsPublishCompletionML_win32_to_host(str
             out_ext->type = XR_TYPE_SPATIAL_ANCHORS_PUBLISH_COMPLETION_DETAILS_ML;
             out_ext->next = NULL;
             out_ext->resultCount = in_ext->resultCount;
-            out_ext->results = (XrSpatialAnchorCompletionResultML *)(uintptr_t)UlongToPtr(in_ext->results);
+            out_ext->results = (XrSpatialAnchorCompletionResultML *)UlongToPtr(in_ext->results);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8056,7 +8056,7 @@ static inline void convert_XrSenseDataQueryInfoBD_win32_to_host(struct conversio
     out->type = in->type;
     out->next = NULL;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -8067,7 +8067,7 @@ static inline void convert_XrSenseDataQueryInfoBD_win32_to_host(struct conversio
             out_ext->type = XR_TYPE_SENSE_DATA_FILTER_UUID_BD;
             out_ext->next = NULL;
             out_ext->uuidCount = in_ext->uuidCount;
-            out_ext->uuids = (const XrUuidEXT *)(uintptr_t)UlongToPtr(in_ext->uuids);
+            out_ext->uuids = (const XrUuidEXT *)UlongToPtr(in_ext->uuids);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8079,7 +8079,7 @@ static inline void convert_XrSenseDataQueryInfoBD_win32_to_host(struct conversio
             out_ext->type = XR_TYPE_SENSE_DATA_FILTER_SEMANTIC_BD;
             out_ext->next = NULL;
             out_ext->labelCount = in_ext->labelCount;
-            out_ext->labels = (const XrSemanticLabelBD *)(uintptr_t)UlongToPtr(in_ext->labels);
+            out_ext->labels = (const XrSemanticLabelBD *)UlongToPtr(in_ext->labels);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8091,7 +8091,7 @@ static inline void convert_XrSenseDataQueryInfoBD_win32_to_host(struct conversio
             out_ext->type = XR_TYPE_SENSE_DATA_FILTER_PLANE_ORIENTATION_BD;
             out_ext->next = NULL;
             out_ext->orientationCount = in_ext->orientationCount;
-            out_ext->orientations = (XrPlaneOrientationBD *)(uintptr_t)UlongToPtr(in_ext->orientations);
+            out_ext->orientations = (XrPlaneOrientationBD *)UlongToPtr(in_ext->orientations);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8163,7 +8163,7 @@ static inline void convert_XrSpatialAnchorsQueryCompletionML_win32_to_host(const
     out->futureResult = in->futureResult;
     out->uuidCapacityInput = in->uuidCapacityInput;
     out->uuidCountOutput = in->uuidCountOutput;
-    out->uuids = (XrUuidEXT *)(uintptr_t)UlongToPtr(in->uuids);
+    out->uuids = (XrUuidEXT *)UlongToPtr(in->uuids);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8189,9 +8189,9 @@ static inline void convert_XrSpatialComponentDataQueryConditionEXT_win32_to_host
     out->type = in->type;
     out->next = NULL;
     out->componentTypeCount = in->componentTypeCount;
-    out->componentTypes = (const XrSpatialComponentTypeEXT *)(uintptr_t)UlongToPtr(in->componentTypes);
+    out->componentTypes = (const XrSpatialComponentTypeEXT *)UlongToPtr(in->componentTypes);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -8213,7 +8213,7 @@ static inline void convert_XrSpatialComponentDataQueryConditionEXT_win32_to_host
             out_ext->type = XR_TYPE_SPATIAL_DISCOVERY_PERSISTENCE_UUID_FILTER_EXT;
             out_ext->next = NULL;
             out_ext->persistedUuidCount = in_ext->persistedUuidCount;
-            out_ext->persistedUuids = (const XrUuid *)(uintptr_t)UlongToPtr(in_ext->persistedUuids);
+            out_ext->persistedUuids = (const XrUuid *)UlongToPtr(in_ext->persistedUuids);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8248,12 +8248,12 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
     out->next = NULL;
     out->entityIdCapacityInput = in->entityIdCapacityInput;
     out->entityIdCountOutput = in->entityIdCountOutput;
-    out->entityIds = (XrSpatialEntityIdEXT *)(uintptr_t)UlongToPtr(in->entityIds);
+    out->entityIds = (XrSpatialEntityIdEXT *)UlongToPtr(in->entityIds);
     out->entityStateCapacityInput = in->entityStateCapacityInput;
     out->entityStateCountOutput = in->entityStateCountOutput;
-    out->entityStates = (XrSpatialEntityTrackingStateEXT *)(uintptr_t)UlongToPtr(in->entityStates);
+    out->entityStates = (XrSpatialEntityTrackingStateEXT *)UlongToPtr(in->entityStates);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -8264,7 +8264,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_BOUNDED_2D_LIST_EXT;
             out_ext->next = NULL;
             out_ext->boundCount = in_ext->boundCount;
-            out_ext->bounds = (XrSpatialBounded2DDataEXT *)(uintptr_t)UlongToPtr(in_ext->bounds);
+            out_ext->bounds = (XrSpatialBounded2DDataEXT *)UlongToPtr(in_ext->bounds);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8276,7 +8276,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_BOUNDED_3D_LIST_EXT;
             out_ext->next = NULL;
             out_ext->boundCount = in_ext->boundCount;
-            out_ext->bounds = (XrBoxf *)(uintptr_t)UlongToPtr(in_ext->bounds);
+            out_ext->bounds = (XrBoxf *)UlongToPtr(in_ext->bounds);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8288,7 +8288,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_PARENT_LIST_EXT;
             out_ext->next = NULL;
             out_ext->parentCount = in_ext->parentCount;
-            out_ext->parents = (XrSpatialEntityIdEXT *)(uintptr_t)UlongToPtr(in_ext->parents);
+            out_ext->parents = (XrSpatialEntityIdEXT *)UlongToPtr(in_ext->parents);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8300,7 +8300,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_MESH_3D_LIST_EXT;
             out_ext->next = NULL;
             out_ext->meshCount = in_ext->meshCount;
-            out_ext->meshes = (XrSpatialMeshDataEXT *)(uintptr_t)UlongToPtr(in_ext->meshes);
+            out_ext->meshes = (XrSpatialMeshDataEXT *)UlongToPtr(in_ext->meshes);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8312,7 +8312,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_ANCHOR_LIST_EXT;
             out_ext->next = NULL;
             out_ext->locationCount = in_ext->locationCount;
-            out_ext->locations = (XrPosef *)(uintptr_t)UlongToPtr(in_ext->locations);
+            out_ext->locations = (XrPosef *)UlongToPtr(in_ext->locations);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8324,7 +8324,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_PERSISTENCE_LIST_EXT;
             out_ext->next = NULL;
             out_ext->persistDataCount = in_ext->persistDataCount;
-            out_ext->persistData = (XrSpatialPersistenceDataEXT *)(uintptr_t)UlongToPtr(in_ext->persistData);
+            out_ext->persistData = (XrSpatialPersistenceDataEXT *)UlongToPtr(in_ext->persistData);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8336,7 +8336,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_PLANE_ALIGNMENT_LIST_EXT;
             out_ext->next = NULL;
             out_ext->planeAlignmentCount = in_ext->planeAlignmentCount;
-            out_ext->planeAlignments = (XrSpatialPlaneAlignmentEXT *)(uintptr_t)UlongToPtr(in_ext->planeAlignments);
+            out_ext->planeAlignments = (XrSpatialPlaneAlignmentEXT *)UlongToPtr(in_ext->planeAlignments);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8348,7 +8348,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_MESH_2D_LIST_EXT;
             out_ext->next = NULL;
             out_ext->meshCount = in_ext->meshCount;
-            out_ext->meshes = (XrSpatialMeshDataEXT *)(uintptr_t)UlongToPtr(in_ext->meshes);
+            out_ext->meshes = (XrSpatialMeshDataEXT *)UlongToPtr(in_ext->meshes);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8360,7 +8360,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_POLYGON_2D_LIST_EXT;
             out_ext->next = NULL;
             out_ext->polygonCount = in_ext->polygonCount;
-            out_ext->polygons = (XrSpatialPolygon2DDataEXT *)(uintptr_t)UlongToPtr(in_ext->polygons);
+            out_ext->polygons = (XrSpatialPolygon2DDataEXT *)UlongToPtr(in_ext->polygons);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8372,7 +8372,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_PLANE_SEMANTIC_LABEL_LIST_EXT;
             out_ext->next = NULL;
             out_ext->semanticLabelCount = in_ext->semanticLabelCount;
-            out_ext->semanticLabels = (XrSpatialPlaneSemanticLabelEXT *)(uintptr_t)UlongToPtr(in_ext->semanticLabels);
+            out_ext->semanticLabels = (XrSpatialPlaneSemanticLabelEXT *)UlongToPtr(in_ext->semanticLabels);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8384,7 +8384,7 @@ static inline void convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(st
             out_ext->type = XR_TYPE_SPATIAL_COMPONENT_MARKER_LIST_EXT;
             out_ext->next = NULL;
             out_ext->markerCount = in_ext->markerCount;
-            out_ext->markers = (XrSpatialMarkerDataEXT *)(uintptr_t)UlongToPtr(in_ext->markers);
+            out_ext->markers = (XrSpatialMarkerDataEXT *)UlongToPtr(in_ext->markers);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -8563,7 +8563,7 @@ static inline void convert_XrKeyboardTrackingDescriptionFB_host_to_win32(const X
     memcpy(out->name, in->name, XR_MAX_KEYBOARD_TRACKING_NAME_SIZE_FB * sizeof(char));
 }
 
-static inline const XrTrackableTrackerANDROID *convert_XrTrackableTrackerANDROID_array_win32_to_host(struct conversion_context *ctx, const PTR32 *in, uint32_t count)
+static inline const XrTrackableTrackerANDROID *convert_XrTrackableTrackerANDROID_array_win32_to_host(struct conversion_context *ctx, const XrTrackableTrackerANDROID *in, uint32_t count)
 {
     XrTrackableTrackerANDROID *out;
     unsigned int i;
@@ -8573,7 +8573,7 @@ static inline const XrTrackableTrackerANDROID *convert_XrTrackableTrackerANDROID
     out = conversion_context_alloc(ctx, count * sizeof(*out));
     for (i = 0; i < count; i++)
     {
-        out[i] = (XrTrackableTrackerANDROID)(uintptr_t)UlongToPtr(in[i]);
+        out[i] = *(XrTrackableTrackerANDROID*)(uintptr_t)&in[i];
     }
 
     return out;
@@ -8587,7 +8587,7 @@ static inline void convert_XrRaycastInfoANDROID_win32_to_host(struct conversion_
     out->next = NULL;
     out->maxResults = in->maxResults;
     out->trackerCount = in->trackerCount;
-    out->trackers = convert_XrTrackableTrackerANDROID_array_win32_to_host(ctx, (const PTR32 *)(uintptr_t)UlongToPtr(in->trackers), in->trackerCount);
+    out->trackers = convert_XrTrackableTrackerANDROID_array_win32_to_host(ctx, (const XrTrackableTrackerANDROID *)UlongToPtr(in->trackers), in->trackerCount);
     out->origin = in->origin;
     out->trajectory = in->trajectory;
     out->space = in->space;
@@ -8604,7 +8604,7 @@ static inline void convert_XrRaycastHitResultsANDROID_win32_to_host(const XrRayc
     out->next = NULL;
     out->resultsCapacityInput = in->resultsCapacityInput;
     out->resultsCountOutput = in->resultsCountOutput;
-    out->results = (XrRaycastHitResultANDROID *)(uintptr_t)UlongToPtr(in->results);
+    out->results = (XrRaycastHitResultANDROID *)UlongToPtr(in->results);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8646,7 +8646,7 @@ static inline void convert_XrSceneCaptureRequestInfoFB_win32_to_host(const XrSce
     out->type = in->type;
     out->next = NULL;
     out->requestByteCount = in->requestByteCount;
-    out->request = (const char *)(uintptr_t)UlongToPtr(in->request);
+    out->request = (const char *)UlongToPtr(in->request);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8709,7 +8709,7 @@ static inline void convert_XrWorldMeshGetInfoML_win32_to_host(struct conversion_
     out->fillHoleLength = in->fillHoleLength;
     out->disconnectedComponentArea = in->disconnectedComponentArea;
     out->blockCount = in->blockCount;
-    out->blocks = convert_XrWorldMeshBlockRequestML_array_win32_to_host(ctx, (XrWorldMeshBlockRequestML32 *)(uintptr_t)UlongToPtr(in->blocks), in->blockCount);
+    out->blocks = convert_XrWorldMeshBlockRequestML_array_win32_to_host(ctx, (XrWorldMeshBlockRequestML32 *)UlongToPtr(in->blocks), in->blockCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8718,7 +8718,7 @@ static inline void convert_XrWorldMeshGetInfoML_host_to_win32(const XrWorldMeshG
 {
     if (!in) return;
 
-    convert_XrWorldMeshBlockRequestML_array_host_to_win32(in->blocks, (XrWorldMeshBlockRequestML32 *)(uintptr_t)UlongToPtr(out->blocks), in->blockCount);
+    convert_XrWorldMeshBlockRequestML_array_host_to_win32(in->blocks, (XrWorldMeshBlockRequestML32 *)UlongToPtr(out->blocks), in->blockCount);
 }
 
 static inline void convert_XrWorldMeshRequestCompletionInfoML_win32_to_host(const XrWorldMeshRequestCompletionInfoML32 *in, XrWorldMeshRequestCompletionInfoML *out)
@@ -8744,13 +8744,13 @@ static inline void convert_XrWorldMeshBlockML_win32_to_host(const XrWorldMeshBlo
     out->lod = in->lod;
     out->flags = in->flags;
     out->indexCount = in->indexCount;
-    out->indexBuffer = (uint16_t *)(uintptr_t)UlongToPtr(in->indexBuffer);
+    out->indexBuffer = (uint16_t *)UlongToPtr(in->indexBuffer);
     out->vertexCount = in->vertexCount;
-    out->vertexBuffer = (XrVector3f *)(uintptr_t)UlongToPtr(in->vertexBuffer);
+    out->vertexBuffer = (XrVector3f *)UlongToPtr(in->vertexBuffer);
     out->normalCount = in->normalCount;
-    out->normalBuffer = (XrVector3f *)(uintptr_t)UlongToPtr(in->normalBuffer);
+    out->normalBuffer = (XrVector3f *)UlongToPtr(in->normalBuffer);
     out->confidenceCount = in->confidenceCount;
-    out->confidenceBuffer = (float *)(uintptr_t)UlongToPtr(in->confidenceBuffer);
+    out->confidenceBuffer = (float *)UlongToPtr(in->confidenceBuffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8809,7 +8809,7 @@ static inline void convert_XrWorldMeshRequestCompletionML_win32_to_host(struct c
     out->next = NULL;
     out->futureResult = in->futureResult;
     out->blockCount = in->blockCount;
-    out->blocks = convert_XrWorldMeshBlockML_array_win32_to_host(ctx, (XrWorldMeshBlockML32 *)(uintptr_t)UlongToPtr(in->blocks), in->blockCount);
+    out->blocks = convert_XrWorldMeshBlockML_array_win32_to_host(ctx, (XrWorldMeshBlockML32 *)UlongToPtr(in->blocks), in->blockCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8820,7 +8820,7 @@ static inline void convert_XrWorldMeshRequestCompletionML_host_to_win32(const Xr
 
     out->futureResult = in->futureResult;
     out->blockCount = in->blockCount;
-    convert_XrWorldMeshBlockML_array_host_to_win32(in->blocks, (XrWorldMeshBlockML32 *)(uintptr_t)UlongToPtr(out->blocks), in->blockCount);
+    convert_XrWorldMeshBlockML_array_host_to_win32(in->blocks, (XrWorldMeshBlockML32 *)UlongToPtr(out->blocks), in->blockCount);
 }
 
 static inline void convert_XrWorldMeshStateRequestInfoML_win32_to_host(const XrWorldMeshStateRequestInfoML32 *in, XrWorldMeshStateRequestInfoML *out)
@@ -8901,7 +8901,7 @@ static inline void convert_XrWorldMeshStateRequestCompletionML_win32_to_host(str
     out->timestamp = in->timestamp;
     out->meshBlockStateCapacityInput = in->meshBlockStateCapacityInput;
     out->meshBlockStateCountOutput = in->meshBlockStateCountOutput;
-    out->meshBlockStates = convert_XrWorldMeshBlockStateML_array_win32_to_host(ctx, (XrWorldMeshBlockStateML32 *)(uintptr_t)UlongToPtr(in->meshBlockStates), in->meshBlockStateCapacityInput);
+    out->meshBlockStates = convert_XrWorldMeshBlockStateML_array_win32_to_host(ctx, (XrWorldMeshBlockStateML32 *)UlongToPtr(in->meshBlockStates), in->meshBlockStateCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8914,7 +8914,7 @@ static inline void convert_XrWorldMeshStateRequestCompletionML_host_to_win32(con
     out->timestamp = in->timestamp;
     out->meshBlockStateCapacityInput = in->meshBlockStateCapacityInput;
     out->meshBlockStateCountOutput = in->meshBlockStateCountOutput;
-    convert_XrWorldMeshBlockStateML_array_host_to_win32(in->meshBlockStates, (XrWorldMeshBlockStateML32 *)(uintptr_t)UlongToPtr(out->meshBlockStates), in->meshBlockStateCapacityInput);
+    convert_XrWorldMeshBlockStateML_array_host_to_win32(in->meshBlockStates, (XrWorldMeshBlockStateML32 *)UlongToPtr(out->meshBlockStates), in->meshBlockStateCapacityInput);
 }
 
 static inline void convert_XrSimultaneousHandsAndControllersTrackingResumeInfoMETA_win32_to_host(const XrSimultaneousHandsAndControllersTrackingResumeInfoMETA32 *in, XrSimultaneousHandsAndControllersTrackingResumeInfoMETA *out)
@@ -8965,7 +8965,7 @@ static inline void convert_XrSpaceDiscoveryResultsMETA_win32_to_host(struct conv
     out->next = NULL;
     out->resultCapacityInput = in->resultCapacityInput;
     out->resultCountOutput = in->resultCountOutput;
-    out->results = convert_XrSpaceDiscoveryResultMETA_array_win32_to_host(ctx, (XrSpaceDiscoveryResultMETA32 *)(uintptr_t)UlongToPtr(in->results), in->resultCapacityInput);
+    out->results = convert_XrSpaceDiscoveryResultMETA_array_win32_to_host(ctx, (XrSpaceDiscoveryResultMETA32 *)UlongToPtr(in->results), in->resultCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -8976,7 +8976,7 @@ static inline void convert_XrSpaceDiscoveryResultsMETA_host_to_win32(const XrSpa
 
     out->resultCapacityInput = in->resultCapacityInput;
     out->resultCountOutput = in->resultCountOutput;
-    convert_XrSpaceDiscoveryResultMETA_array_host_to_win32(in->results, (XrSpaceDiscoveryResultMETA32 *)(uintptr_t)UlongToPtr(out->results), in->resultCapacityInput);
+    convert_XrSpaceDiscoveryResultMETA_array_host_to_win32(in->results, (XrSpaceDiscoveryResultMETA32 *)UlongToPtr(out->results), in->resultCapacityInput);
 }
 
 static inline void convert_XrSpaceQueryResultFB_host_to_win32(const XrSpaceQueryResultFB *in, XrSpaceQueryResultFB32 *out)
@@ -9017,7 +9017,7 @@ static inline void convert_XrSpaceQueryResultsFB_win32_to_host(struct conversion
     out->next = NULL;
     out->resultCapacityInput = in->resultCapacityInput;
     out->resultCountOutput = in->resultCountOutput;
-    out->results = convert_XrSpaceQueryResultFB_array_win32_to_host(ctx, (XrSpaceQueryResultFB32 *)(uintptr_t)UlongToPtr(in->results), in->resultCapacityInput);
+    out->results = convert_XrSpaceQueryResultFB_array_win32_to_host(ctx, (XrSpaceQueryResultFB32 *)UlongToPtr(in->results), in->resultCapacityInput);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -9028,7 +9028,7 @@ static inline void convert_XrSpaceQueryResultsFB_host_to_win32(const XrSpaceQuer
 
     out->resultCapacityInput = in->resultCapacityInput;
     out->resultCountOutput = in->resultCountOutput;
-    convert_XrSpaceQueryResultFB_array_host_to_win32(in->results, (XrSpaceQueryResultFB32 *)(uintptr_t)UlongToPtr(out->results), in->resultCapacityInput);
+    convert_XrSpaceQueryResultFB_array_host_to_win32(in->results, (XrSpaceQueryResultFB32 *)UlongToPtr(out->results), in->resultCapacityInput);
 }
 
 static inline void convert_XrSpaceSaveInfoFB_win32_to_host(const XrSpaceSaveInfoFB32 *in, XrSpaceSaveInfoFB *out)
@@ -9051,7 +9051,7 @@ static inline void convert_XrSpaceListSaveInfoFB_win32_to_host(struct conversion
     out->type = in->type;
     out->next = NULL;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
     out->location = in->location;
     if (in->next)
         FIXME("Unexpected next\n");
@@ -9061,7 +9061,7 @@ static inline void convert_XrSpaceListSaveInfoFB_host_to_win32(const XrSpaceList
 {
     if (!in) return;
 
-    convert_XrSpace_array_host_to_win32(in->spaces, (PTR32 *)(uintptr_t)UlongToPtr(out->spaces), in->spaceCount);
+    convert_XrSpace_array_host_to_win32(in->spaces, (XrSpace *)UlongToPtr(out->spaces), in->spaceCount);
 }
 
 static inline void convert_XrSpacesSaveInfoMETA_win32_to_host(struct conversion_context *ctx, const XrSpacesSaveInfoMETA32 *in, XrSpacesSaveInfoMETA *out)
@@ -9071,7 +9071,7 @@ static inline void convert_XrSpacesSaveInfoMETA_win32_to_host(struct conversion_
     out->type = in->type;
     out->next = NULL;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -9080,7 +9080,7 @@ static inline void convert_XrSpacesSaveInfoMETA_host_to_win32(const XrSpacesSave
 {
     if (!in) return;
 
-    convert_XrSpace_array_host_to_win32(in->spaces, (PTR32 *)(uintptr_t)UlongToPtr(out->spaces), in->spaceCount);
+    convert_XrSpace_array_host_to_win32(in->spaces, (XrSpace *)UlongToPtr(out->spaces), in->spaceCount);
 }
 
 static inline void convert_XrVirtualKeyboardInputInfoMETA_win32_to_host(const XrVirtualKeyboardInputInfoMETA32 *in, XrVirtualKeyboardInputInfoMETA *out)
@@ -9154,7 +9154,7 @@ static inline void convert_XrVirtualKeyboardModelVisibilitySetInfoMETA_win32_to_
         FIXME("Unexpected next\n");
 }
 
-static inline XrSpaceUserFB *convert_XrSpaceUserFB_array_win32_to_host(struct conversion_context *ctx, const PTR32 *in, uint32_t count)
+static inline XrSpaceUserFB *convert_XrSpaceUserFB_array_win32_to_host(struct conversion_context *ctx, const XrSpaceUserFB *in, uint32_t count)
 {
     XrSpaceUserFB *out;
     unsigned int i;
@@ -9164,13 +9164,13 @@ static inline XrSpaceUserFB *convert_XrSpaceUserFB_array_win32_to_host(struct co
     out = conversion_context_alloc(ctx, count * sizeof(*out));
     for (i = 0; i < count; i++)
     {
-        out[i] = (XrSpaceUserFB)(uintptr_t)UlongToPtr(in[i]);
+        out[i] = *(XrSpaceUserFB*)(uintptr_t)&in[i];
     }
 
     return out;
 }
 
-static inline void convert_XrSpaceUserFB_array_host_to_win32(const XrSpaceUserFB *in, PTR32 *out, uint32_t count)
+static inline void convert_XrSpaceUserFB_array_host_to_win32(const XrSpaceUserFB *in, XrSpaceUserFB *out, uint32_t count)
 {
     unsigned int i;
 
@@ -9178,7 +9178,7 @@ static inline void convert_XrSpaceUserFB_array_host_to_win32(const XrSpaceUserFB
 
     for (i = 0; i < count; i++)
     {
-        out[i] = PtrToUlong(in[i]);
+        out[i] = in[i];
     }
 }
 
@@ -9189,9 +9189,9 @@ static inline void convert_XrSpaceShareInfoFB_win32_to_host(struct conversion_co
     out->type = in->type;
     out->next = NULL;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
     out->userCount = in->userCount;
-    out->users = convert_XrSpaceUserFB_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->users), in->userCount);
+    out->users = convert_XrSpaceUserFB_array_win32_to_host(ctx, (XrSpaceUserFB *)UlongToPtr(in->users), in->userCount);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -9200,8 +9200,8 @@ static inline void convert_XrSpaceShareInfoFB_host_to_win32(const XrSpaceShareIn
 {
     if (!in) return;
 
-    convert_XrSpace_array_host_to_win32(in->spaces, (PTR32 *)(uintptr_t)UlongToPtr(out->spaces), in->spaceCount);
-    convert_XrSpaceUserFB_array_host_to_win32(in->users, (PTR32 *)(uintptr_t)UlongToPtr(out->users), in->userCount);
+    convert_XrSpace_array_host_to_win32(in->spaces, (XrSpace *)UlongToPtr(out->spaces), in->spaceCount);
+    convert_XrSpaceUserFB_array_host_to_win32(in->users, (XrSpaceUserFB *)UlongToPtr(out->users), in->userCount);
 }
 
 static inline void convert_XrShareSpacesRecipientBaseHeaderMETA_win32_to_host(const XrShareSpacesRecipientBaseHeaderMETA32 *in, XrShareSpacesRecipientBaseHeaderMETA *out)
@@ -9237,8 +9237,8 @@ static inline void convert_XrShareSpacesInfoMETA_win32_to_host(struct conversion
     out->type = in->type;
     out->next = NULL;
     out->spaceCount = in->spaceCount;
-    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (PTR32 *)(uintptr_t)UlongToPtr(in->spaces), in->spaceCount);
-    out->recipientInfo = convert_XrShareSpacesRecipientBaseHeaderMETA_array_win32_to_host(ctx, (const XrShareSpacesRecipientBaseHeaderMETA32 *)(uintptr_t)UlongToPtr(in->recipientInfo), 1);
+    out->spaces = convert_XrSpace_array_win32_to_host(ctx, (XrSpace *)UlongToPtr(in->spaces), in->spaceCount);
+    out->recipientInfo = convert_XrShareSpacesRecipientBaseHeaderMETA_array_win32_to_host(ctx, (const XrShareSpacesRecipientBaseHeaderMETA32 *)UlongToPtr(in->recipientInfo), 1);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -9247,7 +9247,7 @@ static inline void convert_XrShareSpacesInfoMETA_host_to_win32(const XrShareSpac
 {
     if (!in) return;
 
-    convert_XrSpace_array_host_to_win32(in->spaces, (PTR32 *)(uintptr_t)UlongToPtr(out->spaces), in->spaceCount);
+    convert_XrSpace_array_host_to_win32(in->spaces, (XrSpace *)UlongToPtr(out->spaces), in->spaceCount);
 }
 
 static inline void convert_XrSpatialAnchorShareInfoBD_win32_to_host(const XrSpatialAnchorShareInfoBD32 *in, XrSpatialAnchorShareInfoBD *out)
@@ -9284,7 +9284,7 @@ static inline void convert_XrColocationAdvertisementStartInfoMETA_win32_to_host(
     out->type = in->type;
     out->next = NULL;
     out->bufferSize = in->bufferSize;
-    out->buffer = (uint8_t *)(uintptr_t)UlongToPtr(in->buffer);
+    out->buffer = (uint8_t *)UlongToPtr(in->buffer);
     if (in->next)
         FIXME("Unexpected next\n");
 }
@@ -9408,9 +9408,9 @@ static inline void convert_XrInteractionProfileSuggestedBinding_win32_to_host(st
     out->next = NULL;
     out->interactionProfile = in->interactionProfile;
     out->countSuggestedBindings = in->countSuggestedBindings;
-    out->suggestedBindings = convert_XrActionSuggestedBinding_array_win32_to_host(ctx, (const XrActionSuggestedBinding32 *)(uintptr_t)UlongToPtr(in->suggestedBindings), in->countSuggestedBindings);
+    out->suggestedBindings = convert_XrActionSuggestedBinding_array_win32_to_host(ctx, (const XrActionSuggestedBinding32 *)UlongToPtr(in->suggestedBindings), in->countSuggestedBindings);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -9421,7 +9421,7 @@ static inline void convert_XrInteractionProfileSuggestedBinding_win32_to_host(st
             out_ext->type = XR_TYPE_BINDING_MODIFICATIONS_KHR;
             out_ext->next = NULL;
             out_ext->bindingModificationCount = in_ext->bindingModificationCount;
-            out_ext->bindingModifications = convert_XrBindingModificationBaseHeaderKHR_pointer_array_win32_to_host(ctx, (const XrBindingModificationBaseHeaderKHR32 * const*)(uintptr_t)UlongToPtr(in_ext->bindingModifications), in_ext->bindingModificationCount);
+            out_ext->bindingModifications = convert_XrBindingModificationBaseHeaderKHR_pointer_array_win32_to_host(ctx, (const XrBindingModificationBaseHeaderKHR32 * const*)UlongToPtr(in_ext->bindingModifications), in_ext->bindingModificationCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -9517,9 +9517,9 @@ static inline void convert_XrActionsSyncInfo_win32_to_host(struct conversion_con
     out->type = in->type;
     out->next = NULL;
     out->countActiveActionSets = in->countActiveActionSets;
-    out->activeActionSets = convert_XrActiveActionSet_array_win32_to_host(ctx, (const XrActiveActionSet32 *)(uintptr_t)UlongToPtr(in->activeActionSets), in->countActiveActionSets);
+    out->activeActionSets = convert_XrActiveActionSet_array_win32_to_host(ctx, (const XrActiveActionSet32 *)UlongToPtr(in->activeActionSets), in->countActiveActionSets);
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -9530,7 +9530,7 @@ static inline void convert_XrActionsSyncInfo_win32_to_host(struct conversion_con
             out_ext->type = XR_TYPE_ACTIVE_ACTION_SET_PRIORITIES_EXT;
             out_ext->next = NULL;
             out_ext->actionSetPriorityCount = in_ext->actionSetPriorityCount;
-            out_ext->actionSetPriorities = convert_XrActiveActionSetPriorityEXT_array_win32_to_host(ctx, (const XrActiveActionSetPriorityEXT32 *)(uintptr_t)UlongToPtr(in_ext->actionSetPriorities), in_ext->actionSetPriorityCount);
+            out_ext->actionSetPriorities = convert_XrActiveActionSetPriorityEXT_array_win32_to_host(ctx, (const XrActiveActionSetPriorityEXT32 *)UlongToPtr(in_ext->actionSetPriorities), in_ext->actionSetPriorityCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -9628,7 +9628,7 @@ static inline void convert_XrHandMeshIndexBufferMSFT_win32_to_host(const XrHandM
     out->indexBufferKey = in->indexBufferKey;
     out->indexCapacityInput = in->indexCapacityInput;
     out->indexCountOutput = in->indexCountOutput;
-    out->indices = (uint32_t *)(uintptr_t)UlongToPtr(in->indices);
+    out->indices = (uint32_t *)UlongToPtr(in->indices);
 }
 
 static inline void convert_XrHandMeshIndexBufferMSFT_host_to_win32(const XrHandMeshIndexBufferMSFT *in, XrHandMeshIndexBufferMSFT32 *out)
@@ -9648,7 +9648,7 @@ static inline void convert_XrHandMeshVertexBufferMSFT_win32_to_host(const XrHand
     out->vertexUpdateTime = in->vertexUpdateTime;
     out->vertexCapacityInput = in->vertexCapacityInput;
     out->vertexCountOutput = in->vertexCountOutput;
-    out->vertices = (XrHandMeshVertexMSFT *)(uintptr_t)UlongToPtr(in->vertices);
+    out->vertices = (XrHandMeshVertexMSFT *)UlongToPtr(in->vertices);
 }
 
 static inline void convert_XrHandMeshVertexBufferMSFT_host_to_win32(const XrHandMeshVertexBufferMSFT *in, XrHandMeshVertexBufferMSFT32 *out)
@@ -9705,7 +9705,7 @@ static inline void convert_XrSpatialAnchorsUpdateExpirationInfoML_win32_to_host(
     out->type = in->type;
     out->next = NULL;
     out->uuidCount = in->uuidCount;
-    out->uuids = (const XrUuidEXT *)(uintptr_t)UlongToPtr(in->uuids);
+    out->uuids = (const XrUuidEXT *)UlongToPtr(in->uuids);
     out->expiration = in->expiration;
     if (in->next)
         FIXME("Unexpected next\n");
@@ -9723,7 +9723,7 @@ static inline void convert_XrSpatialAnchorsUpdateExpirationCompletionML_win32_to
     out->next = NULL;
     out->futureResult = in->futureResult;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -9734,7 +9734,7 @@ static inline void convert_XrSpatialAnchorsUpdateExpirationCompletionML_win32_to
             out_ext->type = XR_TYPE_SPATIAL_ANCHORS_UPDATE_EXPIRATION_COMPLETION_DETAILS_ML;
             out_ext->next = NULL;
             out_ext->resultCount = in_ext->resultCount;
-            out_ext->results = (XrSpatialAnchorCompletionResultML *)(uintptr_t)UlongToPtr(in_ext->results);
+            out_ext->results = (XrSpatialAnchorCompletionResultML *)UlongToPtr(in_ext->results);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -9859,7 +9859,7 @@ static inline void convert_XrFrameState_win32_to_host(struct conversion_context 
     out->predictedDisplayPeriod = in->predictedDisplayPeriod;
     out->shouldRender = in->shouldRender;
 
-    for (in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)(uintptr_t)UlongToPtr(in_header->next))
+    for (in_header = (const XrBaseInStructure32 *)UlongToPtr(in->next); in_header; in_header = (const XrBaseInStructure32 *)UlongToPtr(in_header->next))
     {
         switch (in_header->type)
         {
@@ -9870,7 +9870,7 @@ static inline void convert_XrFrameState_win32_to_host(struct conversion_context 
             out_ext->type = XR_TYPE_SECONDARY_VIEW_CONFIGURATION_FRAME_STATE_MSFT;
             out_ext->next = NULL;
             out_ext->viewConfigurationCount = in_ext->viewConfigurationCount;
-            out_ext->viewConfigurationStates = convert_XrSecondaryViewConfigurationStateMSFT_array_win32_to_host(ctx, (XrSecondaryViewConfigurationStateMSFT32 *)(uintptr_t)UlongToPtr(in_ext->viewConfigurationStates), in_ext->viewConfigurationCount);
+            out_ext->viewConfigurationStates = convert_XrSecondaryViewConfigurationStateMSFT_array_win32_to_host(ctx, (XrSecondaryViewConfigurationStateMSFT32 *)UlongToPtr(in_ext->viewConfigurationStates), in_ext->viewConfigurationCount);
             out_header->next = (void *)out_ext;
             out_header = (void *)out_ext;
             break;
@@ -9915,7 +9915,7 @@ static inline void convert_XrFrameState_host_to_win32(const XrFrameState *in, Xr
             const XrSecondaryViewConfigurationFrameStateMSFT *in_ext = (const XrSecondaryViewConfigurationFrameStateMSFT *)in_header;
             out_ext->type = XR_TYPE_SECONDARY_VIEW_CONFIGURATION_FRAME_STATE_MSFT;
             out_ext->viewConfigurationCount = in_ext->viewConfigurationCount;
-            convert_XrSecondaryViewConfigurationStateMSFT_array_host_to_win32(in_ext->viewConfigurationStates, (XrSecondaryViewConfigurationStateMSFT32 *)(uintptr_t)UlongToPtr(out_ext->viewConfigurationStates), in_ext->viewConfigurationCount);
+            convert_XrSecondaryViewConfigurationStateMSFT_array_host_to_win32(in_ext->viewConfigurationStates, (XrSecondaryViewConfigurationStateMSFT32 *)UlongToPtr(out_ext->viewConfigurationStates), in_ext->viewConfigurationCount);
             out_header = (void *)out_ext;
             break;
         }
@@ -9951,10 +9951,10 @@ static NTSTATUS thunk32_xrAcquireEnvironmentDepthImageMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->environmentDepthProvider), params->acquireInfo, params->environmentDepthImage);
 
-    convert_XrEnvironmentDepthImageAcquireInfoMETA_win32_to_host((const XrEnvironmentDepthImageAcquireInfoMETA32 *)(uintptr_t)UlongToPtr(params->acquireInfo), &acquireInfo_host);
-    convert_XrEnvironmentDepthImageMETA_win32_to_host((XrEnvironmentDepthImageMETA32 *)(uintptr_t)UlongToPtr(params->environmentDepthImage), &environmentDepthImage_host);
+    convert_XrEnvironmentDepthImageAcquireInfoMETA_win32_to_host((const XrEnvironmentDepthImageAcquireInfoMETA32 *)UlongToPtr(params->acquireInfo), &acquireInfo_host);
+    convert_XrEnvironmentDepthImageMETA_win32_to_host((XrEnvironmentDepthImageMETA32 *)UlongToPtr(params->environmentDepthImage), &environmentDepthImage_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrAcquireEnvironmentDepthImageMETA(params->environmentDepthProvider, &acquireInfo_host, &environmentDepthImage_host);
-    convert_XrEnvironmentDepthImageMETA_host_to_win32(&environmentDepthImage_host, (XrEnvironmentDepthImageMETA32 *)(XrEnvironmentDepthImageMETA32 *)(uintptr_t)UlongToPtr(params->environmentDepthImage));
+    convert_XrEnvironmentDepthImageMETA_host_to_win32(&environmentDepthImage_host, (XrEnvironmentDepthImageMETA32 *)(XrEnvironmentDepthImageMETA32 *)UlongToPtr(params->environmentDepthImage));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -9991,9 +9991,9 @@ static NTSTATUS thunk32_xrAcquireSwapchainImage(void *args)
     if (params->acquireInfo)
     {
         acquireInfo_host = conversion_context_alloc(ctx, sizeof(*acquireInfo_host));
-        convert_XrSwapchainImageAcquireInfo_win32_to_host((const XrSwapchainImageAcquireInfo32 *)(uintptr_t)UlongToPtr(params->acquireInfo), acquireInfo_host);
+        convert_XrSwapchainImageAcquireInfo_win32_to_host((const XrSwapchainImageAcquireInfo32 *)UlongToPtr(params->acquireInfo), acquireInfo_host);
     }
-    params->result = g_xr_host_instance_dispatch_table.p_xrAcquireSwapchainImage(wine_swapchain_from_handle(params->swapchain)->host_swapchain, acquireInfo_host, (uint32_t *)(uintptr_t)UlongToPtr(params->index));
+    params->result = g_xr_host_instance_dispatch_table.p_xrAcquireSwapchainImage(wine_swapchain_from_handle(params->swapchain)->host_swapchain, acquireInfo_host, (uint32_t *)UlongToPtr(params->index));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -10026,10 +10026,10 @@ static NTSTATUS thunk32_xrAllocateWorldMeshBufferML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->detector), params->size, params->buffer);
 
-    convert_XrWorldMeshBufferSizeML_win32_to_host((const XrWorldMeshBufferSizeML32 *)(uintptr_t)UlongToPtr(params->size), &size_host);
-    convert_XrWorldMeshBufferML_win32_to_host((XrWorldMeshBufferML32 *)(uintptr_t)UlongToPtr(params->buffer), &buffer_host);
+    convert_XrWorldMeshBufferSizeML_win32_to_host((const XrWorldMeshBufferSizeML32 *)UlongToPtr(params->size), &size_host);
+    convert_XrWorldMeshBufferML_win32_to_host((XrWorldMeshBufferML32 *)UlongToPtr(params->buffer), &buffer_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrAllocateWorldMeshBufferML(params->detector, &size_host, &buffer_host);
-    convert_XrWorldMeshBufferML_host_to_win32(&buffer_host, (XrWorldMeshBufferML32 *)(XrWorldMeshBufferML32 *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrWorldMeshBufferML_host_to_win32(&buffer_host, (XrWorldMeshBufferML32 *)(XrWorldMeshBufferML32 *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10059,7 +10059,7 @@ static NTSTATUS thunk32_xrApplyForceFeedbackCurlMNDX(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->handTracker), params->locations);
 
-    convert_XrForceFeedbackCurlApplyLocationsMNDX_win32_to_host((const XrForceFeedbackCurlApplyLocationsMNDX32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrForceFeedbackCurlApplyLocationsMNDX_win32_to_host((const XrForceFeedbackCurlApplyLocationsMNDX32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrApplyForceFeedbackCurlMNDX(params->handTracker, &locations_host);
     return STATUS_SUCCESS;
 }
@@ -10092,8 +10092,8 @@ static NTSTATUS thunk32_xrApplyHapticFeedback(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->hapticActionInfo, params->hapticFeedback);
 
-    convert_XrHapticActionInfo_win32_to_host((const XrHapticActionInfo32 *)(uintptr_t)UlongToPtr(params->hapticActionInfo), &hapticActionInfo_host);
-    convert_XrHapticBaseHeader_win32_to_host((const XrHapticBaseHeader32 *)(uintptr_t)UlongToPtr(params->hapticFeedback), &hapticFeedback_host);
+    convert_XrHapticActionInfo_win32_to_host((const XrHapticActionInfo32 *)UlongToPtr(params->hapticActionInfo), &hapticActionInfo_host);
+    convert_XrHapticBaseHeader_win32_to_host((const XrHapticBaseHeader32 *)UlongToPtr(params->hapticFeedback), &hapticFeedback_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrApplyHapticFeedback(wine_session_from_handle(params->session)->host_session, &hapticActionInfo_host, &hapticFeedback_host);
     return STATUS_SUCCESS;
 }
@@ -10127,7 +10127,7 @@ static NTSTATUS thunk32_xrAttachSessionActionSets(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->attachInfo);
 
     init_conversion_context(ctx);
-    convert_XrSessionActionSetsAttachInfo_win32_to_host(ctx, (const XrSessionActionSetsAttachInfo32 *)(uintptr_t)UlongToPtr(params->attachInfo), &attachInfo_host);
+    convert_XrSessionActionSetsAttachInfo_win32_to_host(ctx, (const XrSessionActionSetsAttachInfo32 *)UlongToPtr(params->attachInfo), &attachInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrAttachSessionActionSets(wine_session_from_handle(params->session)->host_session, &attachInfo_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -10165,7 +10165,7 @@ static NTSTATUS thunk32_xrBeginFrame(void *args)
     if (params->frameBeginInfo)
     {
         frameBeginInfo_host = conversion_context_alloc(ctx, sizeof(*frameBeginInfo_host));
-        convert_XrFrameBeginInfo_win32_to_host((const XrFrameBeginInfo32 *)(uintptr_t)UlongToPtr(params->frameBeginInfo), frameBeginInfo_host);
+        convert_XrFrameBeginInfo_win32_to_host((const XrFrameBeginInfo32 *)UlongToPtr(params->frameBeginInfo), frameBeginInfo_host);
     }
     params->result = g_xr_host_instance_dispatch_table.p_xrBeginFrame(wine_session_from_handle(params->session)->host_session, frameBeginInfo_host);
     free_conversion_context(ctx);
@@ -10198,7 +10198,7 @@ static NTSTATUS thunk32_xrBeginPlaneDetectionEXT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->planeDetector), params->beginInfo);
 
-    convert_XrPlaneDetectorBeginInfoEXT_win32_to_host((const XrPlaneDetectorBeginInfoEXT32 *)(uintptr_t)UlongToPtr(params->beginInfo), &beginInfo_host);
+    convert_XrPlaneDetectorBeginInfoEXT_win32_to_host((const XrPlaneDetectorBeginInfoEXT32 *)UlongToPtr(params->beginInfo), &beginInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrBeginPlaneDetectionEXT(params->planeDetector, &beginInfo_host);
     return STATUS_SUCCESS;
 }
@@ -10232,7 +10232,7 @@ static NTSTATUS thunk32_xrBeginSession(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->beginInfo);
 
     init_conversion_context(ctx);
-    convert_XrSessionBeginInfo_win32_to_host(ctx, (const XrSessionBeginInfo32 *)(uintptr_t)UlongToPtr(params->beginInfo), &beginInfo_host);
+    convert_XrSessionBeginInfo_win32_to_host(ctx, (const XrSessionBeginInfo32 *)UlongToPtr(params->beginInfo), &beginInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrBeginSession(wine_session_from_handle(params->session)->host_session, &beginInfo_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -10264,7 +10264,7 @@ static NTSTATUS thunk32_xrCancelFutureEXT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->cancelInfo);
 
-    convert_XrFutureCancelInfoEXT_win32_to_host((const XrFutureCancelInfoEXT32 *)(uintptr_t)UlongToPtr(params->cancelInfo), &cancelInfo_host);
+    convert_XrFutureCancelInfoEXT_win32_to_host((const XrFutureCancelInfoEXT32 *)UlongToPtr(params->cancelInfo), &cancelInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCancelFutureEXT(wine_instance_from_handle(params->instance)->host_instance, &cancelInfo_host);
     return STATUS_SUCCESS;
 }
@@ -10296,8 +10296,8 @@ static NTSTATUS thunk32_xrCaptureSceneAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->info, params->future);
 
-    convert_XrSceneCaptureInfoBD_win32_to_host((const XrSceneCaptureInfoBD32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCaptureSceneAsyncBD(params->provider, &info_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSceneCaptureInfoBD_win32_to_host((const XrSceneCaptureInfoBD32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCaptureSceneAsyncBD(params->provider, &info_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10328,9 +10328,9 @@ static NTSTATUS thunk32_xrCaptureSceneCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCaptureSceneCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10360,7 +10360,7 @@ static NTSTATUS thunk32_xrChangeVirtualKeyboardTextContextMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->keyboard), params->changeInfo);
 
-    convert_XrVirtualKeyboardTextContextChangeInfoMETA_win32_to_host((const XrVirtualKeyboardTextContextChangeInfoMETA32 *)(uintptr_t)UlongToPtr(params->changeInfo), &changeInfo_host);
+    convert_XrVirtualKeyboardTextContextChangeInfoMETA_win32_to_host((const XrVirtualKeyboardTextContextChangeInfoMETA32 *)UlongToPtr(params->changeInfo), &changeInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrChangeVirtualKeyboardTextContextMETA(params->keyboard, &changeInfo_host);
     return STATUS_SUCCESS;
 }
@@ -10422,7 +10422,7 @@ static NTSTATUS thunk32_xrComputeNewSceneMSFT(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->sceneObserver), params->computeInfo);
 
     init_conversion_context(ctx);
-    convert_XrNewSceneComputeInfoMSFT_win32_to_host(ctx, (const XrNewSceneComputeInfoMSFT32 *)(uintptr_t)UlongToPtr(params->computeInfo), &computeInfo_host);
+    convert_XrNewSceneComputeInfoMSFT_win32_to_host(ctx, (const XrNewSceneComputeInfoMSFT32 *)UlongToPtr(params->computeInfo), &computeInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrComputeNewSceneMSFT(params->sceneObserver, &computeInfo_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -10454,7 +10454,7 @@ static NTSTATUS thunk32_xrConvertTimeToTimespecTimeKHR(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->time), params->timespecTime);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->time, (struct timespec *)(uintptr_t)UlongToPtr(params->timespecTime));
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimeToTimespecTimeKHR(wine_instance_from_handle(params->instance)->host_instance, params->time, (struct timespec *)UlongToPtr(params->timespecTime));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10484,7 +10484,7 @@ static NTSTATUS thunk32_xrConvertTimespecTimeToTimeKHR(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->timespecTime, params->time);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle(params->instance)->host_instance, (const struct timespec *)(uintptr_t)UlongToPtr(params->timespecTime), (XrTime *)(uintptr_t)UlongToPtr(params->time));
+    params->result = g_xr_host_instance_dispatch_table.p_xrConvertTimespecTimeToTimeKHR(wine_instance_from_handle(params->instance)->host_instance, (const struct timespec *)UlongToPtr(params->timespecTime), (XrTime *)UlongToPtr(params->time));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10516,10 +10516,10 @@ static NTSTATUS thunk32_xrCreateAction(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->actionSet), params->createInfo, params->action);
 
-    convert_XrActionCreateInfo_win32_to_host((const XrActionCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    action_host = (XrAction)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->action));
+    convert_XrActionCreateInfo_win32_to_host((const XrActionCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    action_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateAction(params->actionSet, &createInfo_host, &action_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->action) = PtrToUlong(action_host);
+    *(XrAction *)UlongToPtr(params->action) = action_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10551,10 +10551,10 @@ static NTSTATUS thunk32_xrCreateActionSet(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->createInfo, params->actionSet);
 
-    convert_XrActionSetCreateInfo_win32_to_host((const XrActionSetCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    actionSet_host = (XrActionSet)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->actionSet));
+    convert_XrActionSetCreateInfo_win32_to_host((const XrActionSetCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    actionSet_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateActionSet(wine_instance_from_handle(params->instance)->host_instance, &createInfo_host, &actionSet_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->actionSet) = PtrToUlong(actionSet_host);
+    *(XrActionSet *)UlongToPtr(params->actionSet) = actionSet_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10586,10 +10586,10 @@ static NTSTATUS thunk32_xrCreateActionSpace(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrActionSpaceCreateInfo_win32_to_host((const XrActionSpaceCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrActionSpaceCreateInfo_win32_to_host((const XrActionSpaceCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateActionSpace(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10621,10 +10621,10 @@ static NTSTATUS thunk32_xrCreateAnchorSpaceANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->anchorOutput);
 
-    convert_XrAnchorSpaceCreateInfoANDROID_win32_to_host((const XrAnchorSpaceCreateInfoANDROID32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    anchorOutput_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->anchorOutput));
+    convert_XrAnchorSpaceCreateInfoANDROID_win32_to_host((const XrAnchorSpaceCreateInfoANDROID32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    anchorOutput_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateAnchorSpaceANDROID(wine_session_from_handle(params->session)->host_session, &createInfo_host, &anchorOutput_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->anchorOutput) = PtrToUlong(anchorOutput_host);
+    *(XrSpace *)UlongToPtr(params->anchorOutput) = anchorOutput_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10656,10 +10656,10 @@ static NTSTATUS thunk32_xrCreateAnchorSpaceBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrAnchorSpaceCreateInfoBD_win32_to_host((const XrAnchorSpaceCreateInfoBD32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrAnchorSpaceCreateInfoBD_win32_to_host((const XrAnchorSpaceCreateInfoBD32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateAnchorSpaceBD(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10691,10 +10691,10 @@ static NTSTATUS thunk32_xrCreateBodyTrackerBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->bodyTracker);
 
-    convert_XrBodyTrackerCreateInfoBD_win32_to_host((const XrBodyTrackerCreateInfoBD32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    bodyTracker_host = (XrBodyTrackerBD)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->bodyTracker));
+    convert_XrBodyTrackerCreateInfoBD_win32_to_host((const XrBodyTrackerCreateInfoBD32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    bodyTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateBodyTrackerBD(wine_session_from_handle(params->session)->host_session, &createInfo_host, &bodyTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->bodyTracker) = PtrToUlong(bodyTracker_host);
+    *(XrBodyTrackerBD *)UlongToPtr(params->bodyTracker) = bodyTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10726,10 +10726,10 @@ static NTSTATUS thunk32_xrCreateBodyTrackerFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->bodyTracker);
 
-    convert_XrBodyTrackerCreateInfoFB_win32_to_host((const XrBodyTrackerCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    bodyTracker_host = (XrBodyTrackerFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->bodyTracker));
+    convert_XrBodyTrackerCreateInfoFB_win32_to_host((const XrBodyTrackerCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    bodyTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateBodyTrackerFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &bodyTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->bodyTracker) = PtrToUlong(bodyTracker_host);
+    *(XrBodyTrackerFB *)UlongToPtr(params->bodyTracker) = bodyTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10761,10 +10761,10 @@ static NTSTATUS thunk32_xrCreateBodyTrackerHTC(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->bodyTracker);
 
-    convert_XrBodyTrackerCreateInfoHTC_win32_to_host((const XrBodyTrackerCreateInfoHTC32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    bodyTracker_host = (XrBodyTrackerHTC)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->bodyTracker));
+    convert_XrBodyTrackerCreateInfoHTC_win32_to_host((const XrBodyTrackerCreateInfoHTC32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    bodyTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateBodyTrackerHTC(wine_session_from_handle(params->session)->host_session, &createInfo_host, &bodyTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->bodyTracker) = PtrToUlong(bodyTracker_host);
+    *(XrBodyTrackerHTC *)UlongToPtr(params->bodyTracker) = bodyTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10796,10 +10796,10 @@ static NTSTATUS thunk32_xrCreateDeviceAnchorPersistenceANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->outHandle);
 
-    convert_XrDeviceAnchorPersistenceCreateInfoANDROID_win32_to_host((const XrDeviceAnchorPersistenceCreateInfoANDROID32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    outHandle_host = (XrDeviceAnchorPersistenceANDROID)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->outHandle));
+    convert_XrDeviceAnchorPersistenceCreateInfoANDROID_win32_to_host((const XrDeviceAnchorPersistenceCreateInfoANDROID32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    outHandle_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateDeviceAnchorPersistenceANDROID(wine_session_from_handle(params->session)->host_session, &createInfo_host, &outHandle_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->outHandle) = PtrToUlong(outHandle_host);
+    *(XrDeviceAnchorPersistenceANDROID *)UlongToPtr(params->outHandle) = outHandle_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10831,10 +10831,10 @@ static NTSTATUS thunk32_xrCreateEnvironmentDepthProviderMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->environmentDepthProvider);
 
-    convert_XrEnvironmentDepthProviderCreateInfoMETA_win32_to_host((const XrEnvironmentDepthProviderCreateInfoMETA32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    environmentDepthProvider_host = (XrEnvironmentDepthProviderMETA)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->environmentDepthProvider));
+    convert_XrEnvironmentDepthProviderCreateInfoMETA_win32_to_host((const XrEnvironmentDepthProviderCreateInfoMETA32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    environmentDepthProvider_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateEnvironmentDepthProviderMETA(wine_session_from_handle(params->session)->host_session, &createInfo_host, &environmentDepthProvider_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->environmentDepthProvider) = PtrToUlong(environmentDepthProvider_host);
+    *(XrEnvironmentDepthProviderMETA *)UlongToPtr(params->environmentDepthProvider) = environmentDepthProvider_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10866,10 +10866,10 @@ static NTSTATUS thunk32_xrCreateEnvironmentDepthSwapchainMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->environmentDepthProvider), params->createInfo, params->swapchain);
 
-    convert_XrEnvironmentDepthSwapchainCreateInfoMETA_win32_to_host((const XrEnvironmentDepthSwapchainCreateInfoMETA32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    swapchain_host = (XrEnvironmentDepthSwapchainMETA)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->swapchain));
+    convert_XrEnvironmentDepthSwapchainCreateInfoMETA_win32_to_host((const XrEnvironmentDepthSwapchainCreateInfoMETA32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    swapchain_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateEnvironmentDepthSwapchainMETA(params->environmentDepthProvider, &createInfo_host, &swapchain_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->swapchain) = PtrToUlong(swapchain_host);
+    *(XrEnvironmentDepthSwapchainMETA *)UlongToPtr(params->swapchain) = swapchain_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10900,9 +10900,9 @@ static NTSTATUS thunk32_xrCreateExportedLocalizationMapML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->mapUuid, params->map);
 
-    map_host = (XrExportedLocalizationMapML)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->map));
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateExportedLocalizationMapML(wine_session_from_handle(params->session)->host_session, (const XrUuidEXT *)(uintptr_t)UlongToPtr(params->mapUuid), &map_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->map) = PtrToUlong(map_host);
+    map_host = XR_NULL_HANDLE;
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateExportedLocalizationMapML(wine_session_from_handle(params->session)->host_session, (const XrUuidEXT *)UlongToPtr(params->mapUuid), &map_host);
+    *(XrExportedLocalizationMapML *)UlongToPtr(params->map) = map_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10934,10 +10934,10 @@ static NTSTATUS thunk32_xrCreateEyeTrackerFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->eyeTracker);
 
-    convert_XrEyeTrackerCreateInfoFB_win32_to_host((const XrEyeTrackerCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    eyeTracker_host = (XrEyeTrackerFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->eyeTracker));
+    convert_XrEyeTrackerCreateInfoFB_win32_to_host((const XrEyeTrackerCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    eyeTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateEyeTrackerFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &eyeTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->eyeTracker) = PtrToUlong(eyeTracker_host);
+    *(XrEyeTrackerFB *)UlongToPtr(params->eyeTracker) = eyeTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -10969,10 +10969,10 @@ static NTSTATUS thunk32_xrCreateFaceTracker2FB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->faceTracker);
 
-    convert_XrFaceTrackerCreateInfo2FB_win32_to_host((const XrFaceTrackerCreateInfo2FB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    faceTracker_host = (XrFaceTracker2FB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->faceTracker));
+    convert_XrFaceTrackerCreateInfo2FB_win32_to_host((const XrFaceTrackerCreateInfo2FB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    faceTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateFaceTracker2FB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &faceTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->faceTracker) = PtrToUlong(faceTracker_host);
+    *(XrFaceTracker2FB *)UlongToPtr(params->faceTracker) = faceTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11004,10 +11004,10 @@ static NTSTATUS thunk32_xrCreateFaceTrackerFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->faceTracker);
 
-    convert_XrFaceTrackerCreateInfoFB_win32_to_host((const XrFaceTrackerCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    faceTracker_host = (XrFaceTrackerFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->faceTracker));
+    convert_XrFaceTrackerCreateInfoFB_win32_to_host((const XrFaceTrackerCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    faceTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateFaceTrackerFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &faceTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->faceTracker) = PtrToUlong(faceTracker_host);
+    *(XrFaceTrackerFB *)UlongToPtr(params->faceTracker) = faceTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11039,10 +11039,10 @@ static NTSTATUS thunk32_xrCreateFacialExpressionClientML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->facialExpressionClient);
 
-    convert_XrFacialExpressionClientCreateInfoML_win32_to_host((const XrFacialExpressionClientCreateInfoML32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    facialExpressionClient_host = (XrFacialExpressionClientML)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->facialExpressionClient));
+    convert_XrFacialExpressionClientCreateInfoML_win32_to_host((const XrFacialExpressionClientCreateInfoML32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    facialExpressionClient_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateFacialExpressionClientML(wine_session_from_handle(params->session)->host_session, &createInfo_host, &facialExpressionClient_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->facialExpressionClient) = PtrToUlong(facialExpressionClient_host);
+    *(XrFacialExpressionClientML *)UlongToPtr(params->facialExpressionClient) = facialExpressionClient_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11074,10 +11074,10 @@ static NTSTATUS thunk32_xrCreateFacialTrackerHTC(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->facialTracker);
 
-    convert_XrFacialTrackerCreateInfoHTC_win32_to_host((const XrFacialTrackerCreateInfoHTC32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    facialTracker_host = (XrFacialTrackerHTC)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->facialTracker));
+    convert_XrFacialTrackerCreateInfoHTC_win32_to_host((const XrFacialTrackerCreateInfoHTC32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    facialTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateFacialTrackerHTC(wine_session_from_handle(params->session)->host_session, &createInfo_host, &facialTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->facialTracker) = PtrToUlong(facialTracker_host);
+    *(XrFacialTrackerHTC *)UlongToPtr(params->facialTracker) = facialTracker_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11112,11 +11112,11 @@ static NTSTATUS thunk32_xrCreateFoveationProfileFB(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->profile);
 
     init_conversion_context(ctx);
-    convert_XrFoveationProfileCreateInfoFB_win32_to_host(ctx, (const XrFoveationProfileCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    profile_host = (XrFoveationProfileFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->profile));
+    convert_XrFoveationProfileCreateInfoFB_win32_to_host(ctx, (const XrFoveationProfileCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    profile_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateFoveationProfileFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &profile_host);
-    convert_XrFoveationProfileCreateInfoFB_host_to_win32(&createInfo_host, (XrFoveationProfileCreateInfoFB32 *)(const XrFoveationProfileCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo));
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->profile) = PtrToUlong(profile_host);
+    convert_XrFoveationProfileCreateInfoFB_host_to_win32(&createInfo_host, (XrFoveationProfileCreateInfoFB32 *)(const XrFoveationProfileCreateInfoFB32 *)UlongToPtr(params->createInfo));
+    *(XrFoveationProfileFB *)UlongToPtr(params->profile) = profile_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11149,10 +11149,10 @@ static NTSTATUS thunk32_xrCreateGeometryInstanceFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->outGeometryInstance);
 
-    convert_XrGeometryInstanceCreateInfoFB_win32_to_host((const XrGeometryInstanceCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    outGeometryInstance_host = (XrGeometryInstanceFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->outGeometryInstance));
+    convert_XrGeometryInstanceCreateInfoFB_win32_to_host((const XrGeometryInstanceCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    outGeometryInstance_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateGeometryInstanceFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &outGeometryInstance_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->outGeometryInstance) = PtrToUlong(outGeometryInstance_host);
+    *(XrGeometryInstanceFB *)UlongToPtr(params->outGeometryInstance) = outGeometryInstance_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11184,10 +11184,10 @@ static NTSTATUS thunk32_xrCreateHandMeshSpaceMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->handTracker), params->createInfo, params->space);
 
-    convert_XrHandMeshSpaceCreateInfoMSFT_win32_to_host((const XrHandMeshSpaceCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrHandMeshSpaceCreateInfoMSFT_win32_to_host((const XrHandMeshSpaceCreateInfoMSFT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateHandMeshSpaceMSFT(params->handTracker, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11222,10 +11222,10 @@ static NTSTATUS thunk32_xrCreateHandTrackerEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->handTracker);
 
     init_conversion_context(ctx);
-    convert_XrHandTrackerCreateInfoEXT_win32_to_host(ctx, (const XrHandTrackerCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    handTracker_host = (XrHandTrackerEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->handTracker));
+    convert_XrHandTrackerCreateInfoEXT_win32_to_host(ctx, (const XrHandTrackerCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    handTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateHandTrackerEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &handTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->handTracker) = PtrToUlong(handTracker_host);
+    *(XrHandTrackerEXT *)UlongToPtr(params->handTracker) = handTracker_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11260,10 +11260,10 @@ static NTSTATUS thunk32_xrCreateInstance(void *args)
     TRACE("%#x, %#x\n", params->createInfo, params->instance);
 
     init_conversion_context(ctx);
-    convert_XrInstanceCreateInfo_win32_to_host(ctx, (const XrInstanceCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    instance_host = (XrInstance)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->instance));
+    convert_XrInstanceCreateInfo_win32_to_host(ctx, (const XrInstanceCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    instance_host = XR_NULL_HANDLE;
     params->result = wine_xrCreateInstance(&createInfo_host, &instance_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->instance) = PtrToUlong(instance_host);
+    *(XrInstance *)UlongToPtr(params->instance) = instance_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11302,10 +11302,10 @@ static NTSTATUS thunk32_xrCreateKeyboardSpaceFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->keyboardSpace);
 
-    convert_XrKeyboardSpaceCreateInfoFB_win32_to_host((const XrKeyboardSpaceCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    keyboardSpace_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->keyboardSpace));
+    convert_XrKeyboardSpaceCreateInfoFB_win32_to_host((const XrKeyboardSpaceCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    keyboardSpace_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateKeyboardSpaceFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &keyboardSpace_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->keyboardSpace) = PtrToUlong(keyboardSpace_host);
+    *(XrSpace *)UlongToPtr(params->keyboardSpace) = keyboardSpace_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11340,10 +11340,10 @@ static NTSTATUS thunk32_xrCreateMarkerDetectorML(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->markerDetector);
 
     init_conversion_context(ctx);
-    convert_XrMarkerDetectorCreateInfoML_win32_to_host(ctx, (const XrMarkerDetectorCreateInfoML32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    markerDetector_host = (XrMarkerDetectorML)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->markerDetector));
+    convert_XrMarkerDetectorCreateInfoML_win32_to_host(ctx, (const XrMarkerDetectorCreateInfoML32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    markerDetector_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateMarkerDetectorML(wine_session_from_handle(params->session)->host_session, &createInfo_host, &markerDetector_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->markerDetector) = PtrToUlong(markerDetector_host);
+    *(XrMarkerDetectorML *)UlongToPtr(params->markerDetector) = markerDetector_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11376,10 +11376,10 @@ static NTSTATUS thunk32_xrCreateMarkerSpaceML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrMarkerSpaceCreateInfoML_win32_to_host((const XrMarkerSpaceCreateInfoML32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrMarkerSpaceCreateInfoML_win32_to_host((const XrMarkerSpaceCreateInfoML32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateMarkerSpaceML(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11411,10 +11411,10 @@ static NTSTATUS thunk32_xrCreateMarkerSpaceVARJO(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrMarkerSpaceCreateInfoVARJO_win32_to_host((const XrMarkerSpaceCreateInfoVARJO32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrMarkerSpaceCreateInfoVARJO_win32_to_host((const XrMarkerSpaceCreateInfoVARJO32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateMarkerSpaceVARJO(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11446,10 +11446,10 @@ static NTSTATUS thunk32_xrCreatePassthroughColorLutMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->passthrough), params->createInfo, params->colorLut);
 
-    convert_XrPassthroughColorLutCreateInfoMETA_win32_to_host((const XrPassthroughColorLutCreateInfoMETA32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    colorLut_host = (XrPassthroughColorLutMETA)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->colorLut));
+    convert_XrPassthroughColorLutCreateInfoMETA_win32_to_host((const XrPassthroughColorLutCreateInfoMETA32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    colorLut_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreatePassthroughColorLutMETA(params->passthrough, &createInfo_host, &colorLut_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->colorLut) = PtrToUlong(colorLut_host);
+    *(XrPassthroughColorLutMETA *)UlongToPtr(params->colorLut) = colorLut_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11481,10 +11481,10 @@ static NTSTATUS thunk32_xrCreatePassthroughFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->outPassthrough);
 
-    convert_XrPassthroughCreateInfoFB_win32_to_host((const XrPassthroughCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    outPassthrough_host = (XrPassthroughFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->outPassthrough));
+    convert_XrPassthroughCreateInfoFB_win32_to_host((const XrPassthroughCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    outPassthrough_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreatePassthroughFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &outPassthrough_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->outPassthrough) = PtrToUlong(outPassthrough_host);
+    *(XrPassthroughFB *)UlongToPtr(params->outPassthrough) = outPassthrough_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11516,10 +11516,10 @@ static NTSTATUS thunk32_xrCreatePassthroughHTC(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->passthrough);
 
-    convert_XrPassthroughCreateInfoHTC_win32_to_host((const XrPassthroughCreateInfoHTC32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    passthrough_host = (XrPassthroughHTC)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->passthrough));
+    convert_XrPassthroughCreateInfoHTC_win32_to_host((const XrPassthroughCreateInfoHTC32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    passthrough_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreatePassthroughHTC(wine_session_from_handle(params->session)->host_session, &createInfo_host, &passthrough_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->passthrough) = PtrToUlong(passthrough_host);
+    *(XrPassthroughHTC *)UlongToPtr(params->passthrough) = passthrough_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11551,10 +11551,10 @@ static NTSTATUS thunk32_xrCreatePassthroughLayerFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->outLayer);
 
-    convert_XrPassthroughLayerCreateInfoFB_win32_to_host((const XrPassthroughLayerCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    outLayer_host = (XrPassthroughLayerFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->outLayer));
+    convert_XrPassthroughLayerCreateInfoFB_win32_to_host((const XrPassthroughLayerCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    outLayer_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreatePassthroughLayerFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &outLayer_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->outLayer) = PtrToUlong(outLayer_host);
+    *(XrPassthroughLayerFB *)UlongToPtr(params->outLayer) = outLayer_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11586,10 +11586,10 @@ static NTSTATUS thunk32_xrCreatePersistedAnchorSpaceANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->handle), params->createInfo, params->anchorOutput);
 
-    convert_XrPersistedAnchorSpaceCreateInfoANDROID_win32_to_host((const XrPersistedAnchorSpaceCreateInfoANDROID32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    anchorOutput_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->anchorOutput));
+    convert_XrPersistedAnchorSpaceCreateInfoANDROID_win32_to_host((const XrPersistedAnchorSpaceCreateInfoANDROID32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    anchorOutput_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreatePersistedAnchorSpaceANDROID(params->handle, &createInfo_host, &anchorOutput_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->anchorOutput) = PtrToUlong(anchorOutput_host);
+    *(XrSpace *)UlongToPtr(params->anchorOutput) = anchorOutput_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11621,10 +11621,10 @@ static NTSTATUS thunk32_xrCreatePlaneDetectorEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->planeDetector);
 
-    convert_XrPlaneDetectorCreateInfoEXT_win32_to_host((const XrPlaneDetectorCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    planeDetector_host = (XrPlaneDetectorEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->planeDetector));
+    convert_XrPlaneDetectorCreateInfoEXT_win32_to_host((const XrPlaneDetectorCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    planeDetector_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreatePlaneDetectorEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &planeDetector_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->planeDetector) = PtrToUlong(planeDetector_host);
+    *(XrPlaneDetectorEXT *)UlongToPtr(params->planeDetector) = planeDetector_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11656,10 +11656,10 @@ static NTSTATUS thunk32_xrCreateReferenceSpace(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrReferenceSpaceCreateInfo_win32_to_host((const XrReferenceSpaceCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrReferenceSpaceCreateInfo_win32_to_host((const XrReferenceSpaceCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateReferenceSpace(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11691,10 +11691,10 @@ static NTSTATUS thunk32_xrCreateRenderModelAssetEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->asset);
 
-    convert_XrRenderModelAssetCreateInfoEXT_win32_to_host((const XrRenderModelAssetCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    asset_host = (XrRenderModelAssetEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->asset));
+    convert_XrRenderModelAssetCreateInfoEXT_win32_to_host((const XrRenderModelAssetCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    asset_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateRenderModelAssetEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &asset_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->asset) = PtrToUlong(asset_host);
+    *(XrRenderModelAssetEXT *)UlongToPtr(params->asset) = asset_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11729,10 +11729,10 @@ static NTSTATUS thunk32_xrCreateRenderModelEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->renderModel);
 
     init_conversion_context(ctx);
-    convert_XrRenderModelCreateInfoEXT_win32_to_host(ctx, (const XrRenderModelCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    renderModel_host = (XrRenderModelEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->renderModel));
+    convert_XrRenderModelCreateInfoEXT_win32_to_host(ctx, (const XrRenderModelCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    renderModel_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateRenderModelEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &renderModel_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->renderModel) = PtrToUlong(renderModel_host);
+    *(XrRenderModelEXT *)UlongToPtr(params->renderModel) = renderModel_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11765,10 +11765,10 @@ static NTSTATUS thunk32_xrCreateRenderModelSpaceEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrRenderModelSpaceCreateInfoEXT_win32_to_host((const XrRenderModelSpaceCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrRenderModelSpaceCreateInfoEXT_win32_to_host((const XrRenderModelSpaceCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateRenderModelSpaceEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11806,11 +11806,11 @@ static NTSTATUS thunk32_xrCreateSceneMSFT(void *args)
     if (params->createInfo)
     {
         createInfo_host = conversion_context_alloc(ctx, sizeof(*createInfo_host));
-        convert_XrSceneCreateInfoMSFT_win32_to_host((const XrSceneCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), createInfo_host);
+        convert_XrSceneCreateInfoMSFT_win32_to_host((const XrSceneCreateInfoMSFT32 *)UlongToPtr(params->createInfo), createInfo_host);
     }
-    scene_host = (XrSceneMSFT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->scene));
+    scene_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSceneMSFT(params->sceneObserver, createInfo_host, &scene_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->scene) = PtrToUlong(scene_host);
+    *(XrSceneMSFT *)UlongToPtr(params->scene) = scene_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11849,11 +11849,11 @@ static NTSTATUS thunk32_xrCreateSceneObserverMSFT(void *args)
     if (params->createInfo)
     {
         createInfo_host = conversion_context_alloc(ctx, sizeof(*createInfo_host));
-        convert_XrSceneObserverCreateInfoMSFT_win32_to_host((const XrSceneObserverCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), createInfo_host);
+        convert_XrSceneObserverCreateInfoMSFT_win32_to_host((const XrSceneObserverCreateInfoMSFT32 *)UlongToPtr(params->createInfo), createInfo_host);
     }
-    sceneObserver_host = (XrSceneObserverMSFT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->sceneObserver));
+    sceneObserver_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSceneObserverMSFT(wine_session_from_handle(params->session)->host_session, createInfo_host, &sceneObserver_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->sceneObserver) = PtrToUlong(sceneObserver_host);
+    *(XrSceneObserverMSFT *)UlongToPtr(params->sceneObserver) = sceneObserver_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11889,10 +11889,10 @@ static NTSTATUS thunk32_xrCreateSenseDataProviderBD(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->provider);
 
     init_conversion_context(ctx);
-    convert_XrSenseDataProviderCreateInfoBD_win32_to_host(ctx, (const XrSenseDataProviderCreateInfoBD32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    provider_host = (XrSenseDataProviderBD)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->provider));
+    convert_XrSenseDataProviderCreateInfoBD_win32_to_host(ctx, (const XrSenseDataProviderCreateInfoBD32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    provider_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSenseDataProviderBD(wine_session_from_handle(params->session)->host_session, &createInfo_host, &provider_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->provider) = PtrToUlong(provider_host);
+    *(XrSenseDataProviderBD *)UlongToPtr(params->provider) = provider_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11928,10 +11928,10 @@ static NTSTATUS thunk32_xrCreateSession(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->createInfo, params->session);
 
     init_conversion_context(ctx);
-    convert_XrSessionCreateInfo_win32_to_host(ctx, (const XrSessionCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    session_host = (XrSession)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->session));
+    convert_XrSessionCreateInfo_win32_to_host(ctx, (const XrSessionCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    session_host = XR_NULL_HANDLE;
     params->result = wine_xrCreateSession(params->instance, &createInfo_host, &session_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->session) = PtrToUlong(session_host);
+    *(XrSession *)UlongToPtr(params->session) = session_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -11964,10 +11964,10 @@ static NTSTATUS thunk32_xrCreateSpaceUserFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->user);
 
-    convert_XrSpaceUserCreateInfoFB_win32_to_host((const XrSpaceUserCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    user_host = (XrSpaceUserFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->user));
+    convert_XrSpaceUserCreateInfoFB_win32_to_host((const XrSpaceUserCreateInfoFB32 *)UlongToPtr(params->info), &info_host);
+    user_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpaceUserFB(wine_session_from_handle(params->session)->host_session, &info_host, &user_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->user) = PtrToUlong(user_host);
+    *(XrSpaceUserFB *)UlongToPtr(params->user) = user_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -11998,8 +11998,8 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->info, params->future);
 
-    convert_XrSpatialAnchorCreateInfoBD_win32_to_host((const XrSpatialAnchorCreateInfoBD32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorCreateInfoBD_win32_to_host((const XrSpatialAnchorCreateInfoBD32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12030,9 +12030,9 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrSpatialAnchorCreateCompletionBD_win32_to_host((XrSpatialAnchorCreateCompletionBD32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrSpatialAnchorCreateCompletionBD_win32_to_host((XrSpatialAnchorCreateCompletionBD32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrSpatialAnchorCreateCompletionBD_host_to_win32(&completion_host, (XrSpatialAnchorCreateCompletionBD32 *)(XrSpatialAnchorCreateCompletionBD32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrSpatialAnchorCreateCompletionBD_host_to_win32(&completion_host, (XrSpatialAnchorCreateCompletionBD32 *)(XrSpatialAnchorCreateCompletionBD32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12065,10 +12065,10 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorEXT(void *args)
 
     TRACE("0x%s, %#x, %#x, %#x\n", TRACE_HANDLE(params->spatialContext), params->createInfo, params->anchorEntityId, params->anchorEntity);
 
-    convert_XrSpatialAnchorCreateInfoEXT_win32_to_host((const XrSpatialAnchorCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    anchorEntity_host = (XrSpatialEntityEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->anchorEntity));
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorEXT(params->spatialContext, &createInfo_host, (XrSpatialEntityIdEXT *)(uintptr_t)UlongToPtr(params->anchorEntityId), &anchorEntity_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->anchorEntity) = PtrToUlong(anchorEntity_host);
+    convert_XrSpatialAnchorCreateInfoEXT_win32_to_host((const XrSpatialAnchorCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    anchorEntity_host = XR_NULL_HANDLE;
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorEXT(params->spatialContext, &createInfo_host, (XrSpatialEntityIdEXT *)UlongToPtr(params->anchorEntityId), &anchorEntity_host);
+    *(XrSpatialEntityEXT *)UlongToPtr(params->anchorEntity) = anchorEntity_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12099,8 +12099,8 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrSpatialAnchorCreateInfoFB_win32_to_host((const XrSpatialAnchorCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSpatialAnchorCreateInfoFB_win32_to_host((const XrSpatialAnchorCreateInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12132,10 +12132,10 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorFromPersistedNameMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->spatialAnchorCreateInfo, params->spatialAnchor);
 
-    convert_XrSpatialAnchorFromPersistedAnchorCreateInfoMSFT_win32_to_host((const XrSpatialAnchorFromPersistedAnchorCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->spatialAnchorCreateInfo), &spatialAnchorCreateInfo_host);
-    spatialAnchor_host = (XrSpatialAnchorMSFT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->spatialAnchor));
+    convert_XrSpatialAnchorFromPersistedAnchorCreateInfoMSFT_win32_to_host((const XrSpatialAnchorFromPersistedAnchorCreateInfoMSFT32 *)UlongToPtr(params->spatialAnchorCreateInfo), &spatialAnchorCreateInfo_host);
+    spatialAnchor_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorFromPersistedNameMSFT(wine_session_from_handle(params->session)->host_session, &spatialAnchorCreateInfo_host, &spatialAnchor_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->spatialAnchor) = PtrToUlong(spatialAnchor_host);
+    *(XrSpatialAnchorMSFT *)UlongToPtr(params->spatialAnchor) = spatialAnchor_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12167,10 +12167,10 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorHTC(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->anchor);
 
-    convert_XrSpatialAnchorCreateInfoHTC_win32_to_host((const XrSpatialAnchorCreateInfoHTC32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    anchor_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->anchor));
+    convert_XrSpatialAnchorCreateInfoHTC_win32_to_host((const XrSpatialAnchorCreateInfoHTC32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    anchor_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorHTC(wine_session_from_handle(params->session)->host_session, &createInfo_host, &anchor_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->anchor) = PtrToUlong(anchor_host);
+    *(XrSpace *)UlongToPtr(params->anchor) = anchor_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12202,10 +12202,10 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->anchor);
 
-    convert_XrSpatialAnchorCreateInfoMSFT_win32_to_host((const XrSpatialAnchorCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    anchor_host = (XrSpatialAnchorMSFT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->anchor));
+    convert_XrSpatialAnchorCreateInfoMSFT_win32_to_host((const XrSpatialAnchorCreateInfoMSFT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    anchor_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorMSFT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &anchor_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->anchor) = PtrToUlong(anchor_host);
+    *(XrSpatialAnchorMSFT *)UlongToPtr(params->anchor) = anchor_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12237,10 +12237,10 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorSpaceMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrSpatialAnchorSpaceCreateInfoMSFT_win32_to_host((const XrSpatialAnchorSpaceCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrSpatialAnchorSpaceCreateInfoMSFT_win32_to_host((const XrSpatialAnchorSpaceCreateInfoMSFT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorSpaceMSFT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12270,9 +12270,9 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorStoreConnectionMSFT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->spatialAnchorStore);
 
-    spatialAnchorStore_host = (XrSpatialAnchorStoreConnectionMSFT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->spatialAnchorStore));
+    spatialAnchorStore_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorStoreConnectionMSFT(wine_session_from_handle(params->session)->host_session, &spatialAnchorStore_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->spatialAnchorStore) = PtrToUlong(spatialAnchorStore_host);
+    *(XrSpatialAnchorStoreConnectionMSFT *)UlongToPtr(params->spatialAnchorStore) = spatialAnchorStore_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12303,8 +12303,8 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorsAsyncML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->future);
 
-    convert_XrSpatialAnchorsCreateInfoBaseHeaderML_win32_to_host((const XrSpatialAnchorsCreateInfoBaseHeaderML32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorsAsyncML(wine_session_from_handle(params->session)->host_session, &createInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorsCreateInfoBaseHeaderML_win32_to_host((const XrSpatialAnchorsCreateInfoBaseHeaderML32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorsAsyncML(wine_session_from_handle(params->session)->host_session, &createInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12338,9 +12338,9 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorsCompleteML(void *args)
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->session), params->future, params->completion);
 
     init_conversion_context(ctx);
-    convert_XrCreateSpatialAnchorsCompletionML_win32_to_host(ctx, (XrCreateSpatialAnchorsCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrCreateSpatialAnchorsCompletionML_win32_to_host(ctx, (XrCreateSpatialAnchorsCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorsCompleteML(wine_session_from_handle(params->session)->host_session, params->future, &completion_host);
-    convert_XrCreateSpatialAnchorsCompletionML_host_to_win32(&completion_host, (XrCreateSpatialAnchorsCompletionML32 *)(XrCreateSpatialAnchorsCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrCreateSpatialAnchorsCompletionML_host_to_win32(&completion_host, (XrCreateSpatialAnchorsCompletionML32 *)(XrCreateSpatialAnchorsCompletionML32 *)UlongToPtr(params->completion));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -12373,10 +12373,10 @@ static NTSTATUS thunk32_xrCreateSpatialAnchorsStorageML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->storage);
 
-    convert_XrSpatialAnchorsCreateStorageInfoML_win32_to_host((const XrSpatialAnchorsCreateStorageInfoML32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    storage_host = (XrSpatialAnchorsStorageML)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->storage));
+    convert_XrSpatialAnchorsCreateStorageInfoML_win32_to_host((const XrSpatialAnchorsCreateStorageInfoML32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    storage_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialAnchorsStorageML(wine_session_from_handle(params->session)->host_session, &createInfo_host, &storage_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->storage) = PtrToUlong(storage_host);
+    *(XrSpatialAnchorsStorageML *)UlongToPtr(params->storage) = storage_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12410,8 +12410,8 @@ static NTSTATUS thunk32_xrCreateSpatialContextAsyncEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->future);
 
     init_conversion_context(ctx);
-    convert_XrSpatialContextCreateInfoEXT_win32_to_host(ctx, (const XrSpatialContextCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialContextAsyncEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialContextCreateInfoEXT_win32_to_host(ctx, (const XrSpatialContextCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialContextAsyncEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -12443,9 +12443,9 @@ static NTSTATUS thunk32_xrCreateSpatialContextCompleteEXT(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->session), params->future, params->completion);
 
-    convert_XrCreateSpatialContextCompletionEXT_win32_to_host((XrCreateSpatialContextCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrCreateSpatialContextCompletionEXT_win32_to_host((XrCreateSpatialContextCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialContextCompleteEXT(wine_session_from_handle(params->session)->host_session, params->future, &completion_host);
-    convert_XrCreateSpatialContextCompletionEXT_host_to_win32(&completion_host, (XrCreateSpatialContextCompletionEXT32 *)(XrCreateSpatialContextCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrCreateSpatialContextCompletionEXT_host_to_win32(&completion_host, (XrCreateSpatialContextCompletionEXT32 *)(XrCreateSpatialContextCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12479,8 +12479,8 @@ static NTSTATUS thunk32_xrCreateSpatialDiscoverySnapshotAsyncEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->spatialContext), params->createInfo, params->future);
 
     init_conversion_context(ctx);
-    convert_XrSpatialDiscoverySnapshotCreateInfoEXT_win32_to_host(ctx, (const XrSpatialDiscoverySnapshotCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialDiscoverySnapshotAsyncEXT(params->spatialContext, &createInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialDiscoverySnapshotCreateInfoEXT_win32_to_host(ctx, (const XrSpatialDiscoverySnapshotCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialDiscoverySnapshotAsyncEXT(params->spatialContext, &createInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -12513,10 +12513,10 @@ static NTSTATUS thunk32_xrCreateSpatialDiscoverySnapshotCompleteEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->spatialContext), params->createSnapshotCompletionInfo, params->completion);
 
-    convert_XrCreateSpatialDiscoverySnapshotCompletionInfoEXT_win32_to_host((const XrCreateSpatialDiscoverySnapshotCompletionInfoEXT32 *)(uintptr_t)UlongToPtr(params->createSnapshotCompletionInfo), &createSnapshotCompletionInfo_host);
-    convert_XrCreateSpatialDiscoverySnapshotCompletionEXT_win32_to_host((XrCreateSpatialDiscoverySnapshotCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrCreateSpatialDiscoverySnapshotCompletionInfoEXT_win32_to_host((const XrCreateSpatialDiscoverySnapshotCompletionInfoEXT32 *)UlongToPtr(params->createSnapshotCompletionInfo), &createSnapshotCompletionInfo_host);
+    convert_XrCreateSpatialDiscoverySnapshotCompletionEXT_win32_to_host((XrCreateSpatialDiscoverySnapshotCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialDiscoverySnapshotCompleteEXT(params->spatialContext, &createSnapshotCompletionInfo_host, &completion_host);
-    convert_XrCreateSpatialDiscoverySnapshotCompletionEXT_host_to_win32(&completion_host, (XrCreateSpatialDiscoverySnapshotCompletionEXT32 *)(XrCreateSpatialDiscoverySnapshotCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrCreateSpatialDiscoverySnapshotCompletionEXT_host_to_win32(&completion_host, (XrCreateSpatialDiscoverySnapshotCompletionEXT32 *)(XrCreateSpatialDiscoverySnapshotCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12548,10 +12548,10 @@ static NTSTATUS thunk32_xrCreateSpatialEntityAnchorBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->createInfo, params->anchor);
 
-    convert_XrSpatialEntityAnchorCreateInfoBD_win32_to_host((const XrSpatialEntityAnchorCreateInfoBD32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    anchor_host = (XrAnchorBD)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->anchor));
+    convert_XrSpatialEntityAnchorCreateInfoBD_win32_to_host((const XrSpatialEntityAnchorCreateInfoBD32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    anchor_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialEntityAnchorBD(params->provider, &createInfo_host, &anchor_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->anchor) = PtrToUlong(anchor_host);
+    *(XrAnchorBD *)UlongToPtr(params->anchor) = anchor_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12583,10 +12583,10 @@ static NTSTATUS thunk32_xrCreateSpatialEntityFromIdEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->spatialContext), params->createInfo, params->spatialEntity);
 
-    convert_XrSpatialEntityFromIdCreateInfoEXT_win32_to_host((const XrSpatialEntityFromIdCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    spatialEntity_host = (XrSpatialEntityEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->spatialEntity));
+    convert_XrSpatialEntityFromIdCreateInfoEXT_win32_to_host((const XrSpatialEntityFromIdCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    spatialEntity_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialEntityFromIdEXT(params->spatialContext, &createInfo_host, &spatialEntity_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->spatialEntity) = PtrToUlong(spatialEntity_host);
+    *(XrSpatialEntityEXT *)UlongToPtr(params->spatialEntity) = spatialEntity_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12618,10 +12618,10 @@ static NTSTATUS thunk32_xrCreateSpatialGraphNodeSpaceMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->space);
 
-    convert_XrSpatialGraphNodeSpaceCreateInfoMSFT_win32_to_host((const XrSpatialGraphNodeSpaceCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    space_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->space));
+    convert_XrSpatialGraphNodeSpaceCreateInfoMSFT_win32_to_host((const XrSpatialGraphNodeSpaceCreateInfoMSFT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    space_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialGraphNodeSpaceMSFT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &space_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->space) = PtrToUlong(space_host);
+    *(XrSpace *)UlongToPtr(params->space) = space_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12652,8 +12652,8 @@ static NTSTATUS thunk32_xrCreateSpatialPersistenceContextAsyncEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->future);
 
-    convert_XrSpatialPersistenceContextCreateInfoEXT_win32_to_host((const XrSpatialPersistenceContextCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialPersistenceContextAsyncEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialPersistenceContextCreateInfoEXT_win32_to_host((const XrSpatialPersistenceContextCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialPersistenceContextAsyncEXT(wine_session_from_handle(params->session)->host_session, &createInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12684,9 +12684,9 @@ static NTSTATUS thunk32_xrCreateSpatialPersistenceContextCompleteEXT(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->session), params->future, params->completion);
 
-    convert_XrCreateSpatialPersistenceContextCompletionEXT_win32_to_host((XrCreateSpatialPersistenceContextCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrCreateSpatialPersistenceContextCompletionEXT_win32_to_host((XrCreateSpatialPersistenceContextCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialPersistenceContextCompleteEXT(wine_session_from_handle(params->session)->host_session, params->future, &completion_host);
-    convert_XrCreateSpatialPersistenceContextCompletionEXT_host_to_win32(&completion_host, (XrCreateSpatialPersistenceContextCompletionEXT32 *)(XrCreateSpatialPersistenceContextCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrCreateSpatialPersistenceContextCompletionEXT_host_to_win32(&completion_host, (XrCreateSpatialPersistenceContextCompletionEXT32 *)(XrCreateSpatialPersistenceContextCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12721,10 +12721,10 @@ static NTSTATUS thunk32_xrCreateSpatialUpdateSnapshotEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->spatialContext), params->createInfo, params->snapshot);
 
     init_conversion_context(ctx);
-    convert_XrSpatialUpdateSnapshotCreateInfoEXT_win32_to_host(ctx, (const XrSpatialUpdateSnapshotCreateInfoEXT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    snapshot_host = (XrSpatialSnapshotEXT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->snapshot));
+    convert_XrSpatialUpdateSnapshotCreateInfoEXT_win32_to_host(ctx, (const XrSpatialUpdateSnapshotCreateInfoEXT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    snapshot_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateSpatialUpdateSnapshotEXT(params->spatialContext, &createInfo_host, &snapshot_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->snapshot) = PtrToUlong(snapshot_host);
+    *(XrSpatialSnapshotEXT *)UlongToPtr(params->snapshot) = snapshot_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -12760,10 +12760,10 @@ static NTSTATUS thunk32_xrCreateSwapchain(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->swapchain);
 
     init_conversion_context(ctx);
-    convert_XrSwapchainCreateInfo_win32_to_host(ctx, (const XrSwapchainCreateInfo32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    swapchain_host = (XrSwapchain)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->swapchain));
+    convert_XrSwapchainCreateInfo_win32_to_host(ctx, (const XrSwapchainCreateInfo32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    swapchain_host = XR_NULL_HANDLE;
     params->result = wine_xrCreateSwapchain(params->session, &createInfo_host, &swapchain_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->swapchain) = PtrToUlong(swapchain_host);
+    *(XrSwapchain *)UlongToPtr(params->swapchain) = swapchain_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -12799,10 +12799,10 @@ static NTSTATUS thunk32_xrCreateTrackableTrackerANDROID(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->trackableTracker);
 
     init_conversion_context(ctx);
-    convert_XrTrackableTrackerCreateInfoANDROID_win32_to_host(ctx, (const XrTrackableTrackerCreateInfoANDROID32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    trackableTracker_host = (XrTrackableTrackerANDROID)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->trackableTracker));
+    convert_XrTrackableTrackerCreateInfoANDROID_win32_to_host(ctx, (const XrTrackableTrackerCreateInfoANDROID32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    trackableTracker_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateTrackableTrackerANDROID(wine_session_from_handle(params->session)->host_session, &createInfo_host, &trackableTracker_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->trackableTracker) = PtrToUlong(trackableTracker_host);
+    *(XrTrackableTrackerANDROID *)UlongToPtr(params->trackableTracker) = trackableTracker_host;
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -12835,10 +12835,10 @@ static NTSTATUS thunk32_xrCreateTriangleMeshFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->outTriangleMesh);
 
-    convert_XrTriangleMeshCreateInfoFB_win32_to_host((const XrTriangleMeshCreateInfoFB32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    outTriangleMesh_host = (XrTriangleMeshFB)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->outTriangleMesh));
+    convert_XrTriangleMeshCreateInfoFB_win32_to_host((const XrTriangleMeshCreateInfoFB32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    outTriangleMesh_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateTriangleMeshFB(wine_session_from_handle(params->session)->host_session, &createInfo_host, &outTriangleMesh_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->outTriangleMesh) = PtrToUlong(outTriangleMesh_host);
+    *(XrTriangleMeshFB *)UlongToPtr(params->outTriangleMesh) = outTriangleMesh_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12870,10 +12870,10 @@ static NTSTATUS thunk32_xrCreateVirtualKeyboardMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->keyboard);
 
-    convert_XrVirtualKeyboardCreateInfoMETA_win32_to_host((const XrVirtualKeyboardCreateInfoMETA32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    keyboard_host = (XrVirtualKeyboardMETA)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->keyboard));
+    convert_XrVirtualKeyboardCreateInfoMETA_win32_to_host((const XrVirtualKeyboardCreateInfoMETA32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    keyboard_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateVirtualKeyboardMETA(wine_session_from_handle(params->session)->host_session, &createInfo_host, &keyboard_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->keyboard) = PtrToUlong(keyboard_host);
+    *(XrVirtualKeyboardMETA *)UlongToPtr(params->keyboard) = keyboard_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12906,10 +12906,10 @@ static NTSTATUS thunk32_xrCreateVirtualKeyboardSpaceMETA(void *args)
 
     TRACE("0x%s, 0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->keyboard), params->createInfo, params->keyboardSpace);
 
-    convert_XrVirtualKeyboardSpaceCreateInfoMETA_win32_to_host((const XrVirtualKeyboardSpaceCreateInfoMETA32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    keyboardSpace_host = (XrSpace)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->keyboardSpace));
+    convert_XrVirtualKeyboardSpaceCreateInfoMETA_win32_to_host((const XrVirtualKeyboardSpaceCreateInfoMETA32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    keyboardSpace_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateVirtualKeyboardSpaceMETA(wine_session_from_handle(params->session)->host_session, params->keyboard, &createInfo_host, &keyboardSpace_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->keyboardSpace) = PtrToUlong(keyboardSpace_host);
+    *(XrSpace *)UlongToPtr(params->keyboardSpace) = keyboardSpace_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12941,10 +12941,10 @@ static NTSTATUS thunk32_xrCreateWorldMeshDetectorML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->detector);
 
-    convert_XrWorldMeshDetectorCreateInfoML_win32_to_host((const XrWorldMeshDetectorCreateInfoML32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    detector_host = (XrWorldMeshDetectorML)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->detector));
+    convert_XrWorldMeshDetectorCreateInfoML_win32_to_host((const XrWorldMeshDetectorCreateInfoML32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    detector_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrCreateWorldMeshDetectorML(wine_session_from_handle(params->session)->host_session, &createInfo_host, &detector_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->detector) = PtrToUlong(detector_host);
+    *(XrWorldMeshDetectorML *)UlongToPtr(params->detector) = detector_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -12975,8 +12975,8 @@ static NTSTATUS thunk32_xrDeleteSpatialAnchorsAsyncML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->storage), params->deleteInfo, params->future);
 
-    convert_XrSpatialAnchorsDeleteInfoML_win32_to_host((const XrSpatialAnchorsDeleteInfoML32 *)(uintptr_t)UlongToPtr(params->deleteInfo), &deleteInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrDeleteSpatialAnchorsAsyncML(params->storage, &deleteInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorsDeleteInfoML_win32_to_host((const XrSpatialAnchorsDeleteInfoML32 *)UlongToPtr(params->deleteInfo), &deleteInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrDeleteSpatialAnchorsAsyncML(params->storage, &deleteInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -13010,9 +13010,9 @@ static NTSTATUS thunk32_xrDeleteSpatialAnchorsCompleteML(void *args)
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->storage), params->future, params->completion);
 
     init_conversion_context(ctx);
-    convert_XrSpatialAnchorsDeleteCompletionML_win32_to_host(ctx, (XrSpatialAnchorsDeleteCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrSpatialAnchorsDeleteCompletionML_win32_to_host(ctx, (XrSpatialAnchorsDeleteCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrDeleteSpatialAnchorsCompleteML(params->storage, params->future, &completion_host);
-    convert_XrSpatialAnchorsDeleteCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsDeleteCompletionML32 *)(XrSpatialAnchorsDeleteCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrSpatialAnchorsDeleteCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsDeleteCompletionML32 *)(XrSpatialAnchorsDeleteCompletionML32 *)UlongToPtr(params->completion));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -13046,7 +13046,7 @@ static NTSTATUS thunk32_xrDeserializeSceneMSFT(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->sceneObserver), params->deserializeInfo);
 
     init_conversion_context(ctx);
-    convert_XrSceneDeserializeInfoMSFT_win32_to_host(ctx, (const XrSceneDeserializeInfoMSFT32 *)(uintptr_t)UlongToPtr(params->deserializeInfo), &deserializeInfo_host);
+    convert_XrSceneDeserializeInfoMSFT_win32_to_host(ctx, (const XrSceneDeserializeInfoMSFT32 *)UlongToPtr(params->deserializeInfo), &deserializeInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrDeserializeSceneMSFT(params->sceneObserver, &deserializeInfo_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -14398,8 +14398,8 @@ static NTSTATUS thunk32_xrDiscoverSpacesMETA(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
     init_conversion_context(ctx);
-    convert_XrSpaceDiscoveryInfoMETA_win32_to_host(ctx, (const XrSpaceDiscoveryInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrDiscoverSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSpaceDiscoveryInfoMETA_win32_to_host(ctx, (const XrSpaceDiscoveryInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrDiscoverSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -14431,8 +14431,8 @@ static NTSTATUS thunk32_xrDownloadSharedSpatialAnchorAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->info, params->future);
 
-    convert_XrSharedSpatialAnchorDownloadInfoBD_win32_to_host((const XrSharedSpatialAnchorDownloadInfoBD32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrDownloadSharedSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSharedSpatialAnchorDownloadInfoBD_win32_to_host((const XrSharedSpatialAnchorDownloadInfoBD32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrDownloadSharedSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14463,9 +14463,9 @@ static NTSTATUS thunk32_xrDownloadSharedSpatialAnchorCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrDownloadSharedSpatialAnchorCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14495,7 +14495,7 @@ static NTSTATUS thunk32_xrEnableLocalizationEventsML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->info);
 
-    convert_XrLocalizationEnableEventsInfoML_win32_to_host((const XrLocalizationEnableEventsInfoML32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
+    convert_XrLocalizationEnableEventsInfoML_win32_to_host((const XrLocalizationEnableEventsInfoML32 *)UlongToPtr(params->info), &info_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrEnableLocalizationEventsML(wine_session_from_handle(params->session)->host_session, &info_host);
     return STATUS_SUCCESS;
 }
@@ -14526,7 +14526,7 @@ static NTSTATUS thunk32_xrEnableUserCalibrationEventsML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->enableInfo);
 
-    convert_XrUserCalibrationEnableEventsInfoML_win32_to_host((const XrUserCalibrationEnableEventsInfoML32 *)(uintptr_t)UlongToPtr(params->enableInfo), &enableInfo_host);
+    convert_XrUserCalibrationEnableEventsInfoML_win32_to_host((const XrUserCalibrationEnableEventsInfoML32 *)UlongToPtr(params->enableInfo), &enableInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrEnableUserCalibrationEventsML(wine_instance_from_handle(params->instance)->host_instance, &enableInfo_host);
     return STATUS_SUCCESS;
 }
@@ -14560,7 +14560,7 @@ static NTSTATUS thunk32_xrEndFrame(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->frameEndInfo);
 
     init_conversion_context(ctx);
-    convert_XrFrameEndInfo_win32_to_host(ctx, (const XrFrameEndInfo32 *)(uintptr_t)UlongToPtr(params->frameEndInfo), &frameEndInfo_host);
+    convert_XrFrameEndInfo_win32_to_host(ctx, (const XrFrameEndInfo32 *)UlongToPtr(params->frameEndInfo), &frameEndInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrEndFrame(wine_session_from_handle(params->session)->host_session, &frameEndInfo_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -14624,9 +14624,9 @@ static NTSTATUS thunk32_xrEnumerateApiLayerProperties(void *args)
     TRACE("%u, %#x, %#x\n", params->propertyCapacityInput, params->propertyCountOutput, params->properties);
 
     init_conversion_context(ctx);
-    properties_host = convert_XrApiLayerProperties_array_win32_to_host(ctx, (XrApiLayerProperties32 *)(uintptr_t)UlongToPtr(params->properties), params->propertyCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateApiLayerProperties(params->propertyCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->propertyCountOutput), properties_host);
-    convert_XrApiLayerProperties_array_host_to_win32(properties_host, (XrApiLayerProperties32 *)(uintptr_t)UlongToPtr(params->properties), params->propertyCapacityInput);
+    properties_host = convert_XrApiLayerProperties_array_win32_to_host(ctx, (XrApiLayerProperties32 *)UlongToPtr(params->properties), params->propertyCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateApiLayerProperties(params->propertyCapacityInput, (uint32_t *)UlongToPtr(params->propertyCountOutput), properties_host);
+    convert_XrApiLayerProperties_array_host_to_win32(properties_host, (XrApiLayerProperties32 *)UlongToPtr(params->properties), params->propertyCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -14660,8 +14660,8 @@ static NTSTATUS thunk32_xrEnumerateBoundSourcesForAction(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->enumerateInfo, params->sourceCapacityInput, params->sourceCountOutput, params->sources);
 
-    convert_XrBoundSourcesForActionEnumerateInfo_win32_to_host((const XrBoundSourcesForActionEnumerateInfo32 *)(uintptr_t)UlongToPtr(params->enumerateInfo), &enumerateInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateBoundSourcesForAction(wine_session_from_handle(params->session)->host_session, &enumerateInfo_host, params->sourceCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->sourceCountOutput), (XrPath *)(uintptr_t)UlongToPtr(params->sources));
+    convert_XrBoundSourcesForActionEnumerateInfo_win32_to_host((const XrBoundSourcesForActionEnumerateInfo32 *)UlongToPtr(params->enumerateInfo), &enumerateInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateBoundSourcesForAction(wine_session_from_handle(params->session)->host_session, &enumerateInfo_host, params->sourceCapacityInput, (uint32_t *)UlongToPtr(params->sourceCountOutput), (XrPath *)UlongToPtr(params->sources));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14692,7 +14692,7 @@ static NTSTATUS thunk32_xrEnumerateColorSpacesFB(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->colorSpaceCapacityInput, params->colorSpaceCountOutput, params->colorSpaces);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateColorSpacesFB(wine_session_from_handle(params->session)->host_session, params->colorSpaceCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->colorSpaceCountOutput), (XrColorSpaceFB *)(uintptr_t)UlongToPtr(params->colorSpaces));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateColorSpacesFB(wine_session_from_handle(params->session)->host_session, params->colorSpaceCapacityInput, (uint32_t *)UlongToPtr(params->colorSpaceCountOutput), (XrColorSpaceFB *)UlongToPtr(params->colorSpaces));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14723,7 +14723,7 @@ static NTSTATUS thunk32_xrEnumerateDisplayRefreshRatesFB(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->displayRefreshRateCapacityInput, params->displayRefreshRateCountOutput, params->displayRefreshRates);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateDisplayRefreshRatesFB(wine_session_from_handle(params->session)->host_session, params->displayRefreshRateCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->displayRefreshRateCountOutput), (float *)(uintptr_t)UlongToPtr(params->displayRefreshRates));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateDisplayRefreshRatesFB(wine_session_from_handle(params->session)->host_session, params->displayRefreshRateCapacityInput, (uint32_t *)UlongToPtr(params->displayRefreshRateCountOutput), (float *)UlongToPtr(params->displayRefreshRates));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14756,7 +14756,7 @@ static NTSTATUS thunk32_xrEnumerateEnvironmentBlendModes(void *args)
 
     TRACE("0x%s, 0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->viewConfigurationType, params->environmentBlendModeCapacityInput, params->environmentBlendModeCountOutput, params->environmentBlendModes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateEnvironmentBlendModes(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, params->environmentBlendModeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->environmentBlendModeCountOutput), (XrEnvironmentBlendMode *)(uintptr_t)UlongToPtr(params->environmentBlendModes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateEnvironmentBlendModes(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, params->environmentBlendModeCapacityInput, (uint32_t *)UlongToPtr(params->environmentBlendModeCountOutput), (XrEnvironmentBlendMode *)UlongToPtr(params->environmentBlendModes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14791,9 +14791,9 @@ static NTSTATUS thunk32_xrEnumerateEnvironmentDepthSwapchainImagesMETA(void *arg
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->swapchain), params->imageCapacityInput, params->imageCountOutput, params->images);
 
     init_conversion_context(ctx);
-    images_host = convert_XrSwapchainImageBaseHeader_array_win32_to_host(ctx, (XrSwapchainImageBaseHeader32 *)(uintptr_t)UlongToPtr(params->images), params->imageCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateEnvironmentDepthSwapchainImagesMETA(params->swapchain, params->imageCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->imageCountOutput), images_host);
-    convert_XrSwapchainImageBaseHeader_array_host_to_win32(images_host, (XrSwapchainImageBaseHeader32 *)(uintptr_t)UlongToPtr(params->images), params->imageCapacityInput);
+    images_host = convert_XrSwapchainImageBaseHeader_array_win32_to_host(ctx, (XrSwapchainImageBaseHeader32 *)UlongToPtr(params->images), params->imageCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateEnvironmentDepthSwapchainImagesMETA(params->swapchain, params->imageCapacityInput, (uint32_t *)UlongToPtr(params->imageCountOutput), images_host);
+    convert_XrSwapchainImageBaseHeader_array_host_to_win32(images_host, (XrSwapchainImageBaseHeader32 *)UlongToPtr(params->images), params->imageCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -14829,9 +14829,9 @@ static NTSTATUS thunk32_xrEnumerateExternalCamerasOCULUS(void *args)
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->cameraCapacityInput, params->cameraCountOutput, params->cameras);
 
     init_conversion_context(ctx);
-    cameras_host = convert_XrExternalCameraOCULUS_array_win32_to_host(ctx, (XrExternalCameraOCULUS32 *)(uintptr_t)UlongToPtr(params->cameras), params->cameraCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateExternalCamerasOCULUS(wine_session_from_handle(params->session)->host_session, params->cameraCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->cameraCountOutput), cameras_host);
-    convert_XrExternalCameraOCULUS_array_host_to_win32(cameras_host, (XrExternalCameraOCULUS32 *)(uintptr_t)UlongToPtr(params->cameras), params->cameraCapacityInput);
+    cameras_host = convert_XrExternalCameraOCULUS_array_win32_to_host(ctx, (XrExternalCameraOCULUS32 *)UlongToPtr(params->cameras), params->cameraCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateExternalCamerasOCULUS(wine_session_from_handle(params->session)->host_session, params->cameraCapacityInput, (uint32_t *)UlongToPtr(params->cameraCountOutput), cameras_host);
+    convert_XrExternalCameraOCULUS_array_host_to_win32(cameras_host, (XrExternalCameraOCULUS32 *)UlongToPtr(params->cameras), params->cameraCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -14867,9 +14867,9 @@ static NTSTATUS thunk32_xrEnumerateInstanceExtensionProperties(void *args)
     TRACE("%#x, %u, %#x, %#x\n", params->layerName, params->propertyCapacityInput, params->propertyCountOutput, params->properties);
 
     init_conversion_context(ctx);
-    properties_host = convert_XrExtensionProperties_array_win32_to_host(ctx, (XrExtensionProperties32 *)(uintptr_t)UlongToPtr(params->properties), params->propertyCapacityInput);
-    params->result = wine_xrEnumerateInstanceExtensionProperties((const char *)(uintptr_t)UlongToPtr(params->layerName), params->propertyCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->propertyCountOutput), properties_host);
-    convert_XrExtensionProperties_array_host_to_win32(properties_host, (XrExtensionProperties32 *)(uintptr_t)UlongToPtr(params->properties), params->propertyCapacityInput);
+    properties_host = convert_XrExtensionProperties_array_win32_to_host(ctx, (XrExtensionProperties32 *)UlongToPtr(params->properties), params->propertyCapacityInput);
+    params->result = wine_xrEnumerateInstanceExtensionProperties((const char *)UlongToPtr(params->layerName), params->propertyCapacityInput, (uint32_t *)UlongToPtr(params->propertyCountOutput), properties_host);
+    convert_XrExtensionProperties_array_host_to_win32(properties_host, (XrExtensionProperties32 *)UlongToPtr(params->properties), params->propertyCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -14903,8 +14903,8 @@ static NTSTATUS thunk32_xrEnumerateInteractionRenderModelIdsEXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->renderModelIdCapacityInput, params->renderModelIdCountOutput, params->renderModelIds);
 
-    convert_XrInteractionRenderModelIdsEnumerateInfoEXT_win32_to_host((const XrInteractionRenderModelIdsEnumerateInfoEXT32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateInteractionRenderModelIdsEXT(wine_session_from_handle(params->session)->host_session, &getInfo_host, params->renderModelIdCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->renderModelIdCountOutput), (XrRenderModelIdEXT *)(uintptr_t)UlongToPtr(params->renderModelIds));
+    convert_XrInteractionRenderModelIdsEnumerateInfoEXT_win32_to_host((const XrInteractionRenderModelIdsEnumerateInfoEXT32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateInteractionRenderModelIdsEXT(wine_session_from_handle(params->session)->host_session, &getInfo_host, params->renderModelIdCapacityInput, (uint32_t *)UlongToPtr(params->renderModelIdCountOutput), (XrRenderModelIdEXT *)UlongToPtr(params->renderModelIds));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14935,7 +14935,7 @@ static NTSTATUS thunk32_xrEnumeratePerformanceMetricsCounterPathsMETA(void *args
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), params->counterPathCapacityInput, params->counterPathCountOutput, params->counterPaths);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumeratePerformanceMetricsCounterPathsMETA(wine_instance_from_handle(params->instance)->host_instance, params->counterPathCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->counterPathCountOutput), (XrPath *)(uintptr_t)UlongToPtr(params->counterPaths));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumeratePerformanceMetricsCounterPathsMETA(wine_instance_from_handle(params->instance)->host_instance, params->counterPathCapacityInput, (uint32_t *)UlongToPtr(params->counterPathCountOutput), (XrPath *)UlongToPtr(params->counterPaths));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14966,7 +14966,7 @@ static NTSTATUS thunk32_xrEnumeratePersistedAnchorsANDROID(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->handle), params->anchorIdCapacityInput, params->anchorIdCountOutput, params->anchorIds);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumeratePersistedAnchorsANDROID(params->handle, params->anchorIdCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->anchorIdCountOutput), (XrUuidEXT *)(uintptr_t)UlongToPtr(params->anchorIds));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumeratePersistedAnchorsANDROID(params->handle, params->anchorIdCapacityInput, (uint32_t *)UlongToPtr(params->anchorIdCountOutput), (XrUuidEXT *)UlongToPtr(params->anchorIds));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -14997,7 +14997,7 @@ static NTSTATUS thunk32_xrEnumeratePersistedSpatialAnchorNamesMSFT(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->spatialAnchorStore), params->spatialAnchorNameCapacityInput, params->spatialAnchorNameCountOutput, params->spatialAnchorNames);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumeratePersistedSpatialAnchorNamesMSFT(params->spatialAnchorStore, params->spatialAnchorNameCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->spatialAnchorNameCountOutput), (XrSpatialAnchorPersistenceNameMSFT *)(uintptr_t)UlongToPtr(params->spatialAnchorNames));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumeratePersistedSpatialAnchorNamesMSFT(params->spatialAnchorStore, params->spatialAnchorNameCapacityInput, (uint32_t *)UlongToPtr(params->spatialAnchorNameCountOutput), (XrSpatialAnchorPersistenceNameMSFT *)UlongToPtr(params->spatialAnchorNames));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15029,7 +15029,7 @@ static NTSTATUS thunk32_xrEnumerateRaycastSupportedTrackableTypesANDROID(void *a
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->trackableTypeCapacityInput, params->trackableTypeCountOutput, params->trackableTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateRaycastSupportedTrackableTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)(uintptr_t)UlongToPtr(params->trackableTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateRaycastSupportedTrackableTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)UlongToPtr(params->trackableTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15060,7 +15060,7 @@ static NTSTATUS thunk32_xrEnumerateReferenceSpaces(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->spaceCapacityInput, params->spaceCountOutput, params->spaces);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateReferenceSpaces(wine_session_from_handle(params->session)->host_session, params->spaceCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->spaceCountOutput), (XrReferenceSpaceType *)(uintptr_t)UlongToPtr(params->spaces));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateReferenceSpaces(wine_session_from_handle(params->session)->host_session, params->spaceCapacityInput, (uint32_t *)UlongToPtr(params->spaceCountOutput), (XrReferenceSpaceType *)UlongToPtr(params->spaces));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15095,9 +15095,9 @@ static NTSTATUS thunk32_xrEnumerateRenderModelPathsFB(void *args)
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->pathCapacityInput, params->pathCountOutput, params->paths);
 
     init_conversion_context(ctx);
-    paths_host = convert_XrRenderModelPathInfoFB_array_win32_to_host(ctx, (XrRenderModelPathInfoFB32 *)(uintptr_t)UlongToPtr(params->paths), params->pathCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateRenderModelPathsFB(wine_session_from_handle(params->session)->host_session, params->pathCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->pathCountOutput), paths_host);
-    convert_XrRenderModelPathInfoFB_array_host_to_win32(paths_host, (XrRenderModelPathInfoFB32 *)(uintptr_t)UlongToPtr(params->paths), params->pathCapacityInput);
+    paths_host = convert_XrRenderModelPathInfoFB_array_win32_to_host(ctx, (XrRenderModelPathInfoFB32 *)UlongToPtr(params->paths), params->pathCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateRenderModelPathsFB(wine_session_from_handle(params->session)->host_session, params->pathCapacityInput, (uint32_t *)UlongToPtr(params->pathCountOutput), paths_host);
+    convert_XrRenderModelPathInfoFB_array_host_to_win32(paths_host, (XrRenderModelPathInfoFB32 *)UlongToPtr(params->paths), params->pathCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -15137,9 +15137,9 @@ static NTSTATUS thunk32_xrEnumerateRenderModelSubactionPathsEXT(void *args)
     if (params->info)
     {
         info_host = conversion_context_alloc(ctx, sizeof(*info_host));
-        convert_XrInteractionRenderModelSubactionPathInfoEXT_win32_to_host((const XrInteractionRenderModelSubactionPathInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), info_host);
+        convert_XrInteractionRenderModelSubactionPathInfoEXT_win32_to_host((const XrInteractionRenderModelSubactionPathInfoEXT32 *)UlongToPtr(params->info), info_host);
     }
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateRenderModelSubactionPathsEXT(params->renderModel, info_host, params->pathCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->pathCountOutput), (XrPath *)(uintptr_t)UlongToPtr(params->paths));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateRenderModelSubactionPathsEXT(params->renderModel, info_host, params->pathCapacityInput, (uint32_t *)UlongToPtr(params->pathCountOutput), (XrPath *)UlongToPtr(params->paths));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -15173,7 +15173,7 @@ static NTSTATUS thunk32_xrEnumerateReprojectionModesMSFT(void *args)
 
     TRACE("0x%s, 0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->viewConfigurationType, params->modeCapacityInput, params->modeCountOutput, params->modes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateReprojectionModesMSFT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, params->modeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->modeCountOutput), (XrReprojectionModeMSFT *)(uintptr_t)UlongToPtr(params->modes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateReprojectionModesMSFT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, params->modeCapacityInput, (uint32_t *)UlongToPtr(params->modeCountOutput), (XrReprojectionModeMSFT *)UlongToPtr(params->modes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15205,7 +15205,7 @@ static NTSTATUS thunk32_xrEnumerateSceneComputeFeaturesMSFT(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->featureCapacityInput, params->featureCountOutput, params->features);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSceneComputeFeaturesMSFT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->featureCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->featureCountOutput), (XrSceneComputeFeatureMSFT *)(uintptr_t)UlongToPtr(params->features));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSceneComputeFeaturesMSFT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->featureCapacityInput, (uint32_t *)UlongToPtr(params->featureCountOutput), (XrSceneComputeFeatureMSFT *)UlongToPtr(params->features));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15236,7 +15236,7 @@ static NTSTATUS thunk32_xrEnumerateSpaceSupportedComponentsFB(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->space), params->componentTypeCapacityInput, params->componentTypeCountOutput, params->componentTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpaceSupportedComponentsFB(params->space, params->componentTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->componentTypeCountOutput), (XrSpaceComponentTypeFB *)(uintptr_t)UlongToPtr(params->componentTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpaceSupportedComponentsFB(params->space, params->componentTypeCapacityInput, (uint32_t *)UlongToPtr(params->componentTypeCountOutput), (XrSpaceComponentTypeFB *)UlongToPtr(params->componentTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15268,7 +15268,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilitiesEXT(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->capabilityCapacityInput, params->capabilityCountOutput, params->capabilities);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialCapabilitiesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->capabilityCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->capabilityCountOutput), (XrSpatialCapabilityEXT *)(uintptr_t)UlongToPtr(params->capabilities));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialCapabilitiesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->capabilityCapacityInput, (uint32_t *)UlongToPtr(params->capabilityCountOutput), (XrSpatialCapabilityEXT *)UlongToPtr(params->capabilities));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15300,9 +15300,9 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilityComponentTypesEXT(void *args
 
     TRACE("0x%s, 0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->capability, params->capabilityComponents);
 
-    convert_XrSpatialCapabilityComponentTypesEXT_win32_to_host((XrSpatialCapabilityComponentTypesEXT32 *)(uintptr_t)UlongToPtr(params->capabilityComponents), &capabilityComponents_host);
+    convert_XrSpatialCapabilityComponentTypesEXT_win32_to_host((XrSpatialCapabilityComponentTypesEXT32 *)UlongToPtr(params->capabilityComponents), &capabilityComponents_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialCapabilityComponentTypesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->capability, &capabilityComponents_host);
-    convert_XrSpatialCapabilityComponentTypesEXT_host_to_win32(&capabilityComponents_host, (XrSpatialCapabilityComponentTypesEXT32 *)(XrSpatialCapabilityComponentTypesEXT32 *)(uintptr_t)UlongToPtr(params->capabilityComponents));
+    convert_XrSpatialCapabilityComponentTypesEXT_host_to_win32(&capabilityComponents_host, (XrSpatialCapabilityComponentTypesEXT32 *)(XrSpatialCapabilityComponentTypesEXT32 *)UlongToPtr(params->capabilityComponents));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15335,7 +15335,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialCapabilityFeaturesEXT(void *args)
 
     TRACE("0x%s, 0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->capability, params->capabilityFeatureCapacityInput, params->capabilityFeatureCountOutput, params->capabilityFeatures);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialCapabilityFeaturesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->capability, params->capabilityFeatureCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->capabilityFeatureCountOutput), (XrSpatialCapabilityFeatureEXT *)(uintptr_t)UlongToPtr(params->capabilityFeatures));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialCapabilityFeaturesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->capability, params->capabilityFeatureCapacityInput, (uint32_t *)UlongToPtr(params->capabilityFeatureCountOutput), (XrSpatialCapabilityFeatureEXT *)UlongToPtr(params->capabilityFeatures));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15367,7 +15367,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialEntityComponentTypesBD(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), wine_dbgstr_longlong(params->entityId), params->componentTypeCapacityInput, params->componentTypeCountOutput, params->componentTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialEntityComponentTypesBD(params->snapshot, params->entityId, params->componentTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->componentTypeCountOutput), (XrSpatialEntityComponentTypeBD *)(uintptr_t)UlongToPtr(params->componentTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialEntityComponentTypesBD(params->snapshot, params->entityId, params->componentTypeCapacityInput, (uint32_t *)UlongToPtr(params->componentTypeCountOutput), (XrSpatialEntityComponentTypeBD *)UlongToPtr(params->componentTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15399,7 +15399,7 @@ static NTSTATUS thunk32_xrEnumerateSpatialPersistenceScopesEXT(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->persistenceScopeCapacityInput, params->persistenceScopeCountOutput, params->persistenceScopes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialPersistenceScopesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->persistenceScopeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->persistenceScopeCountOutput), (XrSpatialPersistenceScopeEXT *)(uintptr_t)UlongToPtr(params->persistenceScopes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSpatialPersistenceScopesEXT(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->persistenceScopeCapacityInput, (uint32_t *)UlongToPtr(params->persistenceScopeCountOutput), (XrSpatialPersistenceScopeEXT *)UlongToPtr(params->persistenceScopes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15431,7 +15431,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedAnchorTrackableTypesANDROID(void *ar
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->trackableTypeCapacityInput, params->trackableTypeCountOutput, params->trackableTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSupportedAnchorTrackableTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)(uintptr_t)UlongToPtr(params->trackableTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSupportedAnchorTrackableTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)UlongToPtr(params->trackableTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15463,7 +15463,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedPersistenceAnchorTypesANDROID(void *
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->trackableTypeCapacityInput, params->trackableTypeCountOutput, params->trackableTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSupportedPersistenceAnchorTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)(uintptr_t)UlongToPtr(params->trackableTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSupportedPersistenceAnchorTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)UlongToPtr(params->trackableTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15495,7 +15495,7 @@ static NTSTATUS thunk32_xrEnumerateSupportedTrackableTypesANDROID(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->trackableTypeCapacityInput, params->trackableTypeCountOutput, params->trackableTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSupportedTrackableTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)(uintptr_t)UlongToPtr(params->trackableTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSupportedTrackableTypesANDROID(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->trackableTypeCapacityInput, (uint32_t *)UlongToPtr(params->trackableTypeCountOutput), (XrTrackableTypeANDROID *)UlongToPtr(params->trackableTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15526,7 +15526,7 @@ static NTSTATUS thunk32_xrEnumerateSwapchainFormats(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->formatCapacityInput, params->formatCountOutput, params->formats);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSwapchainFormats(wine_session_from_handle(params->session)->host_session, params->formatCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->formatCountOutput), (int64_t *)(uintptr_t)UlongToPtr(params->formats));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSwapchainFormats(wine_session_from_handle(params->session)->host_session, params->formatCapacityInput, (uint32_t *)UlongToPtr(params->formatCountOutput), (int64_t *)UlongToPtr(params->formats));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15561,9 +15561,9 @@ static NTSTATUS thunk32_xrEnumerateSwapchainImages(void *args)
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->swapchain), params->imageCapacityInput, params->imageCountOutput, params->images);
 
     init_conversion_context(ctx);
-    images_host = convert_XrSwapchainImageBaseHeader_array_win32_to_host(ctx, (XrSwapchainImageBaseHeader32 *)(uintptr_t)UlongToPtr(params->images), params->imageCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSwapchainImages(wine_swapchain_from_handle(params->swapchain)->host_swapchain, params->imageCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->imageCountOutput), images_host);
-    convert_XrSwapchainImageBaseHeader_array_host_to_win32(images_host, (XrSwapchainImageBaseHeader32 *)(uintptr_t)UlongToPtr(params->images), params->imageCapacityInput);
+    images_host = convert_XrSwapchainImageBaseHeader_array_win32_to_host(ctx, (XrSwapchainImageBaseHeader32 *)UlongToPtr(params->images), params->imageCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateSwapchainImages(wine_swapchain_from_handle(params->swapchain)->host_swapchain, params->imageCapacityInput, (uint32_t *)UlongToPtr(params->imageCountOutput), images_host);
+    convert_XrSwapchainImageBaseHeader_array_host_to_win32(images_host, (XrSwapchainImageBaseHeader32 *)UlongToPtr(params->images), params->imageCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -15601,9 +15601,9 @@ static NTSTATUS thunk32_xrEnumerateViewConfigurationViews(void *args)
     TRACE("0x%s, 0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->viewConfigurationType, params->viewCapacityInput, params->viewCountOutput, params->views);
 
     init_conversion_context(ctx);
-    views_host = convert_XrViewConfigurationView_array_win32_to_host(ctx, (XrViewConfigurationView32 *)(uintptr_t)UlongToPtr(params->views), params->viewCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateViewConfigurationViews(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, params->viewCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->viewCountOutput), views_host);
-    convert_XrViewConfigurationView_array_host_to_win32(views_host, (XrViewConfigurationView32 *)(uintptr_t)UlongToPtr(params->views), params->viewCapacityInput);
+    views_host = convert_XrViewConfigurationView_array_win32_to_host(ctx, (XrViewConfigurationView32 *)UlongToPtr(params->views), params->viewCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateViewConfigurationViews(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, params->viewCapacityInput, (uint32_t *)UlongToPtr(params->viewCountOutput), views_host);
+    convert_XrViewConfigurationView_array_host_to_win32(views_host, (XrViewConfigurationView32 *)UlongToPtr(params->views), params->viewCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -15636,7 +15636,7 @@ static NTSTATUS thunk32_xrEnumerateViewConfigurations(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->viewConfigurationTypeCapacityInput, params->viewConfigurationTypeCountOutput, params->viewConfigurationTypes);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateViewConfigurations(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationTypeCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->viewConfigurationTypeCountOutput), (XrViewConfigurationType *)(uintptr_t)UlongToPtr(params->viewConfigurationTypes));
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateViewConfigurations(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationTypeCapacityInput, (uint32_t *)UlongToPtr(params->viewConfigurationTypeCountOutput), (XrViewConfigurationType *)UlongToPtr(params->viewConfigurationTypes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15671,9 +15671,9 @@ static NTSTATUS thunk32_xrEnumerateViveTrackerPathsHTCX(void *args)
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), params->pathCapacityInput, params->pathCountOutput, params->paths);
 
     init_conversion_context(ctx);
-    paths_host = convert_XrViveTrackerPathsHTCX_array_win32_to_host(ctx, (XrViveTrackerPathsHTCX32 *)(uintptr_t)UlongToPtr(params->paths), params->pathCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateViveTrackerPathsHTCX(wine_instance_from_handle(params->instance)->host_instance, params->pathCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->pathCountOutput), paths_host);
-    convert_XrViveTrackerPathsHTCX_array_host_to_win32(paths_host, (XrViveTrackerPathsHTCX32 *)(uintptr_t)UlongToPtr(params->paths), params->pathCapacityInput);
+    paths_host = convert_XrViveTrackerPathsHTCX_array_win32_to_host(ctx, (XrViveTrackerPathsHTCX32 *)UlongToPtr(params->paths), params->pathCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEnumerateViveTrackerPathsHTCX(wine_instance_from_handle(params->instance)->host_instance, params->pathCapacityInput, (uint32_t *)UlongToPtr(params->pathCountOutput), paths_host);
+    convert_XrViveTrackerPathsHTCX_array_host_to_win32(paths_host, (XrViveTrackerPathsHTCX32 *)UlongToPtr(params->paths), params->pathCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -15705,8 +15705,8 @@ static NTSTATUS thunk32_xrEraseSpaceFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrSpaceEraseInfoFB_win32_to_host((const XrSpaceEraseInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEraseSpaceFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSpaceEraseInfoFB_win32_to_host((const XrSpaceEraseInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEraseSpaceFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15740,9 +15740,9 @@ static NTSTATUS thunk32_xrEraseSpacesMETA(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
     init_conversion_context(ctx);
-    convert_XrSpacesEraseInfoMETA_win32_to_host(ctx, (const XrSpacesEraseInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrEraseSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
-    convert_XrSpacesEraseInfoMETA_host_to_win32(&info_host, (XrSpacesEraseInfoMETA32 *)(const XrSpacesEraseInfoMETA32 *)(uintptr_t)UlongToPtr(params->info));
+    convert_XrSpacesEraseInfoMETA_win32_to_host(ctx, (const XrSpacesEraseInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrEraseSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
+    convert_XrSpacesEraseInfoMETA_host_to_win32(&info_host, (XrSpacesEraseInfoMETA32 *)(const XrSpacesEraseInfoMETA32 *)UlongToPtr(params->info));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -15773,7 +15773,7 @@ static NTSTATUS thunk32_xrFreeWorldMeshBufferML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->detector), params->buffer);
 
-    convert_XrWorldMeshBufferML_win32_to_host((const XrWorldMeshBufferML32 *)(uintptr_t)UlongToPtr(params->buffer), &buffer_host);
+    convert_XrWorldMeshBufferML_win32_to_host((const XrWorldMeshBufferML32 *)UlongToPtr(params->buffer), &buffer_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrFreeWorldMeshBufferML(params->detector, &buffer_host);
     return STATUS_SUCCESS;
 }
@@ -15804,7 +15804,7 @@ static NTSTATUS thunk32_xrGeometryInstanceSetTransformFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->transformation);
 
-    convert_XrGeometryInstanceTransformFB_win32_to_host((const XrGeometryInstanceTransformFB32 *)(uintptr_t)UlongToPtr(params->transformation), &transformation_host);
+    convert_XrGeometryInstanceTransformFB_win32_to_host((const XrGeometryInstanceTransformFB32 *)UlongToPtr(params->transformation), &transformation_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGeometryInstanceSetTransformFB(params->instance, &transformation_host);
     return STATUS_SUCCESS;
 }
@@ -15837,10 +15837,10 @@ static NTSTATUS thunk32_xrGetActionStateBoolean(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->state);
 
-    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrActionStateBoolean_win32_to_host((XrActionStateBoolean32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrActionStateBoolean_win32_to_host((XrActionStateBoolean32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetActionStateBoolean(wine_session_from_handle(params->session)->host_session, &getInfo_host, &state_host);
-    convert_XrActionStateBoolean_host_to_win32(&state_host, (XrActionStateBoolean32 *)(XrActionStateBoolean32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrActionStateBoolean_host_to_win32(&state_host, (XrActionStateBoolean32 *)(XrActionStateBoolean32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15872,10 +15872,10 @@ static NTSTATUS thunk32_xrGetActionStateFloat(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->state);
 
-    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrActionStateFloat_win32_to_host((XrActionStateFloat32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrActionStateFloat_win32_to_host((XrActionStateFloat32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetActionStateFloat(wine_session_from_handle(params->session)->host_session, &getInfo_host, &state_host);
-    convert_XrActionStateFloat_host_to_win32(&state_host, (XrActionStateFloat32 *)(XrActionStateFloat32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrActionStateFloat_host_to_win32(&state_host, (XrActionStateFloat32 *)(XrActionStateFloat32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15907,10 +15907,10 @@ static NTSTATUS thunk32_xrGetActionStatePose(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->state);
 
-    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrActionStatePose_win32_to_host((XrActionStatePose32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrActionStatePose_win32_to_host((XrActionStatePose32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetActionStatePose(wine_session_from_handle(params->session)->host_session, &getInfo_host, &state_host);
-    convert_XrActionStatePose_host_to_win32(&state_host, (XrActionStatePose32 *)(XrActionStatePose32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrActionStatePose_host_to_win32(&state_host, (XrActionStatePose32 *)(XrActionStatePose32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15942,10 +15942,10 @@ static NTSTATUS thunk32_xrGetActionStateVector2f(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->state);
 
-    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrActionStateVector2f_win32_to_host((XrActionStateVector2f32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrActionStateGetInfo_win32_to_host((const XrActionStateGetInfo32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrActionStateVector2f_win32_to_host((XrActionStateVector2f32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetActionStateVector2f(wine_session_from_handle(params->session)->host_session, &getInfo_host, &state_host);
-    convert_XrActionStateVector2f_host_to_win32(&state_host, (XrActionStateVector2f32 *)(XrActionStateVector2f32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrActionStateVector2f_host_to_win32(&state_host, (XrActionStateVector2f32 *)(XrActionStateVector2f32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -15976,7 +15976,7 @@ static NTSTATUS thunk32_xrGetAllTrackablesANDROID(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->trackableTracker), params->trackableCapacityInput, params->trackableCountOutput, params->trackables);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetAllTrackablesANDROID(params->trackableTracker, params->trackableCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->trackableCountOutput), (XrTrackableANDROID *)(uintptr_t)UlongToPtr(params->trackables));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetAllTrackablesANDROID(params->trackableTracker, params->trackableCapacityInput, (uint32_t *)UlongToPtr(params->trackableCountOutput), (XrTrackableANDROID *)UlongToPtr(params->trackables));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16006,7 +16006,7 @@ static NTSTATUS thunk32_xrGetAnchorPersistStateANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->handle), params->anchorId, params->persistState);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetAnchorPersistStateANDROID(params->handle, (const XrUuidEXT *)(uintptr_t)UlongToPtr(params->anchorId), (XrAnchorPersistStateANDROID *)(uintptr_t)UlongToPtr(params->persistState));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetAnchorPersistStateANDROID(params->handle, (const XrUuidEXT *)UlongToPtr(params->anchorId), (XrAnchorPersistStateANDROID *)UlongToPtr(params->persistState));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16035,7 +16035,7 @@ static NTSTATUS thunk32_xrGetAnchorUuidBD(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->anchor), params->uuid);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetAnchorUuidBD(params->anchor, (XrUuidEXT *)(uintptr_t)UlongToPtr(params->uuid));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetAnchorUuidBD(params->anchor, (XrUuidEXT *)UlongToPtr(params->uuid));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16064,7 +16064,7 @@ static NTSTATUS thunk32_xrGetAudioInputDeviceGuidOculus(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetAudioInputDeviceGuidOculus(wine_instance_from_handle(params->instance)->host_instance, (wchar_t *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetAudioInputDeviceGuidOculus(wine_instance_from_handle(params->instance)->host_instance, (wchar_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16093,7 +16093,7 @@ static NTSTATUS thunk32_xrGetAudioOutputDeviceGuidOculus(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetAudioOutputDeviceGuidOculus(wine_instance_from_handle(params->instance)->host_instance, (wchar_t *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetAudioOutputDeviceGuidOculus(wine_instance_from_handle(params->instance)->host_instance, (wchar_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16123,9 +16123,9 @@ static NTSTATUS thunk32_xrGetBodySkeletonFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->bodyTracker), params->skeleton);
 
-    convert_XrBodySkeletonFB_win32_to_host((XrBodySkeletonFB32 *)(uintptr_t)UlongToPtr(params->skeleton), &skeleton_host);
+    convert_XrBodySkeletonFB_win32_to_host((XrBodySkeletonFB32 *)UlongToPtr(params->skeleton), &skeleton_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetBodySkeletonFB(params->bodyTracker, &skeleton_host);
-    convert_XrBodySkeletonFB_host_to_win32(&skeleton_host, (XrBodySkeletonFB32 *)(XrBodySkeletonFB32 *)(uintptr_t)UlongToPtr(params->skeleton));
+    convert_XrBodySkeletonFB_host_to_win32(&skeleton_host, (XrBodySkeletonFB32 *)(XrBodySkeletonFB32 *)UlongToPtr(params->skeleton));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16157,9 +16157,9 @@ static NTSTATUS thunk32_xrGetBodySkeletonHTC(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x\n", TRACE_HANDLE(params->bodyTracker), TRACE_HANDLE(params->baseSpace), params->skeletonGenerationId, params->skeleton);
 
-    convert_XrBodySkeletonHTC_win32_to_host((XrBodySkeletonHTC32 *)(uintptr_t)UlongToPtr(params->skeleton), &skeleton_host);
+    convert_XrBodySkeletonHTC_win32_to_host((XrBodySkeletonHTC32 *)UlongToPtr(params->skeleton), &skeleton_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetBodySkeletonHTC(params->bodyTracker, params->baseSpace, params->skeletonGenerationId, &skeleton_host);
-    convert_XrBodySkeletonHTC_host_to_win32(&skeleton_host, (XrBodySkeletonHTC32 *)(XrBodySkeletonHTC32 *)(uintptr_t)UlongToPtr(params->skeleton));
+    convert_XrBodySkeletonHTC_host_to_win32(&skeleton_host, (XrBodySkeletonHTC32 *)(XrBodySkeletonHTC32 *)UlongToPtr(params->skeleton));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16190,9 +16190,9 @@ static NTSTATUS thunk32_xrGetControllerModelKeyMSFT(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->topLevelUserPath), params->controllerModelKeyState);
 
-    convert_XrControllerModelKeyStateMSFT_win32_to_host((XrControllerModelKeyStateMSFT32 *)(uintptr_t)UlongToPtr(params->controllerModelKeyState), &controllerModelKeyState_host);
+    convert_XrControllerModelKeyStateMSFT_win32_to_host((XrControllerModelKeyStateMSFT32 *)UlongToPtr(params->controllerModelKeyState), &controllerModelKeyState_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetControllerModelKeyMSFT(wine_session_from_handle(params->session)->host_session, params->topLevelUserPath, &controllerModelKeyState_host);
-    convert_XrControllerModelKeyStateMSFT_host_to_win32(&controllerModelKeyState_host, (XrControllerModelKeyStateMSFT32 *)(XrControllerModelKeyStateMSFT32 *)(uintptr_t)UlongToPtr(params->controllerModelKeyState));
+    convert_XrControllerModelKeyStateMSFT_host_to_win32(&controllerModelKeyState_host, (XrControllerModelKeyStateMSFT32 *)(XrControllerModelKeyStateMSFT32 *)UlongToPtr(params->controllerModelKeyState));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16226,9 +16226,9 @@ static NTSTATUS thunk32_xrGetControllerModelPropertiesMSFT(void *args)
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->modelKey), params->properties);
 
     init_conversion_context(ctx);
-    convert_XrControllerModelPropertiesMSFT_win32_to_host(ctx, (XrControllerModelPropertiesMSFT32 *)(uintptr_t)UlongToPtr(params->properties), &properties_host);
+    convert_XrControllerModelPropertiesMSFT_win32_to_host(ctx, (XrControllerModelPropertiesMSFT32 *)UlongToPtr(params->properties), &properties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetControllerModelPropertiesMSFT(wine_session_from_handle(params->session)->host_session, params->modelKey, &properties_host);
-    convert_XrControllerModelPropertiesMSFT_host_to_win32(&properties_host, (XrControllerModelPropertiesMSFT32 *)(XrControllerModelPropertiesMSFT32 *)(uintptr_t)UlongToPtr(params->properties));
+    convert_XrControllerModelPropertiesMSFT_host_to_win32(&properties_host, (XrControllerModelPropertiesMSFT32 *)(XrControllerModelPropertiesMSFT32 *)UlongToPtr(params->properties));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -16263,9 +16263,9 @@ static NTSTATUS thunk32_xrGetControllerModelStateMSFT(void *args)
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->modelKey), params->state);
 
     init_conversion_context(ctx);
-    convert_XrControllerModelStateMSFT_win32_to_host(ctx, (XrControllerModelStateMSFT32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrControllerModelStateMSFT_win32_to_host(ctx, (XrControllerModelStateMSFT32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetControllerModelStateMSFT(wine_session_from_handle(params->session)->host_session, params->modelKey, &state_host);
-    convert_XrControllerModelStateMSFT_host_to_win32(&state_host, (XrControllerModelStateMSFT32 *)(XrControllerModelStateMSFT32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrControllerModelStateMSFT_host_to_win32(&state_host, (XrControllerModelStateMSFT32 *)(XrControllerModelStateMSFT32 *)UlongToPtr(params->state));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -16297,9 +16297,9 @@ static NTSTATUS thunk32_xrGetCurrentInteractionProfile(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->topLevelUserPath), params->interactionProfile);
 
-    convert_XrInteractionProfileState_win32_to_host((XrInteractionProfileState32 *)(uintptr_t)UlongToPtr(params->interactionProfile), &interactionProfile_host);
+    convert_XrInteractionProfileState_win32_to_host((XrInteractionProfileState32 *)UlongToPtr(params->interactionProfile), &interactionProfile_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetCurrentInteractionProfile(wine_session_from_handle(params->session)->host_session, params->topLevelUserPath, &interactionProfile_host);
-    convert_XrInteractionProfileState_host_to_win32(&interactionProfile_host, (XrInteractionProfileState32 *)(XrInteractionProfileState32 *)(uintptr_t)UlongToPtr(params->interactionProfile));
+    convert_XrInteractionProfileState_host_to_win32(&interactionProfile_host, (XrInteractionProfileState32 *)(XrInteractionProfileState32 *)UlongToPtr(params->interactionProfile));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16331,10 +16331,10 @@ static NTSTATUS thunk32_xrGetDeviceSampleRateFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->hapticActionInfo, params->deviceSampleRate);
 
-    convert_XrHapticActionInfo_win32_to_host((const XrHapticActionInfo32 *)(uintptr_t)UlongToPtr(params->hapticActionInfo), &hapticActionInfo_host);
-    convert_XrDevicePcmSampleRateGetInfoFB_win32_to_host((XrDevicePcmSampleRateGetInfoFB32 *)(uintptr_t)UlongToPtr(params->deviceSampleRate), &deviceSampleRate_host);
+    convert_XrHapticActionInfo_win32_to_host((const XrHapticActionInfo32 *)UlongToPtr(params->hapticActionInfo), &hapticActionInfo_host);
+    convert_XrDevicePcmSampleRateGetInfoFB_win32_to_host((XrDevicePcmSampleRateGetInfoFB32 *)UlongToPtr(params->deviceSampleRate), &deviceSampleRate_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetDeviceSampleRateFB(wine_session_from_handle(params->session)->host_session, &hapticActionInfo_host, &deviceSampleRate_host);
-    convert_XrDevicePcmSampleRateGetInfoFB_host_to_win32(&deviceSampleRate_host, (XrDevicePcmSampleRateGetInfoFB32 *)(XrDevicePcmSampleRateGetInfoFB32 *)(uintptr_t)UlongToPtr(params->deviceSampleRate));
+    convert_XrDevicePcmSampleRateGetInfoFB_host_to_win32(&deviceSampleRate_host, (XrDevicePcmSampleRateGetInfoFB32 *)(XrDevicePcmSampleRateGetInfoFB32 *)UlongToPtr(params->deviceSampleRate));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16363,7 +16363,7 @@ static NTSTATUS thunk32_xrGetDisplayRefreshRateFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->displayRefreshRate);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetDisplayRefreshRateFB(wine_session_from_handle(params->session)->host_session, (float *)(uintptr_t)UlongToPtr(params->displayRefreshRate));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetDisplayRefreshRateFB(wine_session_from_handle(params->session)->host_session, (float *)UlongToPtr(params->displayRefreshRate));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16393,9 +16393,9 @@ static NTSTATUS thunk32_xrGetEnvironmentDepthSwapchainStateMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->swapchain), params->state);
 
-    convert_XrEnvironmentDepthSwapchainStateMETA_win32_to_host((XrEnvironmentDepthSwapchainStateMETA32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrEnvironmentDepthSwapchainStateMETA_win32_to_host((XrEnvironmentDepthSwapchainStateMETA32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetEnvironmentDepthSwapchainStateMETA(params->swapchain, &state_host);
-    convert_XrEnvironmentDepthSwapchainStateMETA_host_to_win32(&state_host, (XrEnvironmentDepthSwapchainStateMETA32 *)(XrEnvironmentDepthSwapchainStateMETA32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrEnvironmentDepthSwapchainStateMETA_host_to_win32(&state_host, (XrEnvironmentDepthSwapchainStateMETA32 *)(XrEnvironmentDepthSwapchainStateMETA32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16426,7 +16426,7 @@ static NTSTATUS thunk32_xrGetExportedLocalizationMapDataML(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->map), params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetExportedLocalizationMapDataML(params->map, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetExportedLocalizationMapDataML(params->map, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16458,10 +16458,10 @@ static NTSTATUS thunk32_xrGetEyeGazesFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->eyeTracker), params->gazeInfo, params->eyeGazes);
 
-    convert_XrEyeGazesInfoFB_win32_to_host((const XrEyeGazesInfoFB32 *)(uintptr_t)UlongToPtr(params->gazeInfo), &gazeInfo_host);
-    convert_XrEyeGazesFB_win32_to_host((XrEyeGazesFB32 *)(uintptr_t)UlongToPtr(params->eyeGazes), &eyeGazes_host);
+    convert_XrEyeGazesInfoFB_win32_to_host((const XrEyeGazesInfoFB32 *)UlongToPtr(params->gazeInfo), &gazeInfo_host);
+    convert_XrEyeGazesFB_win32_to_host((XrEyeGazesFB32 *)UlongToPtr(params->eyeGazes), &eyeGazes_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetEyeGazesFB(params->eyeTracker, &gazeInfo_host, &eyeGazes_host);
-    convert_XrEyeGazesFB_host_to_win32(&eyeGazes_host, (XrEyeGazesFB32 *)(XrEyeGazesFB32 *)(uintptr_t)UlongToPtr(params->eyeGazes));
+    convert_XrEyeGazesFB_host_to_win32(&eyeGazes_host, (XrEyeGazesFB32 *)(XrEyeGazesFB32 *)UlongToPtr(params->eyeGazes));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16493,10 +16493,10 @@ static NTSTATUS thunk32_xrGetFaceExpressionWeights2FB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->faceTracker), params->expressionInfo, params->expressionWeights);
 
-    convert_XrFaceExpressionInfo2FB_win32_to_host((const XrFaceExpressionInfo2FB32 *)(uintptr_t)UlongToPtr(params->expressionInfo), &expressionInfo_host);
-    convert_XrFaceExpressionWeights2FB_win32_to_host((XrFaceExpressionWeights2FB32 *)(uintptr_t)UlongToPtr(params->expressionWeights), &expressionWeights_host);
+    convert_XrFaceExpressionInfo2FB_win32_to_host((const XrFaceExpressionInfo2FB32 *)UlongToPtr(params->expressionInfo), &expressionInfo_host);
+    convert_XrFaceExpressionWeights2FB_win32_to_host((XrFaceExpressionWeights2FB32 *)UlongToPtr(params->expressionWeights), &expressionWeights_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetFaceExpressionWeights2FB(params->faceTracker, &expressionInfo_host, &expressionWeights_host);
-    convert_XrFaceExpressionWeights2FB_host_to_win32(&expressionWeights_host, (XrFaceExpressionWeights2FB32 *)(XrFaceExpressionWeights2FB32 *)(uintptr_t)UlongToPtr(params->expressionWeights));
+    convert_XrFaceExpressionWeights2FB_host_to_win32(&expressionWeights_host, (XrFaceExpressionWeights2FB32 *)(XrFaceExpressionWeights2FB32 *)UlongToPtr(params->expressionWeights));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16528,10 +16528,10 @@ static NTSTATUS thunk32_xrGetFaceExpressionWeightsFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->faceTracker), params->expressionInfo, params->expressionWeights);
 
-    convert_XrFaceExpressionInfoFB_win32_to_host((const XrFaceExpressionInfoFB32 *)(uintptr_t)UlongToPtr(params->expressionInfo), &expressionInfo_host);
-    convert_XrFaceExpressionWeightsFB_win32_to_host((XrFaceExpressionWeightsFB32 *)(uintptr_t)UlongToPtr(params->expressionWeights), &expressionWeights_host);
+    convert_XrFaceExpressionInfoFB_win32_to_host((const XrFaceExpressionInfoFB32 *)UlongToPtr(params->expressionInfo), &expressionInfo_host);
+    convert_XrFaceExpressionWeightsFB_win32_to_host((XrFaceExpressionWeightsFB32 *)UlongToPtr(params->expressionWeights), &expressionWeights_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetFaceExpressionWeightsFB(params->faceTracker, &expressionInfo_host, &expressionWeights_host);
-    convert_XrFaceExpressionWeightsFB_host_to_win32(&expressionWeights_host, (XrFaceExpressionWeightsFB32 *)(XrFaceExpressionWeightsFB32 *)(uintptr_t)UlongToPtr(params->expressionWeights));
+    convert_XrFaceExpressionWeightsFB_host_to_win32(&expressionWeights_host, (XrFaceExpressionWeightsFB32 *)(XrFaceExpressionWeightsFB32 *)UlongToPtr(params->expressionWeights));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16567,10 +16567,10 @@ static NTSTATUS thunk32_xrGetFacialExpressionBlendShapePropertiesML(void *args)
     TRACE("0x%s, %#x, %u, %#x\n", TRACE_HANDLE(params->facialExpressionClient), params->blendShapeGetInfo, params->blendShapeCount, params->blendShapes);
 
     init_conversion_context(ctx);
-    convert_XrFacialExpressionBlendShapeGetInfoML_win32_to_host((const XrFacialExpressionBlendShapeGetInfoML32 *)(uintptr_t)UlongToPtr(params->blendShapeGetInfo), &blendShapeGetInfo_host);
-    blendShapes_host = convert_XrFacialExpressionBlendShapePropertiesML_array_win32_to_host(ctx, (XrFacialExpressionBlendShapePropertiesML32 *)(uintptr_t)UlongToPtr(params->blendShapes), params->blendShapeCount);
+    convert_XrFacialExpressionBlendShapeGetInfoML_win32_to_host((const XrFacialExpressionBlendShapeGetInfoML32 *)UlongToPtr(params->blendShapeGetInfo), &blendShapeGetInfo_host);
+    blendShapes_host = convert_XrFacialExpressionBlendShapePropertiesML_array_win32_to_host(ctx, (XrFacialExpressionBlendShapePropertiesML32 *)UlongToPtr(params->blendShapes), params->blendShapeCount);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetFacialExpressionBlendShapePropertiesML(params->facialExpressionClient, &blendShapeGetInfo_host, params->blendShapeCount, blendShapes_host);
-    convert_XrFacialExpressionBlendShapePropertiesML_array_host_to_win32(blendShapes_host, (XrFacialExpressionBlendShapePropertiesML32 *)(uintptr_t)UlongToPtr(params->blendShapes), params->blendShapeCount);
+    convert_XrFacialExpressionBlendShapePropertiesML_array_host_to_win32(blendShapes_host, (XrFacialExpressionBlendShapePropertiesML32 *)UlongToPtr(params->blendShapes), params->blendShapeCount);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -16601,9 +16601,9 @@ static NTSTATUS thunk32_xrGetFacialExpressionsHTC(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->facialTracker), params->facialExpressions);
 
-    convert_XrFacialExpressionsHTC_win32_to_host((XrFacialExpressionsHTC32 *)(uintptr_t)UlongToPtr(params->facialExpressions), &facialExpressions_host);
+    convert_XrFacialExpressionsHTC_win32_to_host((XrFacialExpressionsHTC32 *)UlongToPtr(params->facialExpressions), &facialExpressions_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetFacialExpressionsHTC(params->facialTracker, &facialExpressions_host);
-    convert_XrFacialExpressionsHTC_host_to_win32(&facialExpressions_host, (XrFacialExpressionsHTC32 *)(XrFacialExpressionsHTC32 *)(uintptr_t)UlongToPtr(params->facialExpressions));
+    convert_XrFacialExpressionsHTC_host_to_win32(&facialExpressions_host, (XrFacialExpressionsHTC32 *)(XrFacialExpressionsHTC32 *)UlongToPtr(params->facialExpressions));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16633,9 +16633,9 @@ static NTSTATUS thunk32_xrGetFoveationEyeTrackedStateMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->foveationState);
 
-    convert_XrFoveationEyeTrackedStateMETA_win32_to_host((XrFoveationEyeTrackedStateMETA32 *)(uintptr_t)UlongToPtr(params->foveationState), &foveationState_host);
+    convert_XrFoveationEyeTrackedStateMETA_win32_to_host((XrFoveationEyeTrackedStateMETA32 *)UlongToPtr(params->foveationState), &foveationState_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetFoveationEyeTrackedStateMETA(wine_session_from_handle(params->session)->host_session, &foveationState_host);
-    convert_XrFoveationEyeTrackedStateMETA_host_to_win32(&foveationState_host, (XrFoveationEyeTrackedStateMETA32 *)(XrFoveationEyeTrackedStateMETA32 *)(uintptr_t)UlongToPtr(params->foveationState));
+    convert_XrFoveationEyeTrackedStateMETA_host_to_win32(&foveationState_host, (XrFoveationEyeTrackedStateMETA32 *)(XrFoveationEyeTrackedStateMETA32 *)UlongToPtr(params->foveationState));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16665,9 +16665,9 @@ static NTSTATUS thunk32_xrGetHandMeshFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->handTracker), params->mesh);
 
-    convert_XrHandTrackingMeshFB_win32_to_host((XrHandTrackingMeshFB32 *)(uintptr_t)UlongToPtr(params->mesh), &mesh_host);
+    convert_XrHandTrackingMeshFB_win32_to_host((XrHandTrackingMeshFB32 *)UlongToPtr(params->mesh), &mesh_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetHandMeshFB(params->handTracker, &mesh_host);
-    convert_XrHandTrackingMeshFB_host_to_win32(&mesh_host, (XrHandTrackingMeshFB32 *)(XrHandTrackingMeshFB32 *)(uintptr_t)UlongToPtr(params->mesh));
+    convert_XrHandTrackingMeshFB_host_to_win32(&mesh_host, (XrHandTrackingMeshFB32 *)(XrHandTrackingMeshFB32 *)UlongToPtr(params->mesh));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16700,8 +16700,8 @@ static NTSTATUS thunk32_xrGetInputSourceLocalizedName(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrInputSourceLocalizedNameGetInfo_win32_to_host((const XrInputSourceLocalizedNameGetInfo32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetInputSourceLocalizedName(wine_session_from_handle(params->session)->host_session, &getInfo_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrInputSourceLocalizedNameGetInfo_win32_to_host((const XrInputSourceLocalizedNameGetInfo32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetInputSourceLocalizedName(wine_session_from_handle(params->session)->host_session, &getInfo_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16731,9 +16731,9 @@ static NTSTATUS thunk32_xrGetInstanceProperties(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->instanceProperties);
 
-    convert_XrInstanceProperties_win32_to_host((XrInstanceProperties32 *)(uintptr_t)UlongToPtr(params->instanceProperties), &instanceProperties_host);
+    convert_XrInstanceProperties_win32_to_host((XrInstanceProperties32 *)UlongToPtr(params->instanceProperties), &instanceProperties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetInstanceProperties(wine_instance_from_handle(params->instance)->host_instance, &instanceProperties_host);
-    convert_XrInstanceProperties_host_to_win32(&instanceProperties_host, (XrInstanceProperties32 *)(XrInstanceProperties32 *)(uintptr_t)UlongToPtr(params->instanceProperties));
+    convert_XrInstanceProperties_host_to_win32(&instanceProperties_host, (XrInstanceProperties32 *)(XrInstanceProperties32 *)UlongToPtr(params->instanceProperties));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16763,9 +16763,9 @@ static NTSTATUS thunk32_xrGetMarkerDetectorStateML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->markerDetector), params->state);
 
-    convert_XrMarkerDetectorStateML_win32_to_host((XrMarkerDetectorStateML32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrMarkerDetectorStateML_win32_to_host((XrMarkerDetectorStateML32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerDetectorStateML(params->markerDetector, &state_host);
-    convert_XrMarkerDetectorStateML_host_to_win32(&state_host, (XrMarkerDetectorStateML32 *)(XrMarkerDetectorStateML32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrMarkerDetectorStateML_host_to_win32(&state_host, (XrMarkerDetectorStateML32 *)(XrMarkerDetectorStateML32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16795,7 +16795,7 @@ static NTSTATUS thunk32_xrGetMarkerLengthML(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->markerDetector), wine_dbgstr_longlong(params->marker), params->meters);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerLengthML(params->markerDetector, params->marker, (float *)(uintptr_t)UlongToPtr(params->meters));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerLengthML(params->markerDetector, params->marker, (float *)UlongToPtr(params->meters));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16825,7 +16825,7 @@ static NTSTATUS thunk32_xrGetMarkerNumberML(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->markerDetector), wine_dbgstr_longlong(params->marker), params->number);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerNumberML(params->markerDetector, params->marker, (uint64_t *)(uintptr_t)UlongToPtr(params->number));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerNumberML(params->markerDetector, params->marker, (uint64_t *)UlongToPtr(params->number));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16855,7 +16855,7 @@ static NTSTATUS thunk32_xrGetMarkerReprojectionErrorML(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->markerDetector), wine_dbgstr_longlong(params->marker), params->reprojectionErrorMeters);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerReprojectionErrorML(params->markerDetector, params->marker, (float *)(uintptr_t)UlongToPtr(params->reprojectionErrorMeters));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerReprojectionErrorML(params->markerDetector, params->marker, (float *)UlongToPtr(params->reprojectionErrorMeters));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16885,7 +16885,7 @@ static NTSTATUS thunk32_xrGetMarkerSizeVARJO(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->markerId), params->size);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerSizeVARJO(wine_session_from_handle(params->session)->host_session, params->markerId, (XrExtent2Df *)(uintptr_t)UlongToPtr(params->size));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerSizeVARJO(wine_session_from_handle(params->session)->host_session, params->markerId, (XrExtent2Df *)UlongToPtr(params->size));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16917,7 +16917,7 @@ static NTSTATUS thunk32_xrGetMarkerStringML(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->markerDetector), wine_dbgstr_longlong(params->marker), params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerStringML(params->markerDetector, params->marker, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkerStringML(params->markerDetector, params->marker, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16948,7 +16948,7 @@ static NTSTATUS thunk32_xrGetMarkersML(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->markerDetector), params->markerCapacityInput, params->markerCountOutput, params->markers);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkersML(params->markerDetector, params->markerCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->markerCountOutput), (XrMarkerML *)(uintptr_t)UlongToPtr(params->markers));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetMarkersML(params->markerDetector, params->markerCapacityInput, (uint32_t *)UlongToPtr(params->markerCountOutput), (XrMarkerML *)UlongToPtr(params->markers));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -16979,9 +16979,9 @@ static NTSTATUS thunk32_xrGetOpenGLGraphicsRequirementsKHR(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->graphicsRequirements);
 
-    convert_XrGraphicsRequirementsOpenGLKHR_win32_to_host((XrGraphicsRequirementsOpenGLKHR32 *)(uintptr_t)UlongToPtr(params->graphicsRequirements), &graphicsRequirements_host);
+    convert_XrGraphicsRequirementsOpenGLKHR_win32_to_host((XrGraphicsRequirementsOpenGLKHR32 *)UlongToPtr(params->graphicsRequirements), &graphicsRequirements_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetOpenGLGraphicsRequirementsKHR(wine_instance_from_handle(params->instance)->host_instance, params->systemId, &graphicsRequirements_host);
-    convert_XrGraphicsRequirementsOpenGLKHR_host_to_win32(&graphicsRequirements_host, (XrGraphicsRequirementsOpenGLKHR32 *)(XrGraphicsRequirementsOpenGLKHR32 *)(uintptr_t)UlongToPtr(params->graphicsRequirements));
+    convert_XrGraphicsRequirementsOpenGLKHR_host_to_win32(&graphicsRequirements_host, (XrGraphicsRequirementsOpenGLKHR32 *)(XrGraphicsRequirementsOpenGLKHR32 *)UlongToPtr(params->graphicsRequirements));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17012,8 +17012,8 @@ static NTSTATUS thunk32_xrGetPassthroughCameraStateANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->getInfo, params->cameraStateOutput);
 
-    convert_XrPassthroughCameraStateGetInfoANDROID_win32_to_host((const XrPassthroughCameraStateGetInfoANDROID32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetPassthroughCameraStateANDROID(wine_session_from_handle(params->session)->host_session, &getInfo_host, (XrPassthroughCameraStateANDROID *)(uintptr_t)UlongToPtr(params->cameraStateOutput));
+    convert_XrPassthroughCameraStateGetInfoANDROID_win32_to_host((const XrPassthroughCameraStateGetInfoANDROID32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetPassthroughCameraStateANDROID(wine_session_from_handle(params->session)->host_session, &getInfo_host, (XrPassthroughCameraStateANDROID *)UlongToPtr(params->cameraStateOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17043,9 +17043,9 @@ static NTSTATUS thunk32_xrGetPassthroughPreferencesMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->preferences);
 
-    convert_XrPassthroughPreferencesMETA_win32_to_host((XrPassthroughPreferencesMETA32 *)(uintptr_t)UlongToPtr(params->preferences), &preferences_host);
+    convert_XrPassthroughPreferencesMETA_win32_to_host((XrPassthroughPreferencesMETA32 *)UlongToPtr(params->preferences), &preferences_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetPassthroughPreferencesMETA(wine_session_from_handle(params->session)->host_session, &preferences_host);
-    convert_XrPassthroughPreferencesMETA_host_to_win32(&preferences_host, (XrPassthroughPreferencesMETA32 *)(XrPassthroughPreferencesMETA32 *)(uintptr_t)UlongToPtr(params->preferences));
+    convert_XrPassthroughPreferencesMETA_host_to_win32(&preferences_host, (XrPassthroughPreferencesMETA32 *)(XrPassthroughPreferencesMETA32 *)UlongToPtr(params->preferences));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17075,9 +17075,9 @@ static NTSTATUS thunk32_xrGetPerformanceMetricsStateMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->state);
 
-    convert_XrPerformanceMetricsStateMETA_win32_to_host((XrPerformanceMetricsStateMETA32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrPerformanceMetricsStateMETA_win32_to_host((XrPerformanceMetricsStateMETA32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetPerformanceMetricsStateMETA(wine_session_from_handle(params->session)->host_session, &state_host);
-    convert_XrPerformanceMetricsStateMETA_host_to_win32(&state_host, (XrPerformanceMetricsStateMETA32 *)(XrPerformanceMetricsStateMETA32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrPerformanceMetricsStateMETA_host_to_win32(&state_host, (XrPerformanceMetricsStateMETA32 *)(XrPerformanceMetricsStateMETA32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17106,7 +17106,7 @@ static NTSTATUS thunk32_xrGetPlaneDetectionStateEXT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->planeDetector), params->state);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetPlaneDetectionStateEXT(params->planeDetector, (XrPlaneDetectionStateEXT *)(uintptr_t)UlongToPtr(params->state));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetPlaneDetectionStateEXT(params->planeDetector, (XrPlaneDetectionStateEXT *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17141,10 +17141,10 @@ static NTSTATUS thunk32_xrGetPlaneDetectionsEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->planeDetector), params->info, params->locations);
 
     init_conversion_context(ctx);
-    convert_XrPlaneDetectorGetInfoEXT_win32_to_host((const XrPlaneDetectorGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    convert_XrPlaneDetectorLocationsEXT_win32_to_host(ctx, (XrPlaneDetectorLocationsEXT32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrPlaneDetectorGetInfoEXT_win32_to_host((const XrPlaneDetectorGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    convert_XrPlaneDetectorLocationsEXT_win32_to_host(ctx, (XrPlaneDetectorLocationsEXT32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetPlaneDetectionsEXT(params->planeDetector, &info_host, &locations_host);
-    convert_XrPlaneDetectorLocationsEXT_host_to_win32(&locations_host, (XrPlaneDetectorLocationsEXT32 *)(XrPlaneDetectorLocationsEXT32 *)(uintptr_t)UlongToPtr(params->locations));
+    convert_XrPlaneDetectorLocationsEXT_host_to_win32(&locations_host, (XrPlaneDetectorLocationsEXT32 *)(XrPlaneDetectorLocationsEXT32 *)UlongToPtr(params->locations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17177,9 +17177,9 @@ static NTSTATUS thunk32_xrGetPlanePolygonBufferEXT(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x\n", TRACE_HANDLE(params->planeDetector), wine_dbgstr_longlong(params->planeId), params->polygonBufferIndex, params->polygonBuffer);
 
-    convert_XrPlaneDetectorPolygonBufferEXT_win32_to_host((XrPlaneDetectorPolygonBufferEXT32 *)(uintptr_t)UlongToPtr(params->polygonBuffer), &polygonBuffer_host);
+    convert_XrPlaneDetectorPolygonBufferEXT_win32_to_host((XrPlaneDetectorPolygonBufferEXT32 *)UlongToPtr(params->polygonBuffer), &polygonBuffer_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetPlanePolygonBufferEXT(params->planeDetector, params->planeId, params->polygonBufferIndex, &polygonBuffer_host);
-    convert_XrPlaneDetectorPolygonBufferEXT_host_to_win32(&polygonBuffer_host, (XrPlaneDetectorPolygonBufferEXT32 *)(XrPlaneDetectorPolygonBufferEXT32 *)(uintptr_t)UlongToPtr(params->polygonBuffer));
+    convert_XrPlaneDetectorPolygonBufferEXT_host_to_win32(&polygonBuffer_host, (XrPlaneDetectorPolygonBufferEXT32 *)(XrPlaneDetectorPolygonBufferEXT32 *)UlongToPtr(params->polygonBuffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17214,11 +17214,11 @@ static NTSTATUS thunk32_xrGetQueriedSenseDataBD(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->getInfo, params->queriedSenseData);
 
     init_conversion_context(ctx);
-    convert_XrQueriedSenseDataGetInfoBD_win32_to_host((XrQueriedSenseDataGetInfoBD32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrQueriedSenseDataBD_win32_to_host(ctx, (XrQueriedSenseDataBD32 *)(uintptr_t)UlongToPtr(params->queriedSenseData), &queriedSenseData_host);
+    convert_XrQueriedSenseDataGetInfoBD_win32_to_host((XrQueriedSenseDataGetInfoBD32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrQueriedSenseDataBD_win32_to_host(ctx, (XrQueriedSenseDataBD32 *)UlongToPtr(params->queriedSenseData), &queriedSenseData_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetQueriedSenseDataBD(params->snapshot, &getInfo_host, &queriedSenseData_host);
-    convert_XrQueriedSenseDataGetInfoBD_host_to_win32(&getInfo_host, (XrQueriedSenseDataGetInfoBD32 *)(XrQueriedSenseDataGetInfoBD32 *)(uintptr_t)UlongToPtr(params->getInfo));
-    convert_XrQueriedSenseDataBD_host_to_win32(&queriedSenseData_host, (XrQueriedSenseDataBD32 *)(XrQueriedSenseDataBD32 *)(uintptr_t)UlongToPtr(params->queriedSenseData));
+    convert_XrQueriedSenseDataGetInfoBD_host_to_win32(&getInfo_host, (XrQueriedSenseDataGetInfoBD32 *)(XrQueriedSenseDataGetInfoBD32 *)UlongToPtr(params->getInfo));
+    convert_XrQueriedSenseDataBD_host_to_win32(&queriedSenseData_host, (XrQueriedSenseDataBD32 *)(XrQueriedSenseDataBD32 *)UlongToPtr(params->queriedSenseData));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17254,10 +17254,10 @@ static NTSTATUS thunk32_xrGetRecommendedLayerResolutionMETA(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->resolution);
 
     init_conversion_context(ctx);
-    convert_XrRecommendedLayerResolutionGetInfoMETA_win32_to_host(ctx, (const XrRecommendedLayerResolutionGetInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    convert_XrRecommendedLayerResolutionMETA_win32_to_host((XrRecommendedLayerResolutionMETA32 *)(uintptr_t)UlongToPtr(params->resolution), &resolution_host);
+    convert_XrRecommendedLayerResolutionGetInfoMETA_win32_to_host(ctx, (const XrRecommendedLayerResolutionGetInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    convert_XrRecommendedLayerResolutionMETA_win32_to_host((XrRecommendedLayerResolutionMETA32 *)UlongToPtr(params->resolution), &resolution_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetRecommendedLayerResolutionMETA(wine_session_from_handle(params->session)->host_session, &info_host, &resolution_host);
-    convert_XrRecommendedLayerResolutionMETA_host_to_win32(&resolution_host, (XrRecommendedLayerResolutionMETA32 *)(XrRecommendedLayerResolutionMETA32 *)(uintptr_t)UlongToPtr(params->resolution));
+    convert_XrRecommendedLayerResolutionMETA_host_to_win32(&resolution_host, (XrRecommendedLayerResolutionMETA32 *)(XrRecommendedLayerResolutionMETA32 *)UlongToPtr(params->resolution));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17288,7 +17288,7 @@ static NTSTATUS thunk32_xrGetReferenceSpaceBoundsRect(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->referenceSpaceType, params->bounds);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetReferenceSpaceBoundsRect(wine_session_from_handle(params->session)->host_session, params->referenceSpaceType, (XrExtent2Df *)(uintptr_t)UlongToPtr(params->bounds));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetReferenceSpaceBoundsRect(wine_session_from_handle(params->session)->host_session, params->referenceSpaceType, (XrExtent2Df *)UlongToPtr(params->bounds));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17326,11 +17326,11 @@ static NTSTATUS thunk32_xrGetRenderModelAssetDataEXT(void *args)
     if (params->getInfo)
     {
         getInfo_host = conversion_context_alloc(ctx, sizeof(*getInfo_host));
-        convert_XrRenderModelAssetDataGetInfoEXT_win32_to_host((const XrRenderModelAssetDataGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->getInfo), getInfo_host);
+        convert_XrRenderModelAssetDataGetInfoEXT_win32_to_host((const XrRenderModelAssetDataGetInfoEXT32 *)UlongToPtr(params->getInfo), getInfo_host);
     }
-    convert_XrRenderModelAssetDataEXT_win32_to_host((XrRenderModelAssetDataEXT32 *)(uintptr_t)UlongToPtr(params->buffer), &buffer_host);
+    convert_XrRenderModelAssetDataEXT_win32_to_host((XrRenderModelAssetDataEXT32 *)UlongToPtr(params->buffer), &buffer_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelAssetDataEXT(params->asset, getInfo_host, &buffer_host);
-    convert_XrRenderModelAssetDataEXT_host_to_win32(&buffer_host, (XrRenderModelAssetDataEXT32 *)(XrRenderModelAssetDataEXT32 *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrRenderModelAssetDataEXT_host_to_win32(&buffer_host, (XrRenderModelAssetDataEXT32 *)(XrRenderModelAssetDataEXT32 *)UlongToPtr(params->buffer));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17369,11 +17369,11 @@ static NTSTATUS thunk32_xrGetRenderModelAssetPropertiesEXT(void *args)
     if (params->getInfo)
     {
         getInfo_host = conversion_context_alloc(ctx, sizeof(*getInfo_host));
-        convert_XrRenderModelAssetPropertiesGetInfoEXT_win32_to_host((const XrRenderModelAssetPropertiesGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->getInfo), getInfo_host);
+        convert_XrRenderModelAssetPropertiesGetInfoEXT_win32_to_host((const XrRenderModelAssetPropertiesGetInfoEXT32 *)UlongToPtr(params->getInfo), getInfo_host);
     }
-    convert_XrRenderModelAssetPropertiesEXT_win32_to_host((XrRenderModelAssetPropertiesEXT32 *)(uintptr_t)UlongToPtr(params->properties), &properties_host);
+    convert_XrRenderModelAssetPropertiesEXT_win32_to_host((XrRenderModelAssetPropertiesEXT32 *)UlongToPtr(params->properties), &properties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelAssetPropertiesEXT(params->asset, getInfo_host, &properties_host);
-    convert_XrRenderModelAssetPropertiesEXT_host_to_win32(&properties_host, (XrRenderModelAssetPropertiesEXT32 *)(XrRenderModelAssetPropertiesEXT32 *)(uintptr_t)UlongToPtr(params->properties));
+    convert_XrRenderModelAssetPropertiesEXT_host_to_win32(&properties_host, (XrRenderModelAssetPropertiesEXT32 *)(XrRenderModelAssetPropertiesEXT32 *)UlongToPtr(params->properties));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17405,8 +17405,8 @@ static NTSTATUS thunk32_xrGetRenderModelPoseTopLevelUserPathEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->renderModel), params->info, params->topLevelUserPath);
 
-    convert_XrInteractionRenderModelTopLevelUserPathGetInfoEXT_win32_to_host((const XrInteractionRenderModelTopLevelUserPathGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelPoseTopLevelUserPathEXT(params->renderModel, &info_host, (XrPath *)(uintptr_t)UlongToPtr(params->topLevelUserPath));
+    convert_XrInteractionRenderModelTopLevelUserPathGetInfoEXT_win32_to_host((const XrInteractionRenderModelTopLevelUserPathGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelPoseTopLevelUserPathEXT(params->renderModel, &info_host, (XrPath *)UlongToPtr(params->topLevelUserPath));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17444,11 +17444,11 @@ static NTSTATUS thunk32_xrGetRenderModelPropertiesEXT(void *args)
     if (params->getInfo)
     {
         getInfo_host = conversion_context_alloc(ctx, sizeof(*getInfo_host));
-        convert_XrRenderModelPropertiesGetInfoEXT_win32_to_host((const XrRenderModelPropertiesGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->getInfo), getInfo_host);
+        convert_XrRenderModelPropertiesGetInfoEXT_win32_to_host((const XrRenderModelPropertiesGetInfoEXT32 *)UlongToPtr(params->getInfo), getInfo_host);
     }
-    convert_XrRenderModelPropertiesEXT_win32_to_host((XrRenderModelPropertiesEXT32 *)(uintptr_t)UlongToPtr(params->properties), &properties_host);
+    convert_XrRenderModelPropertiesEXT_win32_to_host((XrRenderModelPropertiesEXT32 *)UlongToPtr(params->properties), &properties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelPropertiesEXT(params->renderModel, getInfo_host, &properties_host);
-    convert_XrRenderModelPropertiesEXT_host_to_win32(&properties_host, (XrRenderModelPropertiesEXT32 *)(XrRenderModelPropertiesEXT32 *)(uintptr_t)UlongToPtr(params->properties));
+    convert_XrRenderModelPropertiesEXT_host_to_win32(&properties_host, (XrRenderModelPropertiesEXT32 *)(XrRenderModelPropertiesEXT32 *)UlongToPtr(params->properties));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17483,9 +17483,9 @@ static NTSTATUS thunk32_xrGetRenderModelPropertiesFB(void *args)
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->path), params->properties);
 
     init_conversion_context(ctx);
-    convert_XrRenderModelPropertiesFB_win32_to_host(ctx, (XrRenderModelPropertiesFB32 *)(uintptr_t)UlongToPtr(params->properties), &properties_host);
+    convert_XrRenderModelPropertiesFB_win32_to_host(ctx, (XrRenderModelPropertiesFB32 *)UlongToPtr(params->properties), &properties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelPropertiesFB(wine_session_from_handle(params->session)->host_session, params->path, &properties_host);
-    convert_XrRenderModelPropertiesFB_host_to_win32(&properties_host, (XrRenderModelPropertiesFB32 *)(XrRenderModelPropertiesFB32 *)(uintptr_t)UlongToPtr(params->properties));
+    convert_XrRenderModelPropertiesFB_host_to_win32(&properties_host, (XrRenderModelPropertiesFB32 *)(XrRenderModelPropertiesFB32 *)UlongToPtr(params->properties));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17518,10 +17518,10 @@ static NTSTATUS thunk32_xrGetRenderModelStateEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->renderModel), params->getInfo, params->state);
 
-    convert_XrRenderModelStateGetInfoEXT_win32_to_host((const XrRenderModelStateGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrRenderModelStateEXT_win32_to_host((XrRenderModelStateEXT32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrRenderModelStateGetInfoEXT_win32_to_host((const XrRenderModelStateGetInfoEXT32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrRenderModelStateEXT_win32_to_host((XrRenderModelStateEXT32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetRenderModelStateEXT(params->renderModel, &getInfo_host, &state_host);
-    convert_XrRenderModelStateEXT_host_to_win32(&state_host, (XrRenderModelStateEXT32 *)(XrRenderModelStateEXT32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrRenderModelStateEXT_host_to_win32(&state_host, (XrRenderModelStateEXT32 *)(XrRenderModelStateEXT32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17556,10 +17556,10 @@ static NTSTATUS thunk32_xrGetSceneComponentsMSFT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->scene), params->getInfo, params->components);
 
     init_conversion_context(ctx);
-    convert_XrSceneComponentsGetInfoMSFT_win32_to_host(ctx, (const XrSceneComponentsGetInfoMSFT32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrSceneComponentsMSFT_win32_to_host(ctx, (XrSceneComponentsMSFT32 *)(uintptr_t)UlongToPtr(params->components), &components_host);
+    convert_XrSceneComponentsGetInfoMSFT_win32_to_host(ctx, (const XrSceneComponentsGetInfoMSFT32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrSceneComponentsMSFT_win32_to_host(ctx, (XrSceneComponentsMSFT32 *)UlongToPtr(params->components), &components_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneComponentsMSFT(params->scene, &getInfo_host, &components_host);
-    convert_XrSceneComponentsMSFT_host_to_win32(&components_host, (XrSceneComponentsMSFT32 *)(XrSceneComponentsMSFT32 *)(uintptr_t)UlongToPtr(params->components));
+    convert_XrSceneComponentsMSFT_host_to_win32(&components_host, (XrSceneComponentsMSFT32 *)(XrSceneComponentsMSFT32 *)UlongToPtr(params->components));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -17589,7 +17589,7 @@ static NTSTATUS thunk32_xrGetSceneComputeStateMSFT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->sceneObserver), params->state);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneComputeStateMSFT(params->sceneObserver, (XrSceneComputeStateMSFT *)(uintptr_t)UlongToPtr(params->state));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneComputeStateMSFT(params->sceneObserver, (XrSceneComputeStateMSFT *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17621,7 +17621,7 @@ static NTSTATUS thunk32_xrGetSceneMarkerDecodedStringMSFT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->scene), params->markerId, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneMarkerDecodedStringMSFT(params->scene, (const XrUuidMSFT *)(uintptr_t)UlongToPtr(params->markerId), params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneMarkerDecodedStringMSFT(params->scene, (const XrUuidMSFT *)UlongToPtr(params->markerId), params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17653,7 +17653,7 @@ static NTSTATUS thunk32_xrGetSceneMarkerRawDataMSFT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->scene), params->markerId, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneMarkerRawDataMSFT(params->scene, (const XrUuidMSFT *)(uintptr_t)UlongToPtr(params->markerId), params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (uint8_t *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneMarkerRawDataMSFT(params->scene, (const XrUuidMSFT *)UlongToPtr(params->markerId), params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (uint8_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17685,10 +17685,10 @@ static NTSTATUS thunk32_xrGetSceneMeshBuffersMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->scene), params->getInfo, params->buffers);
 
-    convert_XrSceneMeshBuffersGetInfoMSFT_win32_to_host((const XrSceneMeshBuffersGetInfoMSFT32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrSceneMeshBuffersMSFT_win32_to_host((XrSceneMeshBuffersMSFT32 *)(uintptr_t)UlongToPtr(params->buffers), &buffers_host);
+    convert_XrSceneMeshBuffersGetInfoMSFT_win32_to_host((const XrSceneMeshBuffersGetInfoMSFT32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrSceneMeshBuffersMSFT_win32_to_host((XrSceneMeshBuffersMSFT32 *)UlongToPtr(params->buffers), &buffers_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSceneMeshBuffersMSFT(params->scene, &getInfo_host, &buffers_host);
-    convert_XrSceneMeshBuffersMSFT_host_to_win32(&buffers_host, (XrSceneMeshBuffersMSFT32 *)(XrSceneMeshBuffersMSFT32 *)(uintptr_t)UlongToPtr(params->buffers));
+    convert_XrSceneMeshBuffersMSFT_host_to_win32(&buffers_host, (XrSceneMeshBuffersMSFT32 *)(XrSceneMeshBuffersMSFT32 *)UlongToPtr(params->buffers));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17717,7 +17717,7 @@ static NTSTATUS thunk32_xrGetSenseDataProviderStateBD(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->provider), params->state);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSenseDataProviderStateBD(params->provider, (XrSenseDataProviderStateBD *)(uintptr_t)UlongToPtr(params->state));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSenseDataProviderStateBD(params->provider, (XrSenseDataProviderStateBD *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17750,8 +17750,8 @@ static NTSTATUS thunk32_xrGetSerializedSceneFragmentDataMSFT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->scene), params->getInfo, params->countInput, params->readOutput, params->buffer);
 
-    convert_XrSerializedSceneFragmentDataGetInfoMSFT_win32_to_host((const XrSerializedSceneFragmentDataGetInfoMSFT32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSerializedSceneFragmentDataMSFT(params->scene, &getInfo_host, params->countInput, (uint32_t *)(uintptr_t)UlongToPtr(params->readOutput), (uint8_t *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSerializedSceneFragmentDataGetInfoMSFT_win32_to_host((const XrSerializedSceneFragmentDataGetInfoMSFT32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSerializedSceneFragmentDataMSFT(params->scene, &getInfo_host, params->countInput, (uint32_t *)UlongToPtr(params->readOutput), (uint8_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17782,9 +17782,9 @@ static NTSTATUS thunk32_xrGetSpaceBoundary2DFB(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->space), params->boundary2DOutput);
 
-    convert_XrBoundary2DFB_win32_to_host((XrBoundary2DFB32 *)(uintptr_t)UlongToPtr(params->boundary2DOutput), &boundary2DOutput_host);
+    convert_XrBoundary2DFB_win32_to_host((XrBoundary2DFB32 *)UlongToPtr(params->boundary2DOutput), &boundary2DOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceBoundary2DFB(wine_session_from_handle(params->session)->host_session, params->space, &boundary2DOutput_host);
-    convert_XrBoundary2DFB_host_to_win32(&boundary2DOutput_host, (XrBoundary2DFB32 *)(XrBoundary2DFB32 *)(uintptr_t)UlongToPtr(params->boundary2DOutput));
+    convert_XrBoundary2DFB_host_to_win32(&boundary2DOutput_host, (XrBoundary2DFB32 *)(XrBoundary2DFB32 *)UlongToPtr(params->boundary2DOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17814,7 +17814,7 @@ static NTSTATUS thunk32_xrGetSpaceBoundingBox2DFB(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->space), params->boundingBox2DOutput);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceBoundingBox2DFB(wine_session_from_handle(params->session)->host_session, params->space, (XrRect2Df *)(uintptr_t)UlongToPtr(params->boundingBox2DOutput));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceBoundingBox2DFB(wine_session_from_handle(params->session)->host_session, params->space, (XrRect2Df *)UlongToPtr(params->boundingBox2DOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17844,7 +17844,7 @@ static NTSTATUS thunk32_xrGetSpaceBoundingBox3DFB(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->space), params->boundingBox3DOutput);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceBoundingBox3DFB(wine_session_from_handle(params->session)->host_session, params->space, (XrRect3DfFB *)(uintptr_t)UlongToPtr(params->boundingBox3DOutput));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceBoundingBox3DFB(wine_session_from_handle(params->session)->host_session, params->space, (XrRect3DfFB *)UlongToPtr(params->boundingBox3DOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17875,9 +17875,9 @@ static NTSTATUS thunk32_xrGetSpaceComponentStatusFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->space), params->componentType, params->status);
 
-    convert_XrSpaceComponentStatusFB_win32_to_host((XrSpaceComponentStatusFB32 *)(uintptr_t)UlongToPtr(params->status), &status_host);
+    convert_XrSpaceComponentStatusFB_win32_to_host((XrSpaceComponentStatusFB32 *)UlongToPtr(params->status), &status_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceComponentStatusFB(params->space, params->componentType, &status_host);
-    convert_XrSpaceComponentStatusFB_host_to_win32(&status_host, (XrSpaceComponentStatusFB32 *)(XrSpaceComponentStatusFB32 *)(uintptr_t)UlongToPtr(params->status));
+    convert_XrSpaceComponentStatusFB_host_to_win32(&status_host, (XrSpaceComponentStatusFB32 *)(XrSpaceComponentStatusFB32 *)UlongToPtr(params->status));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17908,9 +17908,9 @@ static NTSTATUS thunk32_xrGetSpaceContainerFB(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->space), params->spaceContainerOutput);
 
-    convert_XrSpaceContainerFB_win32_to_host((XrSpaceContainerFB32 *)(uintptr_t)UlongToPtr(params->spaceContainerOutput), &spaceContainerOutput_host);
+    convert_XrSpaceContainerFB_win32_to_host((XrSpaceContainerFB32 *)UlongToPtr(params->spaceContainerOutput), &spaceContainerOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceContainerFB(wine_session_from_handle(params->session)->host_session, params->space, &spaceContainerOutput_host);
-    convert_XrSpaceContainerFB_host_to_win32(&spaceContainerOutput_host, (XrSpaceContainerFB32 *)(XrSpaceContainerFB32 *)(uintptr_t)UlongToPtr(params->spaceContainerOutput));
+    convert_XrSpaceContainerFB_host_to_win32(&spaceContainerOutput_host, (XrSpaceContainerFB32 *)(XrSpaceContainerFB32 *)UlongToPtr(params->spaceContainerOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17941,9 +17941,9 @@ static NTSTATUS thunk32_xrGetSpaceRoomLayoutFB(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->space), params->roomLayoutOutput);
 
-    convert_XrRoomLayoutFB_win32_to_host((XrRoomLayoutFB32 *)(uintptr_t)UlongToPtr(params->roomLayoutOutput), &roomLayoutOutput_host);
+    convert_XrRoomLayoutFB_win32_to_host((XrRoomLayoutFB32 *)UlongToPtr(params->roomLayoutOutput), &roomLayoutOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceRoomLayoutFB(wine_session_from_handle(params->session)->host_session, params->space, &roomLayoutOutput_host);
-    convert_XrRoomLayoutFB_host_to_win32(&roomLayoutOutput_host, (XrRoomLayoutFB32 *)(XrRoomLayoutFB32 *)(uintptr_t)UlongToPtr(params->roomLayoutOutput));
+    convert_XrRoomLayoutFB_host_to_win32(&roomLayoutOutput_host, (XrRoomLayoutFB32 *)(XrRoomLayoutFB32 *)UlongToPtr(params->roomLayoutOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -17974,9 +17974,9 @@ static NTSTATUS thunk32_xrGetSpaceSemanticLabelsFB(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), TRACE_HANDLE(params->space), params->semanticLabelsOutput);
 
-    convert_XrSemanticLabelsFB_win32_to_host((XrSemanticLabelsFB32 *)(uintptr_t)UlongToPtr(params->semanticLabelsOutput), &semanticLabelsOutput_host);
+    convert_XrSemanticLabelsFB_win32_to_host((XrSemanticLabelsFB32 *)UlongToPtr(params->semanticLabelsOutput), &semanticLabelsOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceSemanticLabelsFB(wine_session_from_handle(params->session)->host_session, params->space, &semanticLabelsOutput_host);
-    convert_XrSemanticLabelsFB_host_to_win32(&semanticLabelsOutput_host, (XrSemanticLabelsFB32 *)(XrSemanticLabelsFB32 *)(uintptr_t)UlongToPtr(params->semanticLabelsOutput));
+    convert_XrSemanticLabelsFB_host_to_win32(&semanticLabelsOutput_host, (XrSemanticLabelsFB32 *)(XrSemanticLabelsFB32 *)UlongToPtr(params->semanticLabelsOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18008,10 +18008,10 @@ static NTSTATUS thunk32_xrGetSpaceTriangleMeshMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->space), params->getInfo, params->triangleMeshOutput);
 
-    convert_XrSpaceTriangleMeshGetInfoMETA_win32_to_host((const XrSpaceTriangleMeshGetInfoMETA32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrSpaceTriangleMeshMETA_win32_to_host((XrSpaceTriangleMeshMETA32 *)(uintptr_t)UlongToPtr(params->triangleMeshOutput), &triangleMeshOutput_host);
+    convert_XrSpaceTriangleMeshGetInfoMETA_win32_to_host((const XrSpaceTriangleMeshGetInfoMETA32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrSpaceTriangleMeshMETA_win32_to_host((XrSpaceTriangleMeshMETA32 *)UlongToPtr(params->triangleMeshOutput), &triangleMeshOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceTriangleMeshMETA(params->space, &getInfo_host, &triangleMeshOutput_host);
-    convert_XrSpaceTriangleMeshMETA_host_to_win32(&triangleMeshOutput_host, (XrSpaceTriangleMeshMETA32 *)(XrSpaceTriangleMeshMETA32 *)(uintptr_t)UlongToPtr(params->triangleMeshOutput));
+    convert_XrSpaceTriangleMeshMETA_host_to_win32(&triangleMeshOutput_host, (XrSpaceTriangleMeshMETA32 *)(XrSpaceTriangleMeshMETA32 *)UlongToPtr(params->triangleMeshOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18040,7 +18040,7 @@ static NTSTATUS thunk32_xrGetSpaceUserIdFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->user), params->userId);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceUserIdFB(params->user, (XrSpaceUserIdFB *)(uintptr_t)UlongToPtr(params->userId));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceUserIdFB(params->user, (XrSpaceUserIdFB *)UlongToPtr(params->userId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18069,7 +18069,7 @@ static NTSTATUS thunk32_xrGetSpaceUuidFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->space), params->uuid);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceUuidFB(params->space, (XrUuidEXT *)(uintptr_t)UlongToPtr(params->uuid));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpaceUuidFB(params->space, (XrUuidEXT *)UlongToPtr(params->uuid));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18098,7 +18098,7 @@ static NTSTATUS thunk32_xrGetSpatialAnchorNameHTC(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->anchor), params->name);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialAnchorNameHTC(params->anchor, (XrSpatialAnchorNameHTC *)(uintptr_t)UlongToPtr(params->name));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialAnchorNameHTC(params->anchor, (XrSpatialAnchorNameHTC *)UlongToPtr(params->name));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18128,9 +18128,9 @@ static NTSTATUS thunk32_xrGetSpatialAnchorStateML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->anchor), params->state);
 
-    convert_XrSpatialAnchorStateML_win32_to_host((XrSpatialAnchorStateML32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrSpatialAnchorStateML_win32_to_host((XrSpatialAnchorStateML32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialAnchorStateML(params->anchor, &state_host);
-    convert_XrSpatialAnchorStateML_host_to_win32(&state_host, (XrSpatialAnchorStateML32 *)(XrSpatialAnchorStateML32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrSpatialAnchorStateML_host_to_win32(&state_host, (XrSpatialAnchorStateML32 *)(XrSpatialAnchorStateML32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18163,8 +18163,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferFloatEXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferFloatEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (float *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferFloatEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (float *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18197,8 +18197,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferStringEXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferStringEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferStringEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18231,8 +18231,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferUint16EXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferUint16EXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (uint16_t *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferUint16EXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (uint16_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18265,8 +18265,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferUint32EXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferUint32EXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (uint32_t *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferUint32EXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (uint32_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18299,8 +18299,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferUint8EXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferUint8EXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (uint8_t *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferUint8EXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (uint8_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18333,8 +18333,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferVector2fEXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferVector2fEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (XrVector2f *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferVector2fEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (XrVector2f *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18367,8 +18367,8 @@ static NTSTATUS thunk32_xrGetSpatialBufferVector3fEXT(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->info, params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferVector3fEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (XrVector3f *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrSpatialBufferGetInfoEXT_win32_to_host((const XrSpatialBufferGetInfoEXT32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialBufferVector3fEXT(params->snapshot, &info_host, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (XrVector3f *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18403,10 +18403,10 @@ static NTSTATUS thunk32_xrGetSpatialEntityComponentDataBD(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->getInfo, params->componentData);
 
     init_conversion_context(ctx);
-    convert_XrSpatialEntityComponentGetInfoBD_win32_to_host((const XrSpatialEntityComponentGetInfoBD32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrSpatialEntityComponentDataBaseHeaderBD_win32_to_host(ctx, (XrSpatialEntityComponentDataBaseHeaderBD32 *)(uintptr_t)UlongToPtr(params->componentData), &componentData_host);
+    convert_XrSpatialEntityComponentGetInfoBD_win32_to_host((const XrSpatialEntityComponentGetInfoBD32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrSpatialEntityComponentDataBaseHeaderBD_win32_to_host(ctx, (XrSpatialEntityComponentDataBaseHeaderBD32 *)UlongToPtr(params->componentData), &componentData_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialEntityComponentDataBD(params->snapshot, &getInfo_host, &componentData_host);
-    convert_XrSpatialEntityComponentDataBaseHeaderBD_host_to_win32(&componentData_host, (XrSpatialEntityComponentDataBaseHeaderBD32 *)(XrSpatialEntityComponentDataBaseHeaderBD32 *)(uintptr_t)UlongToPtr(params->componentData));
+    convert_XrSpatialEntityComponentDataBaseHeaderBD_host_to_win32(&componentData_host, (XrSpatialEntityComponentDataBaseHeaderBD32 *)(XrSpatialEntityComponentDataBaseHeaderBD32 *)UlongToPtr(params->componentData));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -18437,7 +18437,7 @@ static NTSTATUS thunk32_xrGetSpatialEntityUuidBD(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->snapshot), wine_dbgstr_longlong(params->entityId), params->uuid);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialEntityUuidBD(params->snapshot, params->entityId, (XrUuidEXT *)(uintptr_t)UlongToPtr(params->uuid));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialEntityUuidBD(params->snapshot, params->entityId, (XrUuidEXT *)UlongToPtr(params->uuid));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18475,11 +18475,11 @@ static NTSTATUS thunk32_xrGetSpatialGraphNodeBindingPropertiesMSFT(void *args)
     if (params->getInfo)
     {
         getInfo_host = conversion_context_alloc(ctx, sizeof(*getInfo_host));
-        convert_XrSpatialGraphNodeBindingPropertiesGetInfoMSFT_win32_to_host((const XrSpatialGraphNodeBindingPropertiesGetInfoMSFT32 *)(uintptr_t)UlongToPtr(params->getInfo), getInfo_host);
+        convert_XrSpatialGraphNodeBindingPropertiesGetInfoMSFT_win32_to_host((const XrSpatialGraphNodeBindingPropertiesGetInfoMSFT32 *)UlongToPtr(params->getInfo), getInfo_host);
     }
-    convert_XrSpatialGraphNodeBindingPropertiesMSFT_win32_to_host((XrSpatialGraphNodeBindingPropertiesMSFT32 *)(uintptr_t)UlongToPtr(params->properties), &properties_host);
+    convert_XrSpatialGraphNodeBindingPropertiesMSFT_win32_to_host((XrSpatialGraphNodeBindingPropertiesMSFT32 *)UlongToPtr(params->properties), &properties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSpatialGraphNodeBindingPropertiesMSFT(params->nodeBinding, getInfo_host, &properties_host);
-    convert_XrSpatialGraphNodeBindingPropertiesMSFT_host_to_win32(&properties_host, (XrSpatialGraphNodeBindingPropertiesMSFT32 *)(XrSpatialGraphNodeBindingPropertiesMSFT32 *)(uintptr_t)UlongToPtr(params->properties));
+    convert_XrSpatialGraphNodeBindingPropertiesMSFT_host_to_win32(&properties_host, (XrSpatialGraphNodeBindingPropertiesMSFT32 *)(XrSpatialGraphNodeBindingPropertiesMSFT32 *)UlongToPtr(params->properties));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -18510,9 +18510,9 @@ static NTSTATUS thunk32_xrGetSwapchainStateFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->swapchain), params->state);
 
-    convert_XrSwapchainStateBaseHeaderFB_win32_to_host((XrSwapchainStateBaseHeaderFB32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrSwapchainStateBaseHeaderFB_win32_to_host((XrSwapchainStateBaseHeaderFB32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSwapchainStateFB(wine_swapchain_from_handle(params->swapchain)->host_swapchain, &state_host);
-    convert_XrSwapchainStateBaseHeaderFB_host_to_win32(&state_host, (XrSwapchainStateBaseHeaderFB32 *)(XrSwapchainStateBaseHeaderFB32 *)(uintptr_t)UlongToPtr(params->state));
+    convert_XrSwapchainStateBaseHeaderFB_host_to_win32(&state_host, (XrSwapchainStateBaseHeaderFB32 *)(XrSwapchainStateBaseHeaderFB32 *)UlongToPtr(params->state));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18543,8 +18543,8 @@ static NTSTATUS thunk32_xrGetSystem(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->getInfo, params->systemId);
 
-    convert_XrSystemGetInfo_win32_to_host((const XrSystemGetInfo32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetSystem(wine_instance_from_handle(params->instance)->host_instance, &getInfo_host, (XrSystemId *)(uintptr_t)UlongToPtr(params->systemId));
+    convert_XrSystemGetInfo_win32_to_host((const XrSystemGetInfo32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetSystem(wine_instance_from_handle(params->instance)->host_instance, &getInfo_host, (XrSystemId *)UlongToPtr(params->systemId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18578,9 +18578,9 @@ static NTSTATUS thunk32_xrGetSystemProperties(void *args)
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->properties);
 
     init_conversion_context(ctx);
-    convert_XrSystemProperties_win32_to_host(ctx, (XrSystemProperties32 *)(uintptr_t)UlongToPtr(params->properties), &properties_host);
+    convert_XrSystemProperties_win32_to_host(ctx, (XrSystemProperties32 *)UlongToPtr(params->properties), &properties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetSystemProperties(wine_instance_from_handle(params->instance)->host_instance, params->systemId, &properties_host);
-    convert_XrSystemProperties_host_to_win32(&properties_host, (XrSystemProperties32 *)(XrSystemProperties32 *)(uintptr_t)UlongToPtr(params->properties));
+    convert_XrSystemProperties_host_to_win32(&properties_host, (XrSystemProperties32 *)(XrSystemProperties32 *)UlongToPtr(params->properties));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -18613,10 +18613,10 @@ static NTSTATUS thunk32_xrGetTrackableMarkerANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->tracker), params->getInfo, params->markerOutput);
 
-    convert_XrTrackableGetInfoANDROID_win32_to_host((const XrTrackableGetInfoANDROID32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrTrackableMarkerANDROID_win32_to_host((XrTrackableMarkerANDROID32 *)(uintptr_t)UlongToPtr(params->markerOutput), &markerOutput_host);
+    convert_XrTrackableGetInfoANDROID_win32_to_host((const XrTrackableGetInfoANDROID32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrTrackableMarkerANDROID_win32_to_host((XrTrackableMarkerANDROID32 *)UlongToPtr(params->markerOutput), &markerOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetTrackableMarkerANDROID(params->tracker, &getInfo_host, &markerOutput_host);
-    convert_XrTrackableMarkerANDROID_host_to_win32(&markerOutput_host, (XrTrackableMarkerANDROID32 *)(XrTrackableMarkerANDROID32 *)(uintptr_t)UlongToPtr(params->markerOutput));
+    convert_XrTrackableMarkerANDROID_host_to_win32(&markerOutput_host, (XrTrackableMarkerANDROID32 *)(XrTrackableMarkerANDROID32 *)UlongToPtr(params->markerOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18648,10 +18648,10 @@ static NTSTATUS thunk32_xrGetTrackableObjectANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->tracker), params->getInfo, params->objectOutput);
 
-    convert_XrTrackableGetInfoANDROID_win32_to_host((const XrTrackableGetInfoANDROID32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrTrackableObjectANDROID_win32_to_host((XrTrackableObjectANDROID32 *)(uintptr_t)UlongToPtr(params->objectOutput), &objectOutput_host);
+    convert_XrTrackableGetInfoANDROID_win32_to_host((const XrTrackableGetInfoANDROID32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrTrackableObjectANDROID_win32_to_host((XrTrackableObjectANDROID32 *)UlongToPtr(params->objectOutput), &objectOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetTrackableObjectANDROID(params->tracker, &getInfo_host, &objectOutput_host);
-    convert_XrTrackableObjectANDROID_host_to_win32(&objectOutput_host, (XrTrackableObjectANDROID32 *)(XrTrackableObjectANDROID32 *)(uintptr_t)UlongToPtr(params->objectOutput));
+    convert_XrTrackableObjectANDROID_host_to_win32(&objectOutput_host, (XrTrackableObjectANDROID32 *)(XrTrackableObjectANDROID32 *)UlongToPtr(params->objectOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18683,10 +18683,10 @@ static NTSTATUS thunk32_xrGetTrackablePlaneANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->trackableTracker), params->getInfo, params->planeOutput);
 
-    convert_XrTrackableGetInfoANDROID_win32_to_host((const XrTrackableGetInfoANDROID32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrTrackablePlaneANDROID_win32_to_host((XrTrackablePlaneANDROID32 *)(uintptr_t)UlongToPtr(params->planeOutput), &planeOutput_host);
+    convert_XrTrackableGetInfoANDROID_win32_to_host((const XrTrackableGetInfoANDROID32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrTrackablePlaneANDROID_win32_to_host((XrTrackablePlaneANDROID32 *)UlongToPtr(params->planeOutput), &planeOutput_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetTrackablePlaneANDROID(params->trackableTracker, &getInfo_host, &planeOutput_host);
-    convert_XrTrackablePlaneANDROID_host_to_win32(&planeOutput_host, (XrTrackablePlaneANDROID32 *)(XrTrackablePlaneANDROID32 *)(uintptr_t)UlongToPtr(params->planeOutput));
+    convert_XrTrackablePlaneANDROID_host_to_win32(&planeOutput_host, (XrTrackablePlaneANDROID32 *)(XrTrackablePlaneANDROID32 *)UlongToPtr(params->planeOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18718,9 +18718,9 @@ static NTSTATUS thunk32_xrGetViewConfigurationProperties(void *args)
 
     TRACE("0x%s, 0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->viewConfigurationType, params->configurationProperties);
 
-    convert_XrViewConfigurationProperties_win32_to_host((XrViewConfigurationProperties32 *)(uintptr_t)UlongToPtr(params->configurationProperties), &configurationProperties_host);
+    convert_XrViewConfigurationProperties_win32_to_host((XrViewConfigurationProperties32 *)UlongToPtr(params->configurationProperties), &configurationProperties_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetViewConfigurationProperties(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->viewConfigurationType, &configurationProperties_host);
-    convert_XrViewConfigurationProperties_host_to_win32(&configurationProperties_host, (XrViewConfigurationProperties32 *)(XrViewConfigurationProperties32 *)(uintptr_t)UlongToPtr(params->configurationProperties));
+    convert_XrViewConfigurationProperties_host_to_win32(&configurationProperties_host, (XrViewConfigurationProperties32 *)(XrViewConfigurationProperties32 *)UlongToPtr(params->configurationProperties));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18751,7 +18751,7 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardDirtyTexturesMETA(void *args)
 
     TRACE("0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->keyboard), params->textureIdCapacityInput, params->textureIdCountOutput, params->textureIds);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetVirtualKeyboardDirtyTexturesMETA(params->keyboard, params->textureIdCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->textureIdCountOutput), (uint64_t *)(uintptr_t)UlongToPtr(params->textureIds));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetVirtualKeyboardDirtyTexturesMETA(params->keyboard, params->textureIdCapacityInput, (uint32_t *)UlongToPtr(params->textureIdCountOutput), (uint64_t *)UlongToPtr(params->textureIds));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18784,9 +18784,9 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardModelAnimationStatesMETA(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->keyboard), params->animationStates);
 
     init_conversion_context(ctx);
-    convert_XrVirtualKeyboardModelAnimationStatesMETA_win32_to_host(ctx, (XrVirtualKeyboardModelAnimationStatesMETA32 *)(uintptr_t)UlongToPtr(params->animationStates), &animationStates_host);
+    convert_XrVirtualKeyboardModelAnimationStatesMETA_win32_to_host(ctx, (XrVirtualKeyboardModelAnimationStatesMETA32 *)UlongToPtr(params->animationStates), &animationStates_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetVirtualKeyboardModelAnimationStatesMETA(params->keyboard, &animationStates_host);
-    convert_XrVirtualKeyboardModelAnimationStatesMETA_host_to_win32(&animationStates_host, (XrVirtualKeyboardModelAnimationStatesMETA32 *)(XrVirtualKeyboardModelAnimationStatesMETA32 *)(uintptr_t)UlongToPtr(params->animationStates));
+    convert_XrVirtualKeyboardModelAnimationStatesMETA_host_to_win32(&animationStates_host, (XrVirtualKeyboardModelAnimationStatesMETA32 *)(XrVirtualKeyboardModelAnimationStatesMETA32 *)UlongToPtr(params->animationStates));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -18816,7 +18816,7 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardScaleMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->keyboard), params->scale);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetVirtualKeyboardScaleMETA(params->keyboard, (float *)(uintptr_t)UlongToPtr(params->scale));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetVirtualKeyboardScaleMETA(params->keyboard, (float *)UlongToPtr(params->scale));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18847,9 +18847,9 @@ static NTSTATUS thunk32_xrGetVirtualKeyboardTextureDataMETA(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->keyboard), wine_dbgstr_longlong(params->textureId), params->textureData);
 
-    convert_XrVirtualKeyboardTextureDataMETA_win32_to_host((XrVirtualKeyboardTextureDataMETA32 *)(uintptr_t)UlongToPtr(params->textureData), &textureData_host);
+    convert_XrVirtualKeyboardTextureDataMETA_win32_to_host((XrVirtualKeyboardTextureDataMETA32 *)UlongToPtr(params->textureData), &textureData_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetVirtualKeyboardTextureDataMETA(params->keyboard, params->textureId, &textureData_host);
-    convert_XrVirtualKeyboardTextureDataMETA_host_to_win32(&textureData_host, (XrVirtualKeyboardTextureDataMETA32 *)(XrVirtualKeyboardTextureDataMETA32 *)(uintptr_t)UlongToPtr(params->textureData));
+    convert_XrVirtualKeyboardTextureDataMETA_host_to_win32(&textureData_host, (XrVirtualKeyboardTextureDataMETA32 *)(XrVirtualKeyboardTextureDataMETA32 *)UlongToPtr(params->textureData));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18882,9 +18882,9 @@ static NTSTATUS thunk32_xrGetVisibilityMaskKHR(void *args)
 
     TRACE("0x%s, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->viewConfigurationType, params->viewIndex, params->visibilityMaskType, params->visibilityMask);
 
-    convert_XrVisibilityMaskKHR_win32_to_host((XrVisibilityMaskKHR32 *)(uintptr_t)UlongToPtr(params->visibilityMask), &visibilityMask_host);
+    convert_XrVisibilityMaskKHR_win32_to_host((XrVisibilityMaskKHR32 *)UlongToPtr(params->visibilityMask), &visibilityMask_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetVisibilityMaskKHR(wine_session_from_handle(params->session)->host_session, params->viewConfigurationType, params->viewIndex, params->visibilityMaskType, &visibilityMask_host);
-    convert_XrVisibilityMaskKHR_host_to_win32(&visibilityMask_host, (XrVisibilityMaskKHR32 *)(XrVisibilityMaskKHR32 *)(uintptr_t)UlongToPtr(params->visibilityMask));
+    convert_XrVisibilityMaskKHR_host_to_win32(&visibilityMask_host, (XrVisibilityMaskKHR32 *)(XrVisibilityMaskKHR32 *)UlongToPtr(params->visibilityMask));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18916,7 +18916,7 @@ static NTSTATUS thunk32_xrGetVulkanDeviceExtensionsKHR(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrGetVulkanDeviceExtensionsKHR(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrGetVulkanDeviceExtensionsKHR(wine_instance_from_handle(params->instance)->host_instance, params->systemId, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18947,8 +18947,8 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsDevice2KHR(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->getInfo, params->vulkanPhysicalDevice);
 
-    convert_XrVulkanGraphicsDeviceGetInfoKHR_win32_to_host((const XrVulkanGraphicsDeviceGetInfoKHR32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    params->result = wine_xrGetVulkanGraphicsDevice2KHR(params->instance, &getInfo_host, (VkPhysicalDevice *)(uintptr_t)UlongToPtr(params->vulkanPhysicalDevice));
+    convert_XrVulkanGraphicsDeviceGetInfoKHR_win32_to_host((const XrVulkanGraphicsDeviceGetInfoKHR32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    params->result = wine_xrGetVulkanGraphicsDevice2KHR(params->instance, &getInfo_host, (VkPhysicalDevice *)UlongToPtr(params->vulkanPhysicalDevice));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -18979,7 +18979,7 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsDeviceKHR(void *args)
 
     TRACE("0x%s, 0x%s, %p, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->vkInstance, params->vkPhysicalDevice);
 
-    params->result = wine_xrGetVulkanGraphicsDeviceKHR(params->instance, params->systemId, params->vkInstance, (VkPhysicalDevice *)(uintptr_t)UlongToPtr(params->vkPhysicalDevice));
+    params->result = wine_xrGetVulkanGraphicsDeviceKHR(params->instance, params->systemId, params->vkInstance, (VkPhysicalDevice *)UlongToPtr(params->vkPhysicalDevice));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19010,9 +19010,9 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsRequirements2KHR(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->graphicsRequirements);
 
-    convert_XrGraphicsRequirementsVulkanKHR_win32_to_host((XrGraphicsRequirementsVulkanKHR32 *)(uintptr_t)UlongToPtr(params->graphicsRequirements), &graphicsRequirements_host);
+    convert_XrGraphicsRequirementsVulkanKHR_win32_to_host((XrGraphicsRequirementsVulkanKHR32 *)UlongToPtr(params->graphicsRequirements), &graphicsRequirements_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetVulkanGraphicsRequirements2KHR(wine_instance_from_handle(params->instance)->host_instance, params->systemId, &graphicsRequirements_host);
-    convert_XrGraphicsRequirementsVulkanKHR_host_to_win32(&graphicsRequirements_host, (XrGraphicsRequirementsVulkanKHR32 *)(XrGraphicsRequirementsVulkanKHR32 *)(uintptr_t)UlongToPtr(params->graphicsRequirements));
+    convert_XrGraphicsRequirementsVulkanKHR_host_to_win32(&graphicsRequirements_host, (XrGraphicsRequirementsVulkanKHR32 *)(XrGraphicsRequirementsVulkanKHR32 *)UlongToPtr(params->graphicsRequirements));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19043,9 +19043,9 @@ static NTSTATUS thunk32_xrGetVulkanGraphicsRequirementsKHR(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->graphicsRequirements);
 
-    convert_XrGraphicsRequirementsVulkanKHR_win32_to_host((XrGraphicsRequirementsVulkanKHR32 *)(uintptr_t)UlongToPtr(params->graphicsRequirements), &graphicsRequirements_host);
+    convert_XrGraphicsRequirementsVulkanKHR_win32_to_host((XrGraphicsRequirementsVulkanKHR32 *)UlongToPtr(params->graphicsRequirements), &graphicsRequirements_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetVulkanGraphicsRequirementsKHR(wine_instance_from_handle(params->instance)->host_instance, params->systemId, &graphicsRequirements_host);
-    convert_XrGraphicsRequirementsVulkanKHR_host_to_win32(&graphicsRequirements_host, (XrGraphicsRequirementsVulkanKHR32 *)(XrGraphicsRequirementsVulkanKHR32 *)(uintptr_t)UlongToPtr(params->graphicsRequirements));
+    convert_XrGraphicsRequirementsVulkanKHR_host_to_win32(&graphicsRequirements_host, (XrGraphicsRequirementsVulkanKHR32 *)(XrGraphicsRequirementsVulkanKHR32 *)UlongToPtr(params->graphicsRequirements));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19077,7 +19077,7 @@ static NTSTATUS thunk32_xrGetVulkanInstanceExtensionsKHR(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->systemId), params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = wine_xrGetVulkanInstanceExtensionsKHR(params->instance, params->systemId, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = wine_xrGetVulkanInstanceExtensionsKHR(params->instance, params->systemId, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19109,10 +19109,10 @@ static NTSTATUS thunk32_xrGetWorldMeshBufferRecommendSizeML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->detector), params->sizeInfo, params->size);
 
-    convert_XrWorldMeshBufferRecommendedSizeInfoML_win32_to_host((const XrWorldMeshBufferRecommendedSizeInfoML32 *)(uintptr_t)UlongToPtr(params->sizeInfo), &sizeInfo_host);
-    convert_XrWorldMeshBufferSizeML_win32_to_host((XrWorldMeshBufferSizeML32 *)(uintptr_t)UlongToPtr(params->size), &size_host);
+    convert_XrWorldMeshBufferRecommendedSizeInfoML_win32_to_host((const XrWorldMeshBufferRecommendedSizeInfoML32 *)UlongToPtr(params->sizeInfo), &sizeInfo_host);
+    convert_XrWorldMeshBufferSizeML_win32_to_host((XrWorldMeshBufferSizeML32 *)UlongToPtr(params->size), &size_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrGetWorldMeshBufferRecommendSizeML(params->detector, &sizeInfo_host, &size_host);
-    convert_XrWorldMeshBufferSizeML_host_to_win32(&size_host, (XrWorldMeshBufferSizeML32 *)(XrWorldMeshBufferSizeML32 *)(uintptr_t)UlongToPtr(params->size));
+    convert_XrWorldMeshBufferSizeML_host_to_win32(&size_host, (XrWorldMeshBufferSizeML32 *)(XrWorldMeshBufferSizeML32 *)UlongToPtr(params->size));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19143,8 +19143,8 @@ static NTSTATUS thunk32_xrImportLocalizationMapML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->importInfo, params->mapUuid);
 
-    convert_XrLocalizationMapImportInfoML_win32_to_host((const XrLocalizationMapImportInfoML32 *)(uintptr_t)UlongToPtr(params->importInfo), &importInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrImportLocalizationMapML(wine_session_from_handle(params->session)->host_session, &importInfo_host, (XrUuidEXT *)(uintptr_t)UlongToPtr(params->mapUuid));
+    convert_XrLocalizationMapImportInfoML_win32_to_host((const XrLocalizationMapImportInfoML32 *)UlongToPtr(params->importInfo), &importInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrImportLocalizationMapML(wine_session_from_handle(params->session)->host_session, &importInfo_host, (XrUuidEXT *)UlongToPtr(params->mapUuid));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19176,7 +19176,7 @@ static NTSTATUS thunk32_xrLoadControllerModelMSFT(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->modelKey), params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrLoadControllerModelMSFT(wine_session_from_handle(params->session)->host_session, params->modelKey, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (uint8_t *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrLoadControllerModelMSFT(wine_session_from_handle(params->session)->host_session, params->modelKey, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (uint8_t *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19208,10 +19208,10 @@ static NTSTATUS thunk32_xrLoadRenderModelFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->buffer);
 
-    convert_XrRenderModelLoadInfoFB_win32_to_host((const XrRenderModelLoadInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    convert_XrRenderModelBufferFB_win32_to_host((XrRenderModelBufferFB32 *)(uintptr_t)UlongToPtr(params->buffer), &buffer_host);
+    convert_XrRenderModelLoadInfoFB_win32_to_host((const XrRenderModelLoadInfoFB32 *)UlongToPtr(params->info), &info_host);
+    convert_XrRenderModelBufferFB_win32_to_host((XrRenderModelBufferFB32 *)UlongToPtr(params->buffer), &buffer_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLoadRenderModelFB(wine_session_from_handle(params->session)->host_session, &info_host, &buffer_host);
-    convert_XrRenderModelBufferFB_host_to_win32(&buffer_host, (XrRenderModelBufferFB32 *)(XrRenderModelBufferFB32 *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrRenderModelBufferFB_host_to_win32(&buffer_host, (XrRenderModelBufferFB32 *)(XrRenderModelBufferFB32 *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19246,10 +19246,10 @@ static NTSTATUS thunk32_xrLocateBodyJointsBD(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->bodyTracker), params->locateInfo, params->locations);
 
     init_conversion_context(ctx);
-    convert_XrBodyJointsLocateInfoBD_win32_to_host((const XrBodyJointsLocateInfoBD32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrBodyJointLocationsBD_win32_to_host(ctx, (XrBodyJointLocationsBD32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrBodyJointsLocateInfoBD_win32_to_host((const XrBodyJointsLocateInfoBD32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrBodyJointLocationsBD_win32_to_host(ctx, (XrBodyJointLocationsBD32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateBodyJointsBD(params->bodyTracker, &locateInfo_host, &locations_host);
-    convert_XrBodyJointLocationsBD_host_to_win32(&locations_host, (XrBodyJointLocationsBD32 *)(XrBodyJointLocationsBD32 *)(uintptr_t)UlongToPtr(params->locations));
+    convert_XrBodyJointLocationsBD_host_to_win32(&locations_host, (XrBodyJointLocationsBD32 *)(XrBodyJointLocationsBD32 *)UlongToPtr(params->locations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19285,10 +19285,10 @@ static NTSTATUS thunk32_xrLocateBodyJointsFB(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->bodyTracker), params->locateInfo, params->locations);
 
     init_conversion_context(ctx);
-    convert_XrBodyJointsLocateInfoFB_win32_to_host((const XrBodyJointsLocateInfoFB32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrBodyJointLocationsFB_win32_to_host(ctx, (XrBodyJointLocationsFB32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrBodyJointsLocateInfoFB_win32_to_host((const XrBodyJointsLocateInfoFB32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrBodyJointLocationsFB_win32_to_host(ctx, (XrBodyJointLocationsFB32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateBodyJointsFB(params->bodyTracker, &locateInfo_host, &locations_host);
-    convert_XrBodyJointLocationsFB_host_to_win32(&locations_host, (XrBodyJointLocationsFB32 *)(XrBodyJointLocationsFB32 *)(uintptr_t)UlongToPtr(params->locations));
+    convert_XrBodyJointLocationsFB_host_to_win32(&locations_host, (XrBodyJointLocationsFB32 *)(XrBodyJointLocationsFB32 *)UlongToPtr(params->locations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19324,10 +19324,10 @@ static NTSTATUS thunk32_xrLocateBodyJointsHTC(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->bodyTracker), params->locateInfo, params->locations);
 
     init_conversion_context(ctx);
-    convert_XrBodyJointsLocateInfoHTC_win32_to_host((const XrBodyJointsLocateInfoHTC32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrBodyJointLocationsHTC_win32_to_host(ctx, (XrBodyJointLocationsHTC32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrBodyJointsLocateInfoHTC_win32_to_host((const XrBodyJointsLocateInfoHTC32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrBodyJointLocationsHTC_win32_to_host(ctx, (XrBodyJointLocationsHTC32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateBodyJointsHTC(params->bodyTracker, &locateInfo_host, &locations_host);
-    convert_XrBodyJointLocationsHTC_host_to_win32(&locations_host, (XrBodyJointLocationsHTC32 *)(XrBodyJointLocationsHTC32 *)(uintptr_t)UlongToPtr(params->locations));
+    convert_XrBodyJointLocationsHTC_host_to_win32(&locations_host, (XrBodyJointLocationsHTC32 *)(XrBodyJointLocationsHTC32 *)UlongToPtr(params->locations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19363,10 +19363,10 @@ static NTSTATUS thunk32_xrLocateHandJointsEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->handTracker), params->locateInfo, params->locations);
 
     init_conversion_context(ctx);
-    convert_XrHandJointsLocateInfoEXT_win32_to_host(ctx, (const XrHandJointsLocateInfoEXT32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrHandJointLocationsEXT_win32_to_host(ctx, (XrHandJointLocationsEXT32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrHandJointsLocateInfoEXT_win32_to_host(ctx, (const XrHandJointsLocateInfoEXT32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrHandJointLocationsEXT_win32_to_host(ctx, (XrHandJointLocationsEXT32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateHandJointsEXT(params->handTracker, &locateInfo_host, &locations_host);
-    convert_XrHandJointLocationsEXT_host_to_win32(&locations_host, (XrHandJointLocationsEXT32 *)(XrHandJointLocationsEXT32 *)(uintptr_t)UlongToPtr(params->locations));
+    convert_XrHandJointLocationsEXT_host_to_win32(&locations_host, (XrHandJointLocationsEXT32 *)(XrHandJointLocationsEXT32 *)UlongToPtr(params->locations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19402,10 +19402,10 @@ static NTSTATUS thunk32_xrLocateSceneComponentsMSFT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->scene), params->locateInfo, params->locations);
 
     init_conversion_context(ctx);
-    convert_XrSceneComponentsLocateInfoMSFT_win32_to_host((const XrSceneComponentsLocateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrSceneComponentLocationsMSFT_win32_to_host(ctx, (XrSceneComponentLocationsMSFT32 *)(uintptr_t)UlongToPtr(params->locations), &locations_host);
+    convert_XrSceneComponentsLocateInfoMSFT_win32_to_host((const XrSceneComponentsLocateInfoMSFT32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrSceneComponentLocationsMSFT_win32_to_host(ctx, (XrSceneComponentLocationsMSFT32 *)UlongToPtr(params->locations), &locations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateSceneComponentsMSFT(params->scene, &locateInfo_host, &locations_host);
-    convert_XrSceneComponentLocationsMSFT_host_to_win32(&locations_host, (XrSceneComponentLocationsMSFT32 *)(XrSceneComponentLocationsMSFT32 *)(uintptr_t)UlongToPtr(params->locations));
+    convert_XrSceneComponentLocationsMSFT_host_to_win32(&locations_host, (XrSceneComponentLocationsMSFT32 *)(XrSceneComponentLocationsMSFT32 *)UlongToPtr(params->locations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19441,9 +19441,9 @@ static NTSTATUS thunk32_xrLocateSpace(void *args)
     TRACE("0x%s, 0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->space), TRACE_HANDLE(params->baseSpace), wine_dbgstr_longlong(params->time), params->location);
 
     init_conversion_context(ctx);
-    convert_XrSpaceLocation_win32_to_host(ctx, (XrSpaceLocation32 *)(uintptr_t)UlongToPtr(params->location), &location_host);
+    convert_XrSpaceLocation_win32_to_host(ctx, (XrSpaceLocation32 *)UlongToPtr(params->location), &location_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateSpace(params->space, params->baseSpace, params->time, &location_host);
-    convert_XrSpaceLocation_host_to_win32(&location_host, (XrSpaceLocation32 *)(XrSpaceLocation32 *)(uintptr_t)UlongToPtr(params->location));
+    convert_XrSpaceLocation_host_to_win32(&location_host, (XrSpaceLocation32 *)(XrSpaceLocation32 *)UlongToPtr(params->location));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19479,10 +19479,10 @@ static NTSTATUS thunk32_xrLocateSpaces(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->locateInfo, params->spaceLocations);
 
     init_conversion_context(ctx);
-    convert_XrSpacesLocateInfo_win32_to_host(ctx, (const XrSpacesLocateInfo32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrSpaceLocations_win32_to_host(ctx, (XrSpaceLocations32 *)(uintptr_t)UlongToPtr(params->spaceLocations), &spaceLocations_host);
+    convert_XrSpacesLocateInfo_win32_to_host(ctx, (const XrSpacesLocateInfo32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrSpaceLocations_win32_to_host(ctx, (XrSpaceLocations32 *)UlongToPtr(params->spaceLocations), &spaceLocations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateSpaces(wine_session_from_handle(params->session)->host_session, &locateInfo_host, &spaceLocations_host);
-    convert_XrSpaceLocations_host_to_win32(&spaceLocations_host, (XrSpaceLocations32 *)(XrSpaceLocations32 *)(uintptr_t)UlongToPtr(params->spaceLocations));
+    convert_XrSpaceLocations_host_to_win32(&spaceLocations_host, (XrSpaceLocations32 *)(XrSpaceLocations32 *)UlongToPtr(params->spaceLocations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19518,10 +19518,10 @@ static NTSTATUS thunk32_xrLocateSpacesKHR(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->locateInfo, params->spaceLocations);
 
     init_conversion_context(ctx);
-    convert_XrSpacesLocateInfo_win32_to_host(ctx, (const XrSpacesLocateInfo32 *)(uintptr_t)UlongToPtr(params->locateInfo), &locateInfo_host);
-    convert_XrSpaceLocations_win32_to_host(ctx, (XrSpaceLocations32 *)(uintptr_t)UlongToPtr(params->spaceLocations), &spaceLocations_host);
+    convert_XrSpacesLocateInfo_win32_to_host(ctx, (const XrSpacesLocateInfo32 *)UlongToPtr(params->locateInfo), &locateInfo_host);
+    convert_XrSpaceLocations_win32_to_host(ctx, (XrSpaceLocations32 *)UlongToPtr(params->spaceLocations), &spaceLocations_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrLocateSpacesKHR(wine_session_from_handle(params->session)->host_session, &locateInfo_host, &spaceLocations_host);
-    convert_XrSpaceLocations_host_to_win32(&spaceLocations_host, (XrSpaceLocations32 *)(XrSpaceLocations32 *)(uintptr_t)UlongToPtr(params->spaceLocations));
+    convert_XrSpaceLocations_host_to_win32(&spaceLocations_host, (XrSpaceLocations32 *)(XrSpaceLocations32 *)UlongToPtr(params->spaceLocations));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19561,12 +19561,12 @@ static NTSTATUS thunk32_xrLocateViews(void *args)
     TRACE("0x%s, %#x, %#x, %u, %#x, %#x\n", TRACE_HANDLE(params->session), params->viewLocateInfo, params->viewState, params->viewCapacityInput, params->viewCountOutput, params->views);
 
     init_conversion_context(ctx);
-    convert_XrViewLocateInfo_win32_to_host(ctx, (const XrViewLocateInfo32 *)(uintptr_t)UlongToPtr(params->viewLocateInfo), &viewLocateInfo_host);
-    convert_XrViewState_win32_to_host((XrViewState32 *)(uintptr_t)UlongToPtr(params->viewState), &viewState_host);
-    views_host = convert_XrView_array_win32_to_host(ctx, (XrView32 *)(uintptr_t)UlongToPtr(params->views), params->viewCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrLocateViews(wine_session_from_handle(params->session)->host_session, &viewLocateInfo_host, &viewState_host, params->viewCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->viewCountOutput), views_host);
-    convert_XrViewState_host_to_win32(&viewState_host, (XrViewState32 *)(XrViewState32 *)(uintptr_t)UlongToPtr(params->viewState));
-    convert_XrView_array_host_to_win32(views_host, (XrView32 *)(uintptr_t)UlongToPtr(params->views), params->viewCapacityInput);
+    convert_XrViewLocateInfo_win32_to_host(ctx, (const XrViewLocateInfo32 *)UlongToPtr(params->viewLocateInfo), &viewLocateInfo_host);
+    convert_XrViewState_win32_to_host((XrViewState32 *)UlongToPtr(params->viewState), &viewState_host);
+    views_host = convert_XrView_array_win32_to_host(ctx, (XrView32 *)UlongToPtr(params->views), params->viewCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrLocateViews(wine_session_from_handle(params->session)->host_session, &viewLocateInfo_host, &viewState_host, params->viewCapacityInput, (uint32_t *)UlongToPtr(params->viewCountOutput), views_host);
+    convert_XrViewState_host_to_win32(&viewState_host, (XrViewState32 *)(XrViewState32 *)UlongToPtr(params->viewState));
+    convert_XrView_array_host_to_win32(views_host, (XrView32 *)UlongToPtr(params->views), params->viewCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -19653,7 +19653,7 @@ static NTSTATUS thunk32_xrPassthroughLayerSetKeyboardHandsIntensityFB(void *args
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->layer), params->intensity);
 
-    convert_XrPassthroughKeyboardHandsIntensityFB_win32_to_host((const XrPassthroughKeyboardHandsIntensityFB32 *)(uintptr_t)UlongToPtr(params->intensity), &intensity_host);
+    convert_XrPassthroughKeyboardHandsIntensityFB_win32_to_host((const XrPassthroughKeyboardHandsIntensityFB32 *)UlongToPtr(params->intensity), &intensity_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPassthroughLayerSetKeyboardHandsIntensityFB(params->layer, &intensity_host);
     return STATUS_SUCCESS;
 }
@@ -19687,7 +19687,7 @@ static NTSTATUS thunk32_xrPassthroughLayerSetStyleFB(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->layer), params->style);
 
     init_conversion_context(ctx);
-    convert_XrPassthroughStyleFB_win32_to_host(ctx, (const XrPassthroughStyleFB32 *)(uintptr_t)UlongToPtr(params->style), &style_host);
+    convert_XrPassthroughStyleFB_win32_to_host(ctx, (const XrPassthroughStyleFB32 *)UlongToPtr(params->style), &style_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPassthroughLayerSetStyleFB(params->layer, &style_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -19777,7 +19777,7 @@ static NTSTATUS thunk32_xrPathToString(void *args)
 
     TRACE("0x%s, 0x%s, %u, %#x, %#x\n", TRACE_HANDLE(params->instance), wine_dbgstr_longlong(params->path), params->bufferCapacityInput, params->bufferCountOutput, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrPathToString(wine_instance_from_handle(params->instance)->host_instance, params->path, params->bufferCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->bufferCountOutput), (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrPathToString(wine_instance_from_handle(params->instance)->host_instance, params->path, params->bufferCapacityInput, (uint32_t *)UlongToPtr(params->bufferCountOutput), (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19807,7 +19807,7 @@ static NTSTATUS thunk32_xrPauseSimultaneousHandsAndControllersTrackingMETA(void 
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->pauseInfo);
 
-    convert_XrSimultaneousHandsAndControllersTrackingPauseInfoMETA_win32_to_host((const XrSimultaneousHandsAndControllersTrackingPauseInfoMETA32 *)(uintptr_t)UlongToPtr(params->pauseInfo), &pauseInfo_host);
+    convert_XrSimultaneousHandsAndControllersTrackingPauseInfoMETA_win32_to_host((const XrSimultaneousHandsAndControllersTrackingPauseInfoMETA32 *)UlongToPtr(params->pauseInfo), &pauseInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPauseSimultaneousHandsAndControllersTrackingMETA(wine_session_from_handle(params->session)->host_session, &pauseInfo_host);
     return STATUS_SUCCESS;
 }
@@ -19869,8 +19869,8 @@ static NTSTATUS thunk32_xrPersistAnchorANDROID(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->handle), params->persistedInfo, params->anchorIdOutput);
 
-    convert_XrPersistedAnchorSpaceInfoANDROID_win32_to_host((const XrPersistedAnchorSpaceInfoANDROID32 *)(uintptr_t)UlongToPtr(params->persistedInfo), &persistedInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrPersistAnchorANDROID(params->handle, &persistedInfo_host, (XrUuidEXT *)(uintptr_t)UlongToPtr(params->anchorIdOutput));
+    convert_XrPersistedAnchorSpaceInfoANDROID_win32_to_host((const XrPersistedAnchorSpaceInfoANDROID32 *)UlongToPtr(params->persistedInfo), &persistedInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrPersistAnchorANDROID(params->handle, &persistedInfo_host, (XrUuidEXT *)UlongToPtr(params->anchorIdOutput));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19901,8 +19901,8 @@ static NTSTATUS thunk32_xrPersistSpatialAnchorAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->info, params->future);
 
-    convert_XrSpatialAnchorPersistInfoBD_win32_to_host((const XrSpatialAnchorPersistInfoBD32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorPersistInfoBD_win32_to_host((const XrSpatialAnchorPersistInfoBD32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19933,9 +19933,9 @@ static NTSTATUS thunk32_xrPersistSpatialAnchorCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialAnchorCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -19965,7 +19965,7 @@ static NTSTATUS thunk32_xrPersistSpatialAnchorMSFT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->spatialAnchorStore), params->spatialAnchorPersistenceInfo);
 
-    convert_XrSpatialAnchorPersistenceInfoMSFT_win32_to_host((const XrSpatialAnchorPersistenceInfoMSFT32 *)(uintptr_t)UlongToPtr(params->spatialAnchorPersistenceInfo), &spatialAnchorPersistenceInfo_host);
+    convert_XrSpatialAnchorPersistenceInfoMSFT_win32_to_host((const XrSpatialAnchorPersistenceInfoMSFT32 *)UlongToPtr(params->spatialAnchorPersistenceInfo), &spatialAnchorPersistenceInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialAnchorMSFT(params->spatialAnchorStore, &spatialAnchorPersistenceInfo_host);
     return STATUS_SUCCESS;
 }
@@ -19997,8 +19997,8 @@ static NTSTATUS thunk32_xrPersistSpatialEntityAsyncEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->persistenceContext), params->persistInfo, params->future);
 
-    convert_XrSpatialEntityPersistInfoEXT_win32_to_host((const XrSpatialEntityPersistInfoEXT32 *)(uintptr_t)UlongToPtr(params->persistInfo), &persistInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialEntityAsyncEXT(params->persistenceContext, &persistInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialEntityPersistInfoEXT_win32_to_host((const XrSpatialEntityPersistInfoEXT32 *)UlongToPtr(params->persistInfo), &persistInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialEntityAsyncEXT(params->persistenceContext, &persistInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20029,9 +20029,9 @@ static NTSTATUS thunk32_xrPersistSpatialEntityCompleteEXT(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->persistenceContext), params->future, params->completion);
 
-    convert_XrPersistSpatialEntityCompletionEXT_win32_to_host((XrPersistSpatialEntityCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrPersistSpatialEntityCompletionEXT_win32_to_host((XrPersistSpatialEntityCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPersistSpatialEntityCompleteEXT(params->persistenceContext, params->future, &completion_host);
-    convert_XrPersistSpatialEntityCompletionEXT_host_to_win32(&completion_host, (XrPersistSpatialEntityCompletionEXT32 *)(XrPersistSpatialEntityCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrPersistSpatialEntityCompletionEXT_host_to_win32(&completion_host, (XrPersistSpatialEntityCompletionEXT32 *)(XrPersistSpatialEntityCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20061,9 +20061,9 @@ static NTSTATUS thunk32_xrPollEvent(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->eventData);
 
-    convert_XrEventDataBuffer_win32_to_host((XrEventDataBuffer32 *)(uintptr_t)UlongToPtr(params->eventData), &eventData_host);
+    convert_XrEventDataBuffer_win32_to_host((XrEventDataBuffer32 *)UlongToPtr(params->eventData), &eventData_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPollEvent(wine_instance_from_handle(params->instance)->host_instance, &eventData_host);
-    convert_XrEventDataBuffer_host_to_win32(&eventData_host, (XrEventDataBuffer32 *)(XrEventDataBuffer32 *)(uintptr_t)UlongToPtr(params->eventData));
+    convert_XrEventDataBuffer_host_to_win32(&eventData_host, (XrEventDataBuffer32 *)(XrEventDataBuffer32 *)UlongToPtr(params->eventData));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20098,10 +20098,10 @@ static NTSTATUS thunk32_xrPollFutureEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->pollInfo, params->pollResult);
 
     init_conversion_context(ctx);
-    convert_XrFuturePollInfoEXT_win32_to_host((const XrFuturePollInfoEXT32 *)(uintptr_t)UlongToPtr(params->pollInfo), &pollInfo_host);
-    convert_XrFuturePollResultEXT_win32_to_host(ctx, (XrFuturePollResultEXT32 *)(uintptr_t)UlongToPtr(params->pollResult), &pollResult_host);
+    convert_XrFuturePollInfoEXT_win32_to_host((const XrFuturePollInfoEXT32 *)UlongToPtr(params->pollInfo), &pollInfo_host);
+    convert_XrFuturePollResultEXT_win32_to_host(ctx, (XrFuturePollResultEXT32 *)UlongToPtr(params->pollResult), &pollResult_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPollFutureEXT(wine_instance_from_handle(params->instance)->host_instance, &pollInfo_host, &pollResult_host);
-    convert_XrFuturePollResultEXT_host_to_win32(&pollResult_host, (XrFuturePollResultEXT32 *)(XrFuturePollResultEXT32 *)(uintptr_t)UlongToPtr(params->pollResult));
+    convert_XrFuturePollResultEXT_host_to_win32(&pollResult_host, (XrFuturePollResultEXT32 *)(XrFuturePollResultEXT32 *)UlongToPtr(params->pollResult));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20136,8 +20136,8 @@ static NTSTATUS thunk32_xrPublishSpatialAnchorsAsyncML(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->storage), params->publishInfo, params->future);
 
     init_conversion_context(ctx);
-    convert_XrSpatialAnchorsPublishInfoML_win32_to_host(ctx, (const XrSpatialAnchorsPublishInfoML32 *)(uintptr_t)UlongToPtr(params->publishInfo), &publishInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrPublishSpatialAnchorsAsyncML(params->storage, &publishInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorsPublishInfoML_win32_to_host(ctx, (const XrSpatialAnchorsPublishInfoML32 *)UlongToPtr(params->publishInfo), &publishInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrPublishSpatialAnchorsAsyncML(params->storage, &publishInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20172,9 +20172,9 @@ static NTSTATUS thunk32_xrPublishSpatialAnchorsCompleteML(void *args)
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->storage), params->future, params->completion);
 
     init_conversion_context(ctx);
-    convert_XrSpatialAnchorsPublishCompletionML_win32_to_host(ctx, (XrSpatialAnchorsPublishCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrSpatialAnchorsPublishCompletionML_win32_to_host(ctx, (XrSpatialAnchorsPublishCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrPublishSpatialAnchorsCompleteML(params->storage, params->future, &completion_host);
-    convert_XrSpatialAnchorsPublishCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsPublishCompletionML32 *)(XrSpatialAnchorsPublishCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrSpatialAnchorsPublishCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsPublishCompletionML32 *)(XrSpatialAnchorsPublishCompletionML32 *)UlongToPtr(params->completion));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20215,11 +20215,11 @@ static NTSTATUS thunk32_xrQueryLocalizationMapsML(void *args)
     if (params->queryInfo)
     {
         queryInfo_host = conversion_context_alloc(ctx, sizeof(*queryInfo_host));
-        convert_XrLocalizationMapQueryInfoBaseHeaderML_win32_to_host((const XrLocalizationMapQueryInfoBaseHeaderML32 *)(uintptr_t)UlongToPtr(params->queryInfo), queryInfo_host);
+        convert_XrLocalizationMapQueryInfoBaseHeaderML_win32_to_host((const XrLocalizationMapQueryInfoBaseHeaderML32 *)UlongToPtr(params->queryInfo), queryInfo_host);
     }
-    maps_host = convert_XrLocalizationMapML_array_win32_to_host(ctx, (XrLocalizationMapML32 *)(uintptr_t)UlongToPtr(params->maps), params->mapCapacityInput);
-    params->result = g_xr_host_instance_dispatch_table.p_xrQueryLocalizationMapsML(wine_session_from_handle(params->session)->host_session, queryInfo_host, params->mapCapacityInput, (uint32_t *)(uintptr_t)UlongToPtr(params->mapCountOutput), maps_host);
-    convert_XrLocalizationMapML_array_host_to_win32(maps_host, (XrLocalizationMapML32 *)(uintptr_t)UlongToPtr(params->maps), params->mapCapacityInput);
+    maps_host = convert_XrLocalizationMapML_array_win32_to_host(ctx, (XrLocalizationMapML32 *)UlongToPtr(params->maps), params->mapCapacityInput);
+    params->result = g_xr_host_instance_dispatch_table.p_xrQueryLocalizationMapsML(wine_session_from_handle(params->session)->host_session, queryInfo_host, params->mapCapacityInput, (uint32_t *)UlongToPtr(params->mapCountOutput), maps_host);
+    convert_XrLocalizationMapML_array_host_to_win32(maps_host, (XrLocalizationMapML32 *)UlongToPtr(params->maps), params->mapCapacityInput);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20251,9 +20251,9 @@ static NTSTATUS thunk32_xrQueryPerformanceMetricsCounterMETA(void *args)
 
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->counterPath), params->counter);
 
-    convert_XrPerformanceMetricsCounterMETA_win32_to_host((XrPerformanceMetricsCounterMETA32 *)(uintptr_t)UlongToPtr(params->counter), &counter_host);
+    convert_XrPerformanceMetricsCounterMETA_win32_to_host((XrPerformanceMetricsCounterMETA32 *)UlongToPtr(params->counter), &counter_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrQueryPerformanceMetricsCounterMETA(wine_session_from_handle(params->session)->host_session, params->counterPath, &counter_host);
-    convert_XrPerformanceMetricsCounterMETA_host_to_win32(&counter_host, (XrPerformanceMetricsCounterMETA32 *)(XrPerformanceMetricsCounterMETA32 *)(uintptr_t)UlongToPtr(params->counter));
+    convert_XrPerformanceMetricsCounterMETA_host_to_win32(&counter_host, (XrPerformanceMetricsCounterMETA32 *)(XrPerformanceMetricsCounterMETA32 *)UlongToPtr(params->counter));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20287,8 +20287,8 @@ static NTSTATUS thunk32_xrQuerySenseDataAsyncBD(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->queryInfo, params->future);
 
     init_conversion_context(ctx);
-    convert_XrSenseDataQueryInfoBD_win32_to_host(ctx, (const XrSenseDataQueryInfoBD32 *)(uintptr_t)UlongToPtr(params->queryInfo), &queryInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrQuerySenseDataAsyncBD(params->provider, &queryInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSenseDataQueryInfoBD_win32_to_host(ctx, (const XrSenseDataQueryInfoBD32 *)UlongToPtr(params->queryInfo), &queryInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrQuerySenseDataAsyncBD(params->provider, &queryInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20320,9 +20320,9 @@ static NTSTATUS thunk32_xrQuerySenseDataCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrSenseDataQueryCompletionBD_win32_to_host((XrSenseDataQueryCompletionBD32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrSenseDataQueryCompletionBD_win32_to_host((XrSenseDataQueryCompletionBD32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrQuerySenseDataCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrSenseDataQueryCompletionBD_host_to_win32(&completion_host, (XrSenseDataQueryCompletionBD32 *)(XrSenseDataQueryCompletionBD32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrSenseDataQueryCompletionBD_host_to_win32(&completion_host, (XrSenseDataQueryCompletionBD32 *)(XrSenseDataQueryCompletionBD32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20353,8 +20353,8 @@ static NTSTATUS thunk32_xrQuerySpacesFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrSpaceQueryInfoBaseHeaderFB_win32_to_host((const XrSpaceQueryInfoBaseHeaderFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrQuerySpacesFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSpaceQueryInfoBaseHeaderFB_win32_to_host((const XrSpaceQueryInfoBaseHeaderFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrQuerySpacesFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20385,8 +20385,8 @@ static NTSTATUS thunk32_xrQuerySpatialAnchorsAsyncML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->storage), params->queryInfo, params->future);
 
-    convert_XrSpatialAnchorsQueryInfoBaseHeaderML_win32_to_host((const XrSpatialAnchorsQueryInfoBaseHeaderML32 *)(uintptr_t)UlongToPtr(params->queryInfo), &queryInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrQuerySpatialAnchorsAsyncML(params->storage, &queryInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorsQueryInfoBaseHeaderML_win32_to_host((const XrSpatialAnchorsQueryInfoBaseHeaderML32 *)UlongToPtr(params->queryInfo), &queryInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrQuerySpatialAnchorsAsyncML(params->storage, &queryInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20417,9 +20417,9 @@ static NTSTATUS thunk32_xrQuerySpatialAnchorsCompleteML(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->storage), params->future, params->completion);
 
-    convert_XrSpatialAnchorsQueryCompletionML_win32_to_host((XrSpatialAnchorsQueryCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrSpatialAnchorsQueryCompletionML_win32_to_host((XrSpatialAnchorsQueryCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrQuerySpatialAnchorsCompleteML(params->storage, params->future, &completion_host);
-    convert_XrSpatialAnchorsQueryCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsQueryCompletionML32 *)(XrSpatialAnchorsQueryCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrSpatialAnchorsQueryCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsQueryCompletionML32 *)(XrSpatialAnchorsQueryCompletionML32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20454,10 +20454,10 @@ static NTSTATUS thunk32_xrQuerySpatialComponentDataEXT(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->snapshot), params->queryCondition, params->queryResult);
 
     init_conversion_context(ctx);
-    convert_XrSpatialComponentDataQueryConditionEXT_win32_to_host(ctx, (const XrSpatialComponentDataQueryConditionEXT32 *)(uintptr_t)UlongToPtr(params->queryCondition), &queryCondition_host);
-    convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(ctx, (XrSpatialComponentDataQueryResultEXT32 *)(uintptr_t)UlongToPtr(params->queryResult), &queryResult_host);
+    convert_XrSpatialComponentDataQueryConditionEXT_win32_to_host(ctx, (const XrSpatialComponentDataQueryConditionEXT32 *)UlongToPtr(params->queryCondition), &queryCondition_host);
+    convert_XrSpatialComponentDataQueryResultEXT_win32_to_host(ctx, (XrSpatialComponentDataQueryResultEXT32 *)UlongToPtr(params->queryResult), &queryResult_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrQuerySpatialComponentDataEXT(params->snapshot, &queryCondition_host, &queryResult_host);
-    convert_XrSpatialComponentDataQueryResultEXT_host_to_win32(&queryResult_host, (XrSpatialComponentDataQueryResultEXT32 *)(XrSpatialComponentDataQueryResultEXT32 *)(uintptr_t)UlongToPtr(params->queryResult));
+    convert_XrSpatialComponentDataQueryResultEXT_host_to_win32(&queryResult_host, (XrSpatialComponentDataQueryResultEXT32 *)(XrSpatialComponentDataQueryResultEXT32 *)UlongToPtr(params->queryResult));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20490,9 +20490,9 @@ static NTSTATUS thunk32_xrQuerySystemTrackedKeyboardFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->queryInfo, params->keyboard);
 
-    convert_XrKeyboardTrackingQueryFB_win32_to_host((const XrKeyboardTrackingQueryFB32 *)(uintptr_t)UlongToPtr(params->queryInfo), &queryInfo_host);
+    convert_XrKeyboardTrackingQueryFB_win32_to_host((const XrKeyboardTrackingQueryFB32 *)UlongToPtr(params->queryInfo), &queryInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrQuerySystemTrackedKeyboardFB(wine_session_from_handle(params->session)->host_session, &queryInfo_host, &keyboard_host);
-    convert_XrKeyboardTrackingDescriptionFB_host_to_win32(&keyboard_host, (XrKeyboardTrackingDescriptionFB32 *)(XrKeyboardTrackingDescriptionFB32 *)(uintptr_t)UlongToPtr(params->keyboard));
+    convert_XrKeyboardTrackingDescriptionFB_host_to_win32(&keyboard_host, (XrKeyboardTrackingDescriptionFB32 *)(XrKeyboardTrackingDescriptionFB32 *)UlongToPtr(params->keyboard));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20527,10 +20527,10 @@ static NTSTATUS thunk32_xrRaycastANDROID(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->rayInfo, params->results);
 
     init_conversion_context(ctx);
-    convert_XrRaycastInfoANDROID_win32_to_host(ctx, (const XrRaycastInfoANDROID32 *)(uintptr_t)UlongToPtr(params->rayInfo), &rayInfo_host);
-    convert_XrRaycastHitResultsANDROID_win32_to_host((XrRaycastHitResultsANDROID32 *)(uintptr_t)UlongToPtr(params->results), &results_host);
+    convert_XrRaycastInfoANDROID_win32_to_host(ctx, (const XrRaycastInfoANDROID32 *)UlongToPtr(params->rayInfo), &rayInfo_host);
+    convert_XrRaycastHitResultsANDROID_win32_to_host((XrRaycastHitResultsANDROID32 *)UlongToPtr(params->results), &results_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrRaycastANDROID(wine_session_from_handle(params->session)->host_session, &rayInfo_host, &results_host);
-    convert_XrRaycastHitResultsANDROID_host_to_win32(&results_host, (XrRaycastHitResultsANDROID32 *)(XrRaycastHitResultsANDROID32 *)(uintptr_t)UlongToPtr(params->results));
+    convert_XrRaycastHitResultsANDROID_host_to_win32(&results_host, (XrRaycastHitResultsANDROID32 *)(XrRaycastHitResultsANDROID32 *)UlongToPtr(params->results));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20567,7 +20567,7 @@ static NTSTATUS thunk32_xrReleaseSwapchainImage(void *args)
     if (params->releaseInfo)
     {
         releaseInfo_host = conversion_context_alloc(ctx, sizeof(*releaseInfo_host));
-        convert_XrSwapchainImageReleaseInfo_win32_to_host((const XrSwapchainImageReleaseInfo32 *)(uintptr_t)UlongToPtr(params->releaseInfo), releaseInfo_host);
+        convert_XrSwapchainImageReleaseInfo_win32_to_host((const XrSwapchainImageReleaseInfo32 *)UlongToPtr(params->releaseInfo), releaseInfo_host);
     }
     params->result = g_xr_host_instance_dispatch_table.p_xrReleaseSwapchainImage(wine_swapchain_from_handle(params->swapchain)->host_swapchain, releaseInfo_host);
     free_conversion_context(ctx);
@@ -20657,7 +20657,7 @@ static NTSTATUS thunk32_xrRequestMapLocalizationML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->requestInfo);
 
-    convert_XrMapLocalizationRequestInfoML_win32_to_host((const XrMapLocalizationRequestInfoML32 *)(uintptr_t)UlongToPtr(params->requestInfo), &requestInfo_host);
+    convert_XrMapLocalizationRequestInfoML_win32_to_host((const XrMapLocalizationRequestInfoML32 *)UlongToPtr(params->requestInfo), &requestInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrRequestMapLocalizationML(wine_session_from_handle(params->session)->host_session, &requestInfo_host);
     return STATUS_SUCCESS;
 }
@@ -20689,8 +20689,8 @@ static NTSTATUS thunk32_xrRequestSceneCaptureFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrSceneCaptureRequestInfoFB_win32_to_host((const XrSceneCaptureRequestInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrRequestSceneCaptureFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSceneCaptureRequestInfoFB_win32_to_host((const XrSceneCaptureRequestInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrRequestSceneCaptureFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20726,11 +20726,11 @@ static NTSTATUS thunk32_xrRequestWorldMeshAsyncML(void *args)
     TRACE("0x%s, %#x, %#x, %#x\n", TRACE_HANDLE(params->detector), params->getInfo, params->buffer, params->future);
 
     init_conversion_context(ctx);
-    convert_XrWorldMeshGetInfoML_win32_to_host(ctx, (const XrWorldMeshGetInfoML32 *)(uintptr_t)UlongToPtr(params->getInfo), &getInfo_host);
-    convert_XrWorldMeshBufferML_win32_to_host((XrWorldMeshBufferML32 *)(uintptr_t)UlongToPtr(params->buffer), &buffer_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrRequestWorldMeshAsyncML(params->detector, &getInfo_host, &buffer_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
-    convert_XrWorldMeshGetInfoML_host_to_win32(&getInfo_host, (XrWorldMeshGetInfoML32 *)(const XrWorldMeshGetInfoML32 *)(uintptr_t)UlongToPtr(params->getInfo));
-    convert_XrWorldMeshBufferML_host_to_win32(&buffer_host, (XrWorldMeshBufferML32 *)(XrWorldMeshBufferML32 *)(uintptr_t)UlongToPtr(params->buffer));
+    convert_XrWorldMeshGetInfoML_win32_to_host(ctx, (const XrWorldMeshGetInfoML32 *)UlongToPtr(params->getInfo), &getInfo_host);
+    convert_XrWorldMeshBufferML_win32_to_host((XrWorldMeshBufferML32 *)UlongToPtr(params->buffer), &buffer_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrRequestWorldMeshAsyncML(params->detector, &getInfo_host, &buffer_host, (XrFutureEXT *)UlongToPtr(params->future));
+    convert_XrWorldMeshGetInfoML_host_to_win32(&getInfo_host, (XrWorldMeshGetInfoML32 *)(const XrWorldMeshGetInfoML32 *)UlongToPtr(params->getInfo));
+    convert_XrWorldMeshBufferML_host_to_win32(&buffer_host, (XrWorldMeshBufferML32 *)(XrWorldMeshBufferML32 *)UlongToPtr(params->buffer));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20767,10 +20767,10 @@ static NTSTATUS thunk32_xrRequestWorldMeshCompleteML(void *args)
     TRACE("0x%s, %#x, %p, %#x\n", TRACE_HANDLE(params->detector), params->completionInfo, params->future, params->completion);
 
     init_conversion_context(ctx);
-    convert_XrWorldMeshRequestCompletionInfoML_win32_to_host((const XrWorldMeshRequestCompletionInfoML32 *)(uintptr_t)UlongToPtr(params->completionInfo), &completionInfo_host);
-    convert_XrWorldMeshRequestCompletionML_win32_to_host(ctx, (XrWorldMeshRequestCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrWorldMeshRequestCompletionInfoML_win32_to_host((const XrWorldMeshRequestCompletionInfoML32 *)UlongToPtr(params->completionInfo), &completionInfo_host);
+    convert_XrWorldMeshRequestCompletionML_win32_to_host(ctx, (XrWorldMeshRequestCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrRequestWorldMeshCompleteML(params->detector, &completionInfo_host, params->future, &completion_host);
-    convert_XrWorldMeshRequestCompletionML_host_to_win32(&completion_host, (XrWorldMeshRequestCompletionML32 *)(XrWorldMeshRequestCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrWorldMeshRequestCompletionML_host_to_win32(&completion_host, (XrWorldMeshRequestCompletionML32 *)(XrWorldMeshRequestCompletionML32 *)UlongToPtr(params->completion));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20802,8 +20802,8 @@ static NTSTATUS thunk32_xrRequestWorldMeshStateAsyncML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->detector), params->stateRequest, params->future);
 
-    convert_XrWorldMeshStateRequestInfoML_win32_to_host((const XrWorldMeshStateRequestInfoML32 *)(uintptr_t)UlongToPtr(params->stateRequest), &stateRequest_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrRequestWorldMeshStateAsyncML(params->detector, &stateRequest_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrWorldMeshStateRequestInfoML_win32_to_host((const XrWorldMeshStateRequestInfoML32 *)UlongToPtr(params->stateRequest), &stateRequest_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrRequestWorldMeshStateAsyncML(params->detector, &stateRequest_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20837,9 +20837,9 @@ static NTSTATUS thunk32_xrRequestWorldMeshStateCompleteML(void *args)
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->detector), params->future, params->completion);
 
     init_conversion_context(ctx);
-    convert_XrWorldMeshStateRequestCompletionML_win32_to_host(ctx, (XrWorldMeshStateRequestCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrWorldMeshStateRequestCompletionML_win32_to_host(ctx, (XrWorldMeshStateRequestCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrRequestWorldMeshStateCompleteML(params->detector, params->future, &completion_host);
-    convert_XrWorldMeshStateRequestCompletionML_host_to_win32(&completion_host, (XrWorldMeshStateRequestCompletionML32 *)(XrWorldMeshStateRequestCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrWorldMeshStateRequestCompletionML_host_to_win32(&completion_host, (XrWorldMeshStateRequestCompletionML32 *)(XrWorldMeshStateRequestCompletionML32 *)UlongToPtr(params->completion));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -20898,7 +20898,7 @@ static NTSTATUS thunk32_xrResultToString(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->value, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrResultToString(wine_instance_from_handle(params->instance)->host_instance, params->value, (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrResultToString(wine_instance_from_handle(params->instance)->host_instance, params->value, (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -20928,7 +20928,7 @@ static NTSTATUS thunk32_xrResumeSimultaneousHandsAndControllersTrackingMETA(void
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->resumeInfo);
 
-    convert_XrSimultaneousHandsAndControllersTrackingResumeInfoMETA_win32_to_host((const XrSimultaneousHandsAndControllersTrackingResumeInfoMETA32 *)(uintptr_t)UlongToPtr(params->resumeInfo), &resumeInfo_host);
+    convert_XrSimultaneousHandsAndControllersTrackingResumeInfoMETA_win32_to_host((const XrSimultaneousHandsAndControllersTrackingResumeInfoMETA32 *)UlongToPtr(params->resumeInfo), &resumeInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrResumeSimultaneousHandsAndControllersTrackingMETA(wine_session_from_handle(params->session)->host_session, &resumeInfo_host);
     return STATUS_SUCCESS;
 }
@@ -20963,9 +20963,9 @@ static NTSTATUS thunk32_xrRetrieveSpaceDiscoveryResultsMETA(void *args)
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->requestId), params->results);
 
     init_conversion_context(ctx);
-    convert_XrSpaceDiscoveryResultsMETA_win32_to_host(ctx, (XrSpaceDiscoveryResultsMETA32 *)(uintptr_t)UlongToPtr(params->results), &results_host);
+    convert_XrSpaceDiscoveryResultsMETA_win32_to_host(ctx, (XrSpaceDiscoveryResultsMETA32 *)UlongToPtr(params->results), &results_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrRetrieveSpaceDiscoveryResultsMETA(wine_session_from_handle(params->session)->host_session, params->requestId, &results_host);
-    convert_XrSpaceDiscoveryResultsMETA_host_to_win32(&results_host, (XrSpaceDiscoveryResultsMETA32 *)(XrSpaceDiscoveryResultsMETA32 *)(uintptr_t)UlongToPtr(params->results));
+    convert_XrSpaceDiscoveryResultsMETA_host_to_win32(&results_host, (XrSpaceDiscoveryResultsMETA32 *)(XrSpaceDiscoveryResultsMETA32 *)UlongToPtr(params->results));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -21000,9 +21000,9 @@ static NTSTATUS thunk32_xrRetrieveSpaceQueryResultsFB(void *args)
     TRACE("0x%s, 0x%s, %#x\n", TRACE_HANDLE(params->session), wine_dbgstr_longlong(params->requestId), params->results);
 
     init_conversion_context(ctx);
-    convert_XrSpaceQueryResultsFB_win32_to_host(ctx, (XrSpaceQueryResultsFB32 *)(uintptr_t)UlongToPtr(params->results), &results_host);
+    convert_XrSpaceQueryResultsFB_win32_to_host(ctx, (XrSpaceQueryResultsFB32 *)UlongToPtr(params->results), &results_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrRetrieveSpaceQueryResultsFB(wine_session_from_handle(params->session)->host_session, params->requestId, &results_host);
-    convert_XrSpaceQueryResultsFB_host_to_win32(&results_host, (XrSpaceQueryResultsFB32 *)(XrSpaceQueryResultsFB32 *)(uintptr_t)UlongToPtr(params->results));
+    convert_XrSpaceQueryResultsFB_host_to_win32(&results_host, (XrSpaceQueryResultsFB32 *)(XrSpaceQueryResultsFB32 *)UlongToPtr(params->results));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -21034,8 +21034,8 @@ static NTSTATUS thunk32_xrSaveSpaceFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrSpaceSaveInfoFB_win32_to_host((const XrSpaceSaveInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrSaveSpaceFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSpaceSaveInfoFB_win32_to_host((const XrSpaceSaveInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrSaveSpaceFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21069,9 +21069,9 @@ static NTSTATUS thunk32_xrSaveSpaceListFB(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
     init_conversion_context(ctx);
-    convert_XrSpaceListSaveInfoFB_win32_to_host(ctx, (const XrSpaceListSaveInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrSaveSpaceListFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
-    convert_XrSpaceListSaveInfoFB_host_to_win32(&info_host, (XrSpaceListSaveInfoFB32 *)(const XrSpaceListSaveInfoFB32 *)(uintptr_t)UlongToPtr(params->info));
+    convert_XrSpaceListSaveInfoFB_win32_to_host(ctx, (const XrSpaceListSaveInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrSaveSpaceListFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
+    convert_XrSpaceListSaveInfoFB_host_to_win32(&info_host, (XrSpaceListSaveInfoFB32 *)(const XrSpaceListSaveInfoFB32 *)UlongToPtr(params->info));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -21106,9 +21106,9 @@ static NTSTATUS thunk32_xrSaveSpacesMETA(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
     init_conversion_context(ctx);
-    convert_XrSpacesSaveInfoMETA_win32_to_host(ctx, (const XrSpacesSaveInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrSaveSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
-    convert_XrSpacesSaveInfoMETA_host_to_win32(&info_host, (XrSpacesSaveInfoMETA32 *)(const XrSpacesSaveInfoMETA32 *)(uintptr_t)UlongToPtr(params->info));
+    convert_XrSpacesSaveInfoMETA_win32_to_host(ctx, (const XrSpacesSaveInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrSaveSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
+    convert_XrSpacesSaveInfoMETA_host_to_win32(&info_host, (XrSpacesSaveInfoMETA32 *)(const XrSpacesSaveInfoMETA32 *)UlongToPtr(params->info));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -21140,8 +21140,8 @@ static NTSTATUS thunk32_xrSendVirtualKeyboardInputMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->keyboard), params->info, params->interactorRootPose);
 
-    convert_XrVirtualKeyboardInputInfoMETA_win32_to_host((const XrVirtualKeyboardInputInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrSendVirtualKeyboardInputMETA(params->keyboard, &info_host, (XrPosef *)(uintptr_t)UlongToPtr(params->interactorRootPose));
+    convert_XrVirtualKeyboardInputInfoMETA_win32_to_host((const XrVirtualKeyboardInputInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrSendVirtualKeyboardInputMETA(params->keyboard, &info_host, (XrPosef *)UlongToPtr(params->interactorRootPose));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21200,7 +21200,7 @@ static NTSTATUS thunk32_xrSetDigitalLensControlALMALENCE(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->digitalLensControl);
 
-    convert_XrDigitalLensControlALMALENCE_win32_to_host((const XrDigitalLensControlALMALENCE32 *)(uintptr_t)UlongToPtr(params->digitalLensControl), &digitalLensControl_host);
+    convert_XrDigitalLensControlALMALENCE_win32_to_host((const XrDigitalLensControlALMALENCE32 *)UlongToPtr(params->digitalLensControl), &digitalLensControl_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSetDigitalLensControlALMALENCE(wine_session_from_handle(params->session)->host_session, &digitalLensControl_host);
     return STATUS_SUCCESS;
 }
@@ -21260,7 +21260,7 @@ static NTSTATUS thunk32_xrSetEnvironmentDepthHandRemovalMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->environmentDepthProvider), params->setInfo);
 
-    convert_XrEnvironmentDepthHandRemovalSetInfoMETA_win32_to_host((const XrEnvironmentDepthHandRemovalSetInfoMETA32 *)(uintptr_t)UlongToPtr(params->setInfo), &setInfo_host);
+    convert_XrEnvironmentDepthHandRemovalSetInfoMETA_win32_to_host((const XrEnvironmentDepthHandRemovalSetInfoMETA32 *)UlongToPtr(params->setInfo), &setInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSetEnvironmentDepthHandRemovalMETA(params->environmentDepthProvider, &setInfo_host);
     return STATUS_SUCCESS;
 }
@@ -21536,7 +21536,7 @@ static NTSTATUS thunk32_xrSetPerformanceMetricsStateMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->state);
 
-    convert_XrPerformanceMetricsStateMETA_win32_to_host((const XrPerformanceMetricsStateMETA32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrPerformanceMetricsStateMETA_win32_to_host((const XrPerformanceMetricsStateMETA32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSetPerformanceMetricsStateMETA(wine_session_from_handle(params->session)->host_session, &state_host);
     return STATUS_SUCCESS;
 }
@@ -21568,8 +21568,8 @@ static NTSTATUS thunk32_xrSetSpaceComponentStatusFB(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->space), params->info, params->requestId);
 
-    convert_XrSpaceComponentStatusSetInfoFB_win32_to_host((const XrSpaceComponentStatusSetInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrSetSpaceComponentStatusFB(params->space, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrSpaceComponentStatusSetInfoFB_win32_to_host((const XrSpaceComponentStatusSetInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrSetSpaceComponentStatusFB(params->space, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21599,7 +21599,7 @@ static NTSTATUS thunk32_xrSetSystemNotificationsML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->info);
 
-    convert_XrSystemNotificationsSetInfoML_win32_to_host((const XrSystemNotificationsSetInfoML32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
+    convert_XrSystemNotificationsSetInfoML_win32_to_host((const XrSystemNotificationsSetInfoML32 *)UlongToPtr(params->info), &info_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSetSystemNotificationsML(wine_instance_from_handle(params->instance)->host_instance, &info_host);
     return STATUS_SUCCESS;
 }
@@ -21689,7 +21689,7 @@ static NTSTATUS thunk32_xrSetVirtualKeyboardModelVisibilityMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->keyboard), params->modelVisibility);
 
-    convert_XrVirtualKeyboardModelVisibilitySetInfoMETA_win32_to_host((const XrVirtualKeyboardModelVisibilitySetInfoMETA32 *)(uintptr_t)UlongToPtr(params->modelVisibility), &modelVisibility_host);
+    convert_XrVirtualKeyboardModelVisibilitySetInfoMETA_win32_to_host((const XrVirtualKeyboardModelVisibilitySetInfoMETA32 *)UlongToPtr(params->modelVisibility), &modelVisibility_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSetVirtualKeyboardModelVisibilityMETA(params->keyboard, &modelVisibility_host);
     return STATUS_SUCCESS;
 }
@@ -21724,9 +21724,9 @@ static NTSTATUS thunk32_xrShareSpacesFB(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
     init_conversion_context(ctx);
-    convert_XrSpaceShareInfoFB_win32_to_host(ctx, (const XrSpaceShareInfoFB32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrShareSpacesFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
-    convert_XrSpaceShareInfoFB_host_to_win32(&info_host, (XrSpaceShareInfoFB32 *)(const XrSpaceShareInfoFB32 *)(uintptr_t)UlongToPtr(params->info));
+    convert_XrSpaceShareInfoFB_win32_to_host(ctx, (const XrSpaceShareInfoFB32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrShareSpacesFB(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
+    convert_XrSpaceShareInfoFB_host_to_win32(&info_host, (XrSpaceShareInfoFB32 *)(const XrSpaceShareInfoFB32 *)UlongToPtr(params->info));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -21761,9 +21761,9 @@ static NTSTATUS thunk32_xrShareSpacesMETA(void *args)
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
     init_conversion_context(ctx);
-    convert_XrShareSpacesInfoMETA_win32_to_host(ctx, (const XrShareSpacesInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrShareSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
-    convert_XrShareSpacesInfoMETA_host_to_win32(&info_host, (XrShareSpacesInfoMETA32 *)(const XrShareSpacesInfoMETA32 *)(uintptr_t)UlongToPtr(params->info));
+    convert_XrShareSpacesInfoMETA_win32_to_host(ctx, (const XrShareSpacesInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrShareSpacesMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
+    convert_XrShareSpacesInfoMETA_host_to_win32(&info_host, (XrShareSpacesInfoMETA32 *)(const XrShareSpacesInfoMETA32 *)UlongToPtr(params->info));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -21795,8 +21795,8 @@ static NTSTATUS thunk32_xrShareSpatialAnchorAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->info, params->future);
 
-    convert_XrSpatialAnchorShareInfoBD_win32_to_host((const XrSpatialAnchorShareInfoBD32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrShareSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorShareInfoBD_win32_to_host((const XrSpatialAnchorShareInfoBD32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrShareSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21827,9 +21827,9 @@ static NTSTATUS thunk32_xrShareSpatialAnchorCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrShareSpatialAnchorCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21859,9 +21859,9 @@ static NTSTATUS thunk32_xrSnapshotMarkerDetectorML(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->markerDetector), params->snapshotInfo);
 
-    convert_XrMarkerDetectorSnapshotInfoML_win32_to_host((XrMarkerDetectorSnapshotInfoML32 *)(uintptr_t)UlongToPtr(params->snapshotInfo), &snapshotInfo_host);
+    convert_XrMarkerDetectorSnapshotInfoML_win32_to_host((XrMarkerDetectorSnapshotInfoML32 *)UlongToPtr(params->snapshotInfo), &snapshotInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSnapshotMarkerDetectorML(params->markerDetector, &snapshotInfo_host);
-    convert_XrMarkerDetectorSnapshotInfoML_host_to_win32(&snapshotInfo_host, (XrMarkerDetectorSnapshotInfoML32 *)(XrMarkerDetectorSnapshotInfoML32 *)(uintptr_t)UlongToPtr(params->snapshotInfo));
+    convert_XrMarkerDetectorSnapshotInfoML_host_to_win32(&snapshotInfo_host, (XrMarkerDetectorSnapshotInfoML32 *)(XrMarkerDetectorSnapshotInfoML32 *)UlongToPtr(params->snapshotInfo));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21892,8 +21892,8 @@ static NTSTATUS thunk32_xrStartColocationAdvertisementMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->advertisementRequestId);
 
-    convert_XrColocationAdvertisementStartInfoMETA_win32_to_host((const XrColocationAdvertisementStartInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrStartColocationAdvertisementMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->advertisementRequestId));
+    convert_XrColocationAdvertisementStartInfoMETA_win32_to_host((const XrColocationAdvertisementStartInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrStartColocationAdvertisementMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->advertisementRequestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21924,8 +21924,8 @@ static NTSTATUS thunk32_xrStartColocationDiscoveryMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->discoveryRequestId);
 
-    convert_XrColocationDiscoveryStartInfoMETA_win32_to_host((const XrColocationDiscoveryStartInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrStartColocationDiscoveryMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->discoveryRequestId));
+    convert_XrColocationDiscoveryStartInfoMETA_win32_to_host((const XrColocationDiscoveryStartInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrStartColocationDiscoveryMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->discoveryRequestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -21984,8 +21984,8 @@ static NTSTATUS thunk32_xrStartSenseDataProviderAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->startInfo, params->future);
 
-    convert_XrSenseDataProviderStartInfoBD_win32_to_host((const XrSenseDataProviderStartInfoBD32 *)(uintptr_t)UlongToPtr(params->startInfo), &startInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrStartSenseDataProviderAsyncBD(params->provider, &startInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSenseDataProviderStartInfoBD_win32_to_host((const XrSenseDataProviderStartInfoBD32 *)UlongToPtr(params->startInfo), &startInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrStartSenseDataProviderAsyncBD(params->provider, &startInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22016,9 +22016,9 @@ static NTSTATUS thunk32_xrStartSenseDataProviderCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->session), params->future, params->completion);
 
-    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrStartSenseDataProviderCompleteBD(wine_session_from_handle(params->session)->host_session, params->future, &completion_host);
-    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22049,8 +22049,8 @@ static NTSTATUS thunk32_xrStopColocationAdvertisementMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrColocationAdvertisementStopInfoMETA_win32_to_host((const XrColocationAdvertisementStopInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrStopColocationAdvertisementMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrColocationAdvertisementStopInfoMETA_win32_to_host((const XrColocationAdvertisementStopInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrStopColocationAdvertisementMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22081,8 +22081,8 @@ static NTSTATUS thunk32_xrStopColocationDiscoveryMETA(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->info, params->requestId);
 
-    convert_XrColocationDiscoveryStopInfoMETA_win32_to_host((const XrColocationDiscoveryStopInfoMETA32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrStopColocationDiscoveryMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)(uintptr_t)UlongToPtr(params->requestId));
+    convert_XrColocationDiscoveryStopInfoMETA_win32_to_host((const XrColocationDiscoveryStopInfoMETA32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrStopColocationDiscoveryMETA(wine_session_from_handle(params->session)->host_session, &info_host, (XrAsyncRequestIdFB *)UlongToPtr(params->requestId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22140,7 +22140,7 @@ static NTSTATUS thunk32_xrStopHapticFeedback(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->hapticActionInfo);
 
-    convert_XrHapticActionInfo_win32_to_host((const XrHapticActionInfo32 *)(uintptr_t)UlongToPtr(params->hapticActionInfo), &hapticActionInfo_host);
+    convert_XrHapticActionInfo_win32_to_host((const XrHapticActionInfo32 *)UlongToPtr(params->hapticActionInfo), &hapticActionInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrStopHapticFeedback(wine_session_from_handle(params->session)->host_session, &hapticActionInfo_host);
     return STATUS_SUCCESS;
 }
@@ -22199,7 +22199,7 @@ static NTSTATUS thunk32_xrStringToPath(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->pathString, params->path);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrStringToPath(wine_instance_from_handle(params->instance)->host_instance, (const char *)(uintptr_t)UlongToPtr(params->pathString), (XrPath *)(uintptr_t)UlongToPtr(params->path));
+    params->result = g_xr_host_instance_dispatch_table.p_xrStringToPath(wine_instance_from_handle(params->instance)->host_instance, (const char *)UlongToPtr(params->pathString), (XrPath *)UlongToPtr(params->path));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22229,7 +22229,7 @@ static NTSTATUS thunk32_xrStructureTypeToString(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->value, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrStructureTypeToString(wine_instance_from_handle(params->instance)->host_instance, params->value, (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrStructureTypeToString(wine_instance_from_handle(params->instance)->host_instance, params->value, (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22259,7 +22259,7 @@ static NTSTATUS thunk32_xrStructureTypeToString2KHR(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->instance), params->value, params->buffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrStructureTypeToString2KHR(wine_instance_from_handle(params->instance)->host_instance, params->value, (char *)(uintptr_t)UlongToPtr(params->buffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrStructureTypeToString2KHR(wine_instance_from_handle(params->instance)->host_instance, params->value, (char *)UlongToPtr(params->buffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22289,7 +22289,7 @@ static NTSTATUS thunk32_xrSuggestBodyTrackingCalibrationOverrideMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->bodyTracker), params->calibrationInfo);
 
-    convert_XrBodyTrackingCalibrationInfoMETA_win32_to_host((const XrBodyTrackingCalibrationInfoMETA32 *)(uintptr_t)UlongToPtr(params->calibrationInfo), &calibrationInfo_host);
+    convert_XrBodyTrackingCalibrationInfoMETA_win32_to_host((const XrBodyTrackingCalibrationInfoMETA32 *)UlongToPtr(params->calibrationInfo), &calibrationInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSuggestBodyTrackingCalibrationOverrideMETA(params->bodyTracker, &calibrationInfo_host);
     return STATUS_SUCCESS;
 }
@@ -22323,7 +22323,7 @@ static NTSTATUS thunk32_xrSuggestInteractionProfileBindings(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->instance), params->suggestedBindings);
 
     init_conversion_context(ctx);
-    convert_XrInteractionProfileSuggestedBinding_win32_to_host(ctx, (const XrInteractionProfileSuggestedBinding32 *)(uintptr_t)UlongToPtr(params->suggestedBindings), &suggestedBindings_host);
+    convert_XrInteractionProfileSuggestedBinding_win32_to_host(ctx, (const XrInteractionProfileSuggestedBinding32 *)UlongToPtr(params->suggestedBindings), &suggestedBindings_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSuggestInteractionProfileBindings(wine_instance_from_handle(params->instance)->host_instance, &suggestedBindings_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -22355,7 +22355,7 @@ static NTSTATUS thunk32_xrSuggestVirtualKeyboardLocationMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->keyboard), params->locationInfo);
 
-    convert_XrVirtualKeyboardLocationInfoMETA_win32_to_host((const XrVirtualKeyboardLocationInfoMETA32 *)(uintptr_t)UlongToPtr(params->locationInfo), &locationInfo_host);
+    convert_XrVirtualKeyboardLocationInfoMETA_win32_to_host((const XrVirtualKeyboardLocationInfoMETA32 *)UlongToPtr(params->locationInfo), &locationInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSuggestVirtualKeyboardLocationMETA(params->keyboard, &locationInfo_host);
     return STATUS_SUCCESS;
 }
@@ -22389,7 +22389,7 @@ static NTSTATUS thunk32_xrSyncActions(void *args)
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->session), params->syncInfo);
 
     init_conversion_context(ctx);
-    convert_XrActionsSyncInfo_win32_to_host(ctx, (const XrActionsSyncInfo32 *)(uintptr_t)UlongToPtr(params->syncInfo), &syncInfo_host);
+    convert_XrActionsSyncInfo_win32_to_host(ctx, (const XrActionsSyncInfo32 *)UlongToPtr(params->syncInfo), &syncInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrSyncActions(wine_session_from_handle(params->session)->host_session, &syncInfo_host);
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
@@ -22423,7 +22423,7 @@ static NTSTATUS thunk32_xrThermalGetTemperatureTrendEXT(void *args)
 
     TRACE("0x%s, %#x, %#x, %#x, %#x\n", TRACE_HANDLE(params->session), params->domain, params->notificationLevel, params->tempHeadroom, params->tempSlope);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrThermalGetTemperatureTrendEXT(wine_session_from_handle(params->session)->host_session, params->domain, (XrPerfSettingsNotificationLevelEXT *)(uintptr_t)UlongToPtr(params->notificationLevel), (float *)(uintptr_t)UlongToPtr(params->tempHeadroom), (float *)(uintptr_t)UlongToPtr(params->tempSlope));
+    params->result = g_xr_host_instance_dispatch_table.p_xrThermalGetTemperatureTrendEXT(wine_session_from_handle(params->session)->host_session, params->domain, (XrPerfSettingsNotificationLevelEXT *)UlongToPtr(params->notificationLevel), (float *)UlongToPtr(params->tempHeadroom), (float *)UlongToPtr(params->tempSlope));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22480,7 +22480,7 @@ static NTSTATUS thunk32_xrTriangleMeshBeginVertexBufferUpdateFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->mesh), params->outVertexCount);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrTriangleMeshBeginVertexBufferUpdateFB(params->mesh, (uint32_t *)(uintptr_t)UlongToPtr(params->outVertexCount));
+    params->result = g_xr_host_instance_dispatch_table.p_xrTriangleMeshBeginVertexBufferUpdateFB(params->mesh, (uint32_t *)UlongToPtr(params->outVertexCount));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22567,7 +22567,7 @@ static NTSTATUS thunk32_xrTriangleMeshGetIndexBufferFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->mesh), params->outIndexBuffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrTriangleMeshGetIndexBufferFB(params->mesh, (uint32_t **)(uintptr_t)UlongToPtr(params->outIndexBuffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrTriangleMeshGetIndexBufferFB(params->mesh, (uint32_t **)UlongToPtr(params->outIndexBuffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22596,7 +22596,7 @@ static NTSTATUS thunk32_xrTriangleMeshGetVertexBufferFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->mesh), params->outVertexBuffer);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrTriangleMeshGetVertexBufferFB(params->mesh, (XrVector3f **)(uintptr_t)UlongToPtr(params->outVertexBuffer));
+    params->result = g_xr_host_instance_dispatch_table.p_xrTriangleMeshGetVertexBufferFB(params->mesh, (XrVector3f **)UlongToPtr(params->outVertexBuffer));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22628,10 +22628,10 @@ static NTSTATUS thunk32_xrTryCreateSpatialGraphStaticNodeBindingMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->session), params->createInfo, params->nodeBinding);
 
-    convert_XrSpatialGraphStaticNodeBindingCreateInfoMSFT_win32_to_host((const XrSpatialGraphStaticNodeBindingCreateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->createInfo), &createInfo_host);
-    nodeBinding_host = (XrSpatialGraphNodeBindingMSFT)(uintptr_t)UlongToPtr(*(PTR32 *)(uintptr_t)UlongToPtr(params->nodeBinding));
+    convert_XrSpatialGraphStaticNodeBindingCreateInfoMSFT_win32_to_host((const XrSpatialGraphStaticNodeBindingCreateInfoMSFT32 *)UlongToPtr(params->createInfo), &createInfo_host);
+    nodeBinding_host = XR_NULL_HANDLE;
     params->result = g_xr_host_instance_dispatch_table.p_xrTryCreateSpatialGraphStaticNodeBindingMSFT(wine_session_from_handle(params->session)->host_session, &createInfo_host, &nodeBinding_host);
-    *(PTR32 *)(uintptr_t)UlongToPtr(params->nodeBinding) = PtrToUlong(nodeBinding_host);
+    *(XrSpatialGraphNodeBindingMSFT *)UlongToPtr(params->nodeBinding) = nodeBinding_host;
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22660,7 +22660,7 @@ static NTSTATUS thunk32_xrUnpersistAnchorANDROID(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->handle), params->anchorId);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistAnchorANDROID(params->handle, (const XrUuidEXT *)(uintptr_t)UlongToPtr(params->anchorId));
+    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistAnchorANDROID(params->handle, (const XrUuidEXT *)UlongToPtr(params->anchorId));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22691,8 +22691,8 @@ static NTSTATUS thunk32_xrUnpersistSpatialAnchorAsyncBD(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->provider), params->info, params->future);
 
-    convert_XrSpatialAnchorUnpersistInfoBD_win32_to_host((const XrSpatialAnchorUnpersistInfoBD32 *)(uintptr_t)UlongToPtr(params->info), &info_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorUnpersistInfoBD_win32_to_host((const XrSpatialAnchorUnpersistInfoBD32 *)UlongToPtr(params->info), &info_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialAnchorAsyncBD(params->provider, &info_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22723,9 +22723,9 @@ static NTSTATUS thunk32_xrUnpersistSpatialAnchorCompleteBD(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->provider), params->future, params->completion);
 
-    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrFutureCompletionEXT_win32_to_host((XrFutureCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialAnchorCompleteBD(params->provider, params->future, &completion_host);
-    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrFutureCompletionEXT_host_to_win32(&completion_host, (XrFutureCompletionEXT32 *)(XrFutureCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22754,7 +22754,7 @@ static NTSTATUS thunk32_xrUnpersistSpatialAnchorMSFT(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->spatialAnchorStore), params->spatialAnchorPersistenceName);
 
-    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialAnchorMSFT(params->spatialAnchorStore, (const XrSpatialAnchorPersistenceNameMSFT *)(uintptr_t)UlongToPtr(params->spatialAnchorPersistenceName));
+    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialAnchorMSFT(params->spatialAnchorStore, (const XrSpatialAnchorPersistenceNameMSFT *)UlongToPtr(params->spatialAnchorPersistenceName));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22785,8 +22785,8 @@ static NTSTATUS thunk32_xrUnpersistSpatialEntityAsyncEXT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->persistenceContext), params->unpersistInfo, params->future);
 
-    convert_XrSpatialEntityUnpersistInfoEXT_win32_to_host((const XrSpatialEntityUnpersistInfoEXT32 *)(uintptr_t)UlongToPtr(params->unpersistInfo), &unpersistInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialEntityAsyncEXT(params->persistenceContext, &unpersistInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialEntityUnpersistInfoEXT_win32_to_host((const XrSpatialEntityUnpersistInfoEXT32 *)UlongToPtr(params->unpersistInfo), &unpersistInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialEntityAsyncEXT(params->persistenceContext, &unpersistInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22817,9 +22817,9 @@ static NTSTATUS thunk32_xrUnpersistSpatialEntityCompleteEXT(void *args)
 
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->persistenceContext), params->future, params->completion);
 
-    convert_XrUnpersistSpatialEntityCompletionEXT_win32_to_host((XrUnpersistSpatialEntityCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrUnpersistSpatialEntityCompletionEXT_win32_to_host((XrUnpersistSpatialEntityCompletionEXT32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrUnpersistSpatialEntityCompleteEXT(params->persistenceContext, params->future, &completion_host);
-    convert_XrUnpersistSpatialEntityCompletionEXT_host_to_win32(&completion_host, (XrUnpersistSpatialEntityCompletionEXT32 *)(XrUnpersistSpatialEntityCompletionEXT32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrUnpersistSpatialEntityCompletionEXT_host_to_win32(&completion_host, (XrUnpersistSpatialEntityCompletionEXT32 *)(XrUnpersistSpatialEntityCompletionEXT32 *)UlongToPtr(params->completion));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22851,10 +22851,10 @@ static NTSTATUS thunk32_xrUpdateHandMeshMSFT(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->handTracker), params->updateInfo, params->handMesh);
 
-    convert_XrHandMeshUpdateInfoMSFT_win32_to_host((const XrHandMeshUpdateInfoMSFT32 *)(uintptr_t)UlongToPtr(params->updateInfo), &updateInfo_host);
-    convert_XrHandMeshMSFT_win32_to_host((XrHandMeshMSFT32 *)(uintptr_t)UlongToPtr(params->handMesh), &handMesh_host);
+    convert_XrHandMeshUpdateInfoMSFT_win32_to_host((const XrHandMeshUpdateInfoMSFT32 *)UlongToPtr(params->updateInfo), &updateInfo_host);
+    convert_XrHandMeshMSFT_win32_to_host((XrHandMeshMSFT32 *)UlongToPtr(params->handMesh), &handMesh_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrUpdateHandMeshMSFT(params->handTracker, &updateInfo_host, &handMesh_host);
-    convert_XrHandMeshMSFT_host_to_win32(&handMesh_host, (XrHandMeshMSFT32 *)(XrHandMeshMSFT32 *)(uintptr_t)UlongToPtr(params->handMesh));
+    convert_XrHandMeshMSFT_host_to_win32(&handMesh_host, (XrHandMeshMSFT32 *)(XrHandMeshMSFT32 *)UlongToPtr(params->handMesh));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22884,7 +22884,7 @@ static NTSTATUS thunk32_xrUpdatePassthroughColorLutMETA(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->colorLut), params->updateInfo);
 
-    convert_XrPassthroughColorLutUpdateInfoMETA_win32_to_host((const XrPassthroughColorLutUpdateInfoMETA32 *)(uintptr_t)UlongToPtr(params->updateInfo), &updateInfo_host);
+    convert_XrPassthroughColorLutUpdateInfoMETA_win32_to_host((const XrPassthroughColorLutUpdateInfoMETA32 *)UlongToPtr(params->updateInfo), &updateInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrUpdatePassthroughColorLutMETA(params->colorLut, &updateInfo_host);
     return STATUS_SUCCESS;
 }
@@ -22916,8 +22916,8 @@ static NTSTATUS thunk32_xrUpdateSpatialAnchorsExpirationAsyncML(void *args)
 
     TRACE("0x%s, %#x, %#x\n", TRACE_HANDLE(params->storage), params->updateInfo, params->future);
 
-    convert_XrSpatialAnchorsUpdateExpirationInfoML_win32_to_host((const XrSpatialAnchorsUpdateExpirationInfoML32 *)(uintptr_t)UlongToPtr(params->updateInfo), &updateInfo_host);
-    params->result = g_xr_host_instance_dispatch_table.p_xrUpdateSpatialAnchorsExpirationAsyncML(params->storage, &updateInfo_host, (XrFutureEXT *)(uintptr_t)UlongToPtr(params->future));
+    convert_XrSpatialAnchorsUpdateExpirationInfoML_win32_to_host((const XrSpatialAnchorsUpdateExpirationInfoML32 *)UlongToPtr(params->updateInfo), &updateInfo_host);
+    params->result = g_xr_host_instance_dispatch_table.p_xrUpdateSpatialAnchorsExpirationAsyncML(params->storage, &updateInfo_host, (XrFutureEXT *)UlongToPtr(params->future));
     return STATUS_SUCCESS;
 }
 #endif /* !_WIN64 */
@@ -22951,9 +22951,9 @@ static NTSTATUS thunk32_xrUpdateSpatialAnchorsExpirationCompleteML(void *args)
     TRACE("0x%s, %p, %#x\n", TRACE_HANDLE(params->storage), params->future, params->completion);
 
     init_conversion_context(ctx);
-    convert_XrSpatialAnchorsUpdateExpirationCompletionML_win32_to_host(ctx, (XrSpatialAnchorsUpdateExpirationCompletionML32 *)(uintptr_t)UlongToPtr(params->completion), &completion_host);
+    convert_XrSpatialAnchorsUpdateExpirationCompletionML_win32_to_host(ctx, (XrSpatialAnchorsUpdateExpirationCompletionML32 *)UlongToPtr(params->completion), &completion_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrUpdateSpatialAnchorsExpirationCompleteML(params->storage, params->future, &completion_host);
-    convert_XrSpatialAnchorsUpdateExpirationCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsUpdateExpirationCompletionML32 *)(XrSpatialAnchorsUpdateExpirationCompletionML32 *)(uintptr_t)UlongToPtr(params->completion));
+    convert_XrSpatialAnchorsUpdateExpirationCompletionML_host_to_win32(&completion_host, (XrSpatialAnchorsUpdateExpirationCompletionML32 *)(XrSpatialAnchorsUpdateExpirationCompletionML32 *)UlongToPtr(params->completion));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -22984,7 +22984,7 @@ static NTSTATUS thunk32_xrUpdateSwapchainFB(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->swapchain), params->state);
 
-    convert_XrSwapchainStateBaseHeaderFB_win32_to_host((const XrSwapchainStateBaseHeaderFB32 *)(uintptr_t)UlongToPtr(params->state), &state_host);
+    convert_XrSwapchainStateBaseHeaderFB_win32_to_host((const XrSwapchainStateBaseHeaderFB32 *)UlongToPtr(params->state), &state_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrUpdateSwapchainFB(wine_swapchain_from_handle(params->swapchain)->host_swapchain, &state_host);
     return STATUS_SUCCESS;
 }
@@ -23023,11 +23023,11 @@ static NTSTATUS thunk32_xrWaitFrame(void *args)
     if (params->frameWaitInfo)
     {
         frameWaitInfo_host = conversion_context_alloc(ctx, sizeof(*frameWaitInfo_host));
-        convert_XrFrameWaitInfo_win32_to_host((const XrFrameWaitInfo32 *)(uintptr_t)UlongToPtr(params->frameWaitInfo), frameWaitInfo_host);
+        convert_XrFrameWaitInfo_win32_to_host((const XrFrameWaitInfo32 *)UlongToPtr(params->frameWaitInfo), frameWaitInfo_host);
     }
-    convert_XrFrameState_win32_to_host(ctx, (XrFrameState32 *)(uintptr_t)UlongToPtr(params->frameState), &frameState_host);
+    convert_XrFrameState_win32_to_host(ctx, (XrFrameState32 *)UlongToPtr(params->frameState), &frameState_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrWaitFrame(wine_session_from_handle(params->session)->host_session, frameWaitInfo_host, &frameState_host);
-    convert_XrFrameState_host_to_win32(&frameState_host, (XrFrameState32 *)(XrFrameState32 *)(uintptr_t)UlongToPtr(params->frameState));
+    convert_XrFrameState_host_to_win32(&frameState_host, (XrFrameState32 *)(XrFrameState32 *)UlongToPtr(params->frameState));
     free_conversion_context(ctx);
     return STATUS_SUCCESS;
 }
@@ -23058,7 +23058,7 @@ static NTSTATUS thunk32_xrWaitSwapchainImage(void *args)
 
     TRACE("0x%s, %#x\n", TRACE_HANDLE(params->swapchain), params->waitInfo);
 
-    convert_XrSwapchainImageWaitInfo_win32_to_host((const XrSwapchainImageWaitInfo32 *)(uintptr_t)UlongToPtr(params->waitInfo), &waitInfo_host);
+    convert_XrSwapchainImageWaitInfo_win32_to_host((const XrSwapchainImageWaitInfo32 *)UlongToPtr(params->waitInfo), &waitInfo_host);
     params->result = g_xr_host_instance_dispatch_table.p_xrWaitSwapchainImage(wine_swapchain_from_handle(params->swapchain)->host_swapchain, &waitInfo_host);
     return STATUS_SUCCESS;
 }
