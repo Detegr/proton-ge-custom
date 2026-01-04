@@ -790,7 +790,7 @@ class XrFunction(object):
         params = ", ".join([p.variable(conv, unwrap, params_prefix) for p in self.params])
         if self.extra_param:
             if conv:
-                params += ", (uintptr_t)UlongToPtr({0}{1})".format(params_prefix, self.extra_param)
+                params += ", UlongToPtr({0}{1})".format(params_prefix, self.extra_param)
             else:
                 params += ", (void *){0}{1}".format(params_prefix, self.extra_param)
 
@@ -1320,7 +1320,7 @@ class XrVariable(object):
 
         # Fix: Do not force PTR32* for pointer_arrays (double pointers). 
         # Let them fall through to the 'else' block to generate the native C type (e.g. uint32_t**).
-        if (not self.pointer_array) and ((self.is_pointer() or self.is_static_array()) and self.is_pointer_size()):
+        if (not self.pointer_array) and ((self.is_pointer() or self.is_static_array()) and self.is_pointer_size(4 if conv else 8)):
             cast_type += "PTR32 *"
         else:
             cast_type += self.type
@@ -1337,7 +1337,7 @@ class XrVariable(object):
             cast_type = self.is_const() + " timespec *"
             print(cast_type)
 
-        return "({0})(uintptr_t)UlongToPtr({1}{2})".format(cast_type, prefix, self.name)
+        return "({0})UlongToPtr({1}{2})".format(cast_type, prefix, self.name)
 
 
 class XrMember(XrVariable):
@@ -1742,10 +1742,8 @@ class XrParam(XrVariable):
             elif self.is_struct():
                 return "    convert_{0}_{3}({4}{1}, &{2}_host);\n".format(self.type, self.value(prefix, conv),
                     self.name, suffix, ctx_param)
-            elif self.is_pointer_size() and self.type != "size_t":
-                return "    {0}_host = ({2})(uintptr_t)UlongToPtr(*{1});\n".format(self.name, self.value(prefix, conv), self.type)
             else:
-                return "    {0}_host = *{1};\n".format(self.name, self.value(prefix, conv))
+                return "    {0}_host = XR_NULL_HANDLE;\n".format(self.name, self.value(prefix, conv))
         else:
             if self.is_dynamic_array():
                 return "    convert_{0}_array_{1}({2}_host, {3}, {4});\n".format(
@@ -1758,7 +1756,7 @@ class XrParam(XrVariable):
                     target_type += "32"
                 return "    convert_{0}_host_to_{3}({4}{2}_host, ({5} *){1});\n".format(
                     self.type, self.value(prefix, conv), self.name, win_type, ref_part, target_type)
-            elif self.is_pointer_size() and self.type != "size_t":
+            elif self.is_pointer_size(4 if conv else 8) and self.type != "size_t":
                 return "    *{0} = PtrToUlong({1}_host);\n".format(self.value(prefix, conv), self.name)
             else:
                 return "    *{0} = {1}_host;\n".format(self.value(prefix, conv), self.name)
@@ -1834,7 +1832,7 @@ class XrParam(XrVariable):
                 return True
             if conv and self.handle.is_dispatchable():
                 return True
-        elif self.is_pointer() and self.is_pointer_size():
+        elif self.is_pointer() and self.is_pointer_size(4 if conv else 8):
             return conv
 
         return False
@@ -2160,7 +2158,7 @@ class XrStruct(Sequence):
 
             # check alignment and pointer-sized members for 32-bit conversions
             if conv and (direction == Direction.INPUT or not is_const):
-                if m.is_pointer() or m.is_pointer_size():
+                if m.is_pointer() or m.is_pointer_size(4 if conv else 8):
                     return True
                 # we don't check structs here, they will will be traversed by needs_conversion chain anyway
                 if not m.is_struct() and m.needs_alignment():
@@ -2202,7 +2200,7 @@ class XrStruct(Sequence):
         for m in self.members:
             if self.name == m.type:
                 continue
-            if m.is_pointer() or m.is_pointer_size():
+            if m.is_pointer() or m.is_pointer_size(ptrsize=4):
                 return True
             if m.needs_alignment():
                 return True
@@ -2335,7 +2333,7 @@ class StructConversionFunction(object):
 
         if needs_extensions:
             if self.conv and self.direction == Direction.INPUT:
-                body += f"\n    for (in_header = ({ptr_type})(uintptr_t)UlongToPtr(in->next); in_header; in_header = ({ptr_type})(uintptr_t)UlongToPtr(in_header->next))\n"
+                body += f"\n    for (in_header = ({ptr_type})UlongToPtr(in->next); in_header; in_header = ({ptr_type})UlongToPtr(in_header->next))\n"
             else:
                 body += "\n    for (in_header = (void *)in->next; in_header; in_header = (void *)in_header->next)\n"
             body += "    {\n"
@@ -2509,8 +2507,9 @@ class ArrayConversionFunction(object):
             if self.array.needs_win32_type():
                 win_type += "32"
             elif self.array.is_handle() and self.array.handle.is_dispatchable():
+                pass
                 # Dispatchable handles are pointers on host, but uint32/PTR32 in 32-bit Guest
-                win_type = "PTR32"
+                # win_type = "PTR32"
         
         if self.direction == Direction.OUTPUT and self.array.is_const():
             win_type = "const " + win_type
@@ -2604,7 +2603,7 @@ class ArrayConversionFunction(object):
                     input_val = "in[i]"
                 elif self.direction == Direction.INPUT:
                     # 32-bit Input Handle is PTR32 (uint32). Must cast to uintptr_t then handle type.
-                    input_val = "({0})(uintptr_t)UlongToPtr(in[i])".format(self.type)
+                    input_val = "({0})UlongToPtr(in[i])".format(self.type)
                 else:
                     input_val = "PtrToUlong(in[i])"
 
@@ -2650,8 +2649,9 @@ class ArrayConversionFunction(object):
             if self.array.needs_win32_type():
                 win_type += "32"
             elif self.array.is_handle() and self.array.handle.is_dispatchable():
+                pass
                 # Dispatchable handles are pointers on host, but uint32/PTR32 in 32-bit Guest
-                win_type = "PTR32"
+                # win_type = "PTR32"
         
         if self.direction == Direction.OUTPUT and self.array.is_const():
             win_type = "const " + win_type
