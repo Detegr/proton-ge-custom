@@ -70,6 +70,7 @@ XrResult WINAPI wine_xrCreateInstance(const XrInstanceCreateInfo *createInfo, Xr
   our_createInfo = *createInfo;
   our_createInfo.enabledExtensionNames = (const char *const *)new_list;
   our_createInfo.enabledExtensionCount = count;
+  our_createInfo.enabledApiLayerCount = 0; // Zero out API layer count to not make Linux runtime load them as well
   createInfo = &our_createInfo;
 
   TRACE("Enabled extensions:\n");
